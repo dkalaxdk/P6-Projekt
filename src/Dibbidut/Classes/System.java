@@ -20,9 +20,11 @@ public class System {
 
     public System() {
         running = true;
+
+        Start();
     }
 
-    public void Main() {
+    public void Start() {
         while(running) {
             UpdateOwnShip();
             UpdateShipList();
