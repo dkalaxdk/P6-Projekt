@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class Obstacle {
     public Point position;
-    public Vector velocity;
+    public Velocity velocity;
     public ArrayList<Point> trajectory;
 
     public Obstacle() {

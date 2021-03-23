@@ -9,6 +9,7 @@ public class System {
     public ArrayList<Ship> shipsInRange;
     public IAISBuffer buffer;
 
+    public IOwnShip OS;
     public Ship ownShip;
 
     public IDisplay display;
@@ -18,7 +19,7 @@ public class System {
 
 
     public System() {
-
+        running = true;
     }
 
     public void Main() {
