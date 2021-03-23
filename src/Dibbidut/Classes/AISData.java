@@ -1,5 +1,11 @@
 package Dibbidut.Classes;
 
+import java.time.*;
+
 public class AISData {
-    // All the stuff...
+    public int mmsi;
+
+    public AISData(int mmsi) {
+        this.mmsi = mmsi;
+    }
 }

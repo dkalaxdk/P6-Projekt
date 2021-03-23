@@ -20,8 +20,6 @@ public class System {
 
     public System() {
         running = true;
-
-        Start();
     }
 
     public void Start() {
