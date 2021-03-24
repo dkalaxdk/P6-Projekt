@@ -41,6 +41,8 @@
                 <configuration>
                     <includes>
                         <include>test</include>
+                        <include>Test</include>
+                        <include>Tests</include>
                     </includes>
                 </configuration>
             </plugin>
