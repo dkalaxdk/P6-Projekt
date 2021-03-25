@@ -1,10 +1,10 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.*;
-
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public class System {
+public class CASystem {
 
     public ArrayList<Ship> shipsInRange;
     public IAISBuffer buffer;
@@ -18,16 +18,18 @@ public class System {
     private boolean running;
 
 
-    public System() {
+    public CASystem() {
         running = true;
+
+        
     }
 
     public void Start() {
         while(running) {
-            UpdateOwnShip();
-            UpdateShipList();
-            UpdateVelocityObstacles();
-            UpdateDisplay();
+//            UpdateOwnShip();
+//            UpdateShipList();
+//            UpdateVelocityObstacles();
+//            UpdateDisplay();
         }
     }
 
