@@ -20,6 +20,7 @@ public class ShipDomainTest {
         public double aftOffset;
         public double height;
         public double width;
+        public double[] Dimensions;
         public StartingValues(ShipDomain shipDomain) {
             this.AdvancedDiameter = shipDomain.getAdvanceDiameter();
             this.TacticalDiameter = shipDomain.getTacticalDiameter();
@@ -31,6 +32,7 @@ public class ShipDomainTest {
             this.aftOffset = shipDomain.getAftOffset();
             this.height = shipDomain.getHeight();
             this.width = shipDomain.getWidth();
+            this.Dimensions = shipDomain.getDimensions();
         }
     }
 
@@ -123,6 +125,23 @@ public class ShipDomainTest {
         shipDomain.Update(20,5);
         //Assert
         assertNotEquals(shipDomain.getWidth(), startingValues.width);
+    }
+
+    @Test
+    public void testUpdate_Dimensions() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        boolean equals = true;
+        for(double dimension: shipDomain.getDimensions()) {
+            for (double StartingValue: startingValues.Dimensions) {
+                if (dimension == StartingValue) {
+                    equals = false;
+                    break;
+                }
+            }
+        }
+        assertFalse(equals);
     }
 
     @Test
