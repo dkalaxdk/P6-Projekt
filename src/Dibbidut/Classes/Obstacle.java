@@ -11,4 +11,12 @@ public abstract class Obstacle {
     public Obstacle() {
 
     }
+
+    public Obstacle(Point point) {
+        position = point;
+    }
+
+    public Obstacle(int longitude, int latitude) {
+        position = new Point(longitude, latitude);
+    }
 }

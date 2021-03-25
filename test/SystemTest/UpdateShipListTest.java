@@ -1,11 +1,7 @@
 package SystemTest;
 
 import Dibbidut.Classes.*;
-import Dibbidut.Classes.AISData;
-import Dibbidut.Classes.AISSource;
-import Dibbidut.Classes.AISStream;
-import Dibbidut.Classes.System;
-import Dibbidut.Interfaces.IDataInput;
+import Dibbidut.Classes.CASystem;
 import org.junit.jupiter.api.Test;
 
 
@@ -16,7 +12,7 @@ public class UpdateShipListTest {
     @Test
     public void emptyListNonEmptyBuffer_shouldAddElementToList() {
 
-        System system = new System();
+        CASystem system = new CASystem();
         AISBuffer buffer = new AISBuffer();
         AISData data = new AISData(0);
         buffer.Push(data);
