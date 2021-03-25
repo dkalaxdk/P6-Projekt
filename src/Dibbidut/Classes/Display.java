@@ -5,6 +5,8 @@ import Dibbidut.Interfaces.IDisplay;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -51,14 +53,34 @@ public class Display extends JPanel implements IDisplay {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2.setColor(Color.black);
         g2.setStroke(new BasicStroke(5));
 
         for (Ship ship : ships) {
-            g2.fillOval(ship.position.x + 20, ship.position.y + 45, 10, 10);
-            g2.drawOval(ship.position.x, ship.position.y, 50, 100);
+
+            Shape shape = new Ellipse2D.Double(ship.position.getX() + 20, ship.position.getY() + 45, 10.0, 10.0);
+            g2.draw(shape);
+
+            shape = new Ellipse2D.Double(ship.position.getX(), ship.position.getY(), 50, 100);
+            g2.draw(shape);
         }
+    }
+
+    public Point2D.Double getCoordinatesToDrawShipFrom(Ship ship) {
+
+        if (ship.heading % 90 == 0) {
+
+        }
+
+
+
+        return new Point2D.Double(0,0);
+    }
+
+    public Point2D.Double getCoordinatesToDrawDomainFrom(Ship ship) {
+        return new Point2D.Double(0,0);
     }
 
     @Override

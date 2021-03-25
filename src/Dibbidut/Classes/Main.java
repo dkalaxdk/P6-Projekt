@@ -2,6 +2,7 @@ package Dibbidut.Classes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -13,34 +14,31 @@ public class Main {
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(new Point(0,0));
+        Ship ownShip = new Ship(0,0);
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);
 
         SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
-        s.add(new Ship(new Point(0,0)));
-        s.add(new Ship(new Point(0,0)));
-        s.add(new Ship(new Point(0,0)));
+        s.add(new Ship(new Point2D.Double(0,0)));
+        s.add(new Ship(new Point2D.Double(0,0)));
+        s.add(new Ship(new Point2D.Double(0,0)));
 
         Random rand = new Random();
 
         int i = 0;
         while (true) {
-            s.get(0).position.x = 100;
-            s.get(0).position.y = (i % 60) + 30;
+            s.get(0).position.setLocation(100, (i % 60) + 30);
 
-            s.get(1).position.x = (i % 30) + 700;
-            s.get(1).position.y = 300;
+            s.get(1).position.setLocation((i % 30) + 700, 300);
 
-            s.get(2).position.x = (-i % 100) + 300;
-            s.get(2).position.y = 600;
+            s.get(0).position.setLocation((-i % 100) + 300, 600);
 
 
             display.Update();
             try {
-                TimeUnit.MILLISECONDS.sleep(rand.nextInt(500));
+                TimeUnit.MILLISECONDS.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
