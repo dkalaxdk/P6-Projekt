@@ -72,19 +72,21 @@ public class Display extends JPanel implements IDisplay {
         // Draw OS
         g2.setColor(Color.blue);
 
-        Vector2D drawOwnShipFrom = getCoordinatesToDrawShipFrom(ownShip);
+        Vector2D drawOwnShipFrom = getCoordinatesToDrawDomainFrom(ownShip);
 
-        Shape shape = new Ellipse2D.Double(
-                drawOwnShipFrom.x(),
-                drawOwnShipFrom.y(),
-                this.ownShip.width,
-                this.ownShip.length);
+//        Shape shape = new Ellipse2D.Double(
+//                drawOwnShipFrom.x(),
+//                drawOwnShipFrom.y(),
+//                this.ownShip.width,
+//                this.ownShip.length);
 
-        shape = AffineTransform.getRotateInstance(
-                degreesToRadians(ownShip.heading),
-                ownShip.position.x(),
-                ownShip.position.y())
-                .createTransformedShape(shape);
+        Shape shape = ownShip.domain.getDomainAsEllipse();
+
+//        shape = AffineTransform.getRotateInstance(
+//                degreesToRadians(ownShip.heading),
+//                ownShip.position.x(),
+//                ownShip.position.y())
+//                .createTransformedShape(shape);
 
         g2.draw(shape);
 
