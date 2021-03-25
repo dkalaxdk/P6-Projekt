@@ -1,24 +1,32 @@
 package Dibbidut.Classes;
 
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class AISData {
 
-    @CsvBindByName(column = "Timestamp", required = true)
-    public String timeStamp;
+    @CsvBindByName(column = "Timestamp")
+    public String timestampString;
+
+    public LocalDateTime dateTime;
 
     //public String typeOfMobile;
 
-    @CsvBindByName(column = "MMSI", required = true)
+    @CsvBindByName(column = "MMSI")
     public int mmsi;
 
-    @CsvBindByName(column = "Latitude", required = true)
-    public float latitude;
+    @CsvBindByName(column = "Latitude")
+    public double latitude;
 
-    @CsvBindByName(column = "Longitude", required = true)
-    public float longitude;
+    @CsvBindByName(column = "Longitude")
+    public double longitude;
 
     //public String navigationalStatus;
     //public String ROT;
@@ -31,10 +39,10 @@ public class AISData {
     //public String shipType;
     //public String cargoType;
 
-    @CsvBindByName(column = "Width", required = true)
+    @CsvBindByName(column = "Width")
     public int width;
 
-    @CsvBindByName(column = "Length", required = true)
+    @CsvBindByName(column = "Length")
     public int length;
 
     //public String typeOfPositionFixingDevice;
@@ -43,14 +51,19 @@ public class AISData {
     //public String ETA;
     //public String dateSourceType;
 
-    public AISData(){}
+    public AISData(){ }
 
-    public AISData(String timeStamp, int mmsi, float latitude, float longitude, int width, int length) {
-        this.timeStamp = timeStamp;
+    public AISData(String timestampString, int mmsi, float latitude, float longitude, int width, int length) {
+        this.timestampString = timestampString;
         this.mmsi = mmsi;
         this.latitude = latitude;
         this.longitude = longitude;
         this.width = width;
         this.length = length;
+    }
+
+    public void AddDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        this.dateTime = LocalDateTime.parse(this.timestampString, formatter);
     }
 }

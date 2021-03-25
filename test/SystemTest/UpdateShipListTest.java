@@ -2,7 +2,7 @@ package SystemTest;
 
 import Dibbidut.Classes.*;
 import Dibbidut.Classes.AISData;
-import Dibbidut.Classes.System;
+import Dibbidut.Classes.CASystem;
 import org.junit.jupiter.api.Test;
 
 

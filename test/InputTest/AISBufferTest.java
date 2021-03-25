@@ -1,3 +1,4 @@
+package InputTest;
 
 import Dibbidut.Classes.AISBuffer;
 import Dibbidut.Classes.AISData;
