@@ -1,10 +1,12 @@
 import Dibbidut.Classes.Display;
 import Dibbidut.Classes.Ship;
+import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +17,7 @@ public class DisplayTest {
     public void internalListShouldBeSetToGivenList() {
         // Arrange
         ArrayList<Ship> ships = new ArrayList<>();
-        ships.add(new Ship(new Point2D.Double(0,0)));
+        ships.add(new Ship(0,0));
 
         Ship ownShip = new Ship(0,0);
 
@@ -45,7 +47,7 @@ public class DisplayTest {
     public void addToExternalShipList_internalShipListShouldUpdateWithExternalShipList() {
         // Arrange
         ArrayList<Ship> ships = new ArrayList<>();
-        ships.add(new Ship(new Point2D.Double(0,0)));
+        ships.add(new Ship(0,0));
 
         Display display = new Display(new Ship(0,0), ships);
 
@@ -62,7 +64,7 @@ public class DisplayTest {
     public void changeShipInExternalShipList_internalShipListShouldUpdateWithExternalShipList() {
         // Arrange
         ArrayList<Ship> ships = new ArrayList<>();
-        ships.add(new Ship(new Point2D.Double(0,0)));
+        ships.add(new Ship(0,0));
 
         Display display = new Display(new Ship(0,0), ships);
 
@@ -78,7 +80,7 @@ public class DisplayTest {
         // Arrange
         Display display = new Display(new Ship(0,0), new ArrayList<>());
 
-        Point2D.Double shipPosition = new Point2D.Double(100, 100);
+        Vector2D shipPosition = new Vector2D(100, 100);
         int shipLength = 10;
         int shipWidth = 3;
         int shipHeading = 0;
@@ -88,16 +90,43 @@ public class DisplayTest {
         ship.width = shipWidth;
         ship.heading = shipHeading;
 
-        double expectedX = shipPosition.getX() - (((double) shipWidth) / 2);
-        double expectedY = shipPosition.getY() - (((double) shipLength) / 2);
+        double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
+        double expectedY = shipPosition.y() - (((double) shipLength) / 2);
 
         // Act
-        Point2D.Double expected = new Point2D.Double(expectedX, expectedY);
+        Vector2D expected = new Vector2D(expectedX, expectedY);
 
-        Point2D.Double actual = display.getCoordinatesToDrawShipFrom(ship);
+        Vector2D actual = display.getCoordinatesToDrawShipFrom(ship);
 
         // Assert
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    public void getCoordinatesToDrawShipFrom_shipPointingNorthEast() {
+        // Arrange
+        Display display = new Display(new Ship(0,0), new ArrayList<>());
+
+        Vector2D shipPosition = new Vector2D(100, 100);
+        int shipLength = 10;
+        int shipWidth = 3;
+        int shipHeading = 45;
+
+        Ship ship = new Ship(shipPosition);
+        ship.length = shipLength;
+        ship.width = shipWidth;
+        ship.heading = shipHeading;
+
+        double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
+        double expectedY = shipPosition.y() - (((double) shipLength) / 2);
+
+        // Act
+        Vector2D expected = new Vector2D(expectedX, expectedY);
+
+        Vector2D actual = display.getCoordinatesToDrawShipFrom(ship);
+
+        // Assert
+        assertEquals(expected, actual);
     }
 }

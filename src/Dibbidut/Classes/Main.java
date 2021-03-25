@@ -1,9 +1,12 @@
 package Dibbidut.Classes;
 
+import math.geom2d.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.System;
@@ -14,27 +17,32 @@ public class Main {
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(0,0);
+        Ship ownShip = new Ship(500,500);
+        ownShip.heading = 0;
+        ownShip.length = 100;
+        ownShip.width = 50;
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);
 
         SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
-        s.add(new Ship(new Point2D.Double(0,0)));
-        s.add(new Ship(new Point2D.Double(0,0)));
-        s.add(new Ship(new Point2D.Double(0,0)));
+        s.add(new Ship(new Vector2D(0,0)));
+        s.add(new Ship(new Vector2D(0,0)));
+        s.add(new Ship(new Vector2D(0,0)));
 
         Random rand = new Random();
 
         int i = 0;
         while (true) {
-            s.get(0).position.setLocation(100, (i % 60) + 30);
+            ownShip.heading = (ownShip.heading + 1) % 360;
+            ownShip.position = ownShip.position.plus(new Vector2D(1, 0));
 
-            s.get(1).position.setLocation((i % 30) + 700, 300);
+            s.get(0).position = new Vector2D(100, (i % 60) + 30);
 
-            s.get(0).position.setLocation((-i % 100) + 300, 600);
+            s.get(1).position = new Vector2D((i % 30) + 700, 300);
 
+            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
 
             display.Update();
             try {
