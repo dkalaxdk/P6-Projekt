@@ -32,5 +32,11 @@ public class FileParserTest {
     public void getInputList_returns_list(){
         assertNotNull(parser.getInputList());
     }
+
+    @Test
+    public void getInputList_returns_list_with_one_element(){
+        assertTrue(parser.getInputList().size()==1);
+    }
+
 }
 

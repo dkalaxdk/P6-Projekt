@@ -2,23 +2,22 @@ package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IDataInput;
 import com.opencsv.*;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import java.lang.System;
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class FileParser implements IDataInput {
 
-    private File input;
     private Reader reader;
-    private CSVReader csvReader;
+    private ArrayList<AISData> data;
 
 
     public FileParser(String fileSource) throws IOException {
-        input = new File(fileSource);
-        reader = null;
-        reader = new FileReader(input);
-        csvReader = new CSVReader(reader);
+        reader = new FileReader(new File(fileSource));
+        data = new ArrayList<AISData>();
     }
 
     public AISData getNextInput(){
@@ -26,7 +25,18 @@ public class FileParser implements IDataInput {
     }
 
     public ArrayList<AISData> getInputList(){
-        return new ArrayList<AISData>();
+        data = (ArrayList<AISData>) new CsvToBeanBuilder(reader).withType(AISData.class).build().parse();
+        printData(data.get(0));
+        return data;
+    }
+
+    public void printData(AISData data){
+        System.out.println("TimeStamp:" + data.timeStamp);
+        System.out.println("MMSI" + data.mmsi);
+        System.out.println("Latitude" + data.latitude);
+        System.out.println("Longitude" + data.longitude);
+        System.out.println("Width" + data.width);
+        System.out.println("Length" + data.length);
     }
 
 }
