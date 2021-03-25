@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AISBufferTest {
 
-    @Test
+    /*@Test
     public void push_shouldAddElementToQueue() {
         // Arrange
         AISBuffer buffer = new AISBuffer();
@@ -30,5 +30,5 @@ public class AISBufferTest {
 
         // Assert
         assertThrows(Exception.class, () -> {buffer.Push(data);});
-    }
+    }*/
 }
