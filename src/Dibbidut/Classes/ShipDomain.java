@@ -83,8 +83,8 @@ public class ShipDomain implements IDomain {
         return ellipseDomain;
     }
 
-    public Polygon getDomainAsPolygon() {
-        return new Polygon();
+    public Path2D getDomainAsPolygon() {
+        return pentagonDomain;
     }
 
     @Override
