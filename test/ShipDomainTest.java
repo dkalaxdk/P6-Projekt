@@ -10,12 +10,16 @@ public class ShipDomainTest {
     private StartingValues startingValues;
 
     private class StartingValues {
-        public double AdvancedDiameter = shipDomain.getAdvanceDiameter();
-        public double TacticalDiameter = shipDomain.getTacticalDiameter();
-        public double RadiusFore = shipDomain.getRadiusFore();
-        public double RadiusAft = shipDomain.getRadiusAft();
-        public double RadiusStarboard = shipDomain.getRadiusStarboard();
-        public double RadiusPort = shipDomain.getRadiusPort();
+        public double AdvancedDiameter;
+        public double TacticalDiameter;
+        public double RadiusFore;
+        public double RadiusAft;
+        public double RadiusStarboard;
+        public double RadiusPort;
+        public double starboardOffset;
+        public double aftOffset;
+        public double height;
+        public double width;
         public StartingValues(ShipDomain shipDomain) {
             this.AdvancedDiameter = shipDomain.getAdvanceDiameter();
             this.TacticalDiameter = shipDomain.getTacticalDiameter();
@@ -23,12 +27,16 @@ public class ShipDomainTest {
             this.RadiusAft = shipDomain.getRadiusAft();
             this.RadiusStarboard = shipDomain.getRadiusStarboard();
             this.RadiusPort = shipDomain.getRadiusPort();
+            this.starboardOffset = shipDomain.getStarboardOffset();
+            this.aftOffset = shipDomain.getAftOffset();
+            this.height = shipDomain.getHeight();
+            this.width = shipDomain.getWidth();
         }
     }
 
     @BeforeEach
     public void setUp() {
-        shipDomain = new ShipDomain(5,10);
+        shipDomain = new ShipDomain(5,10,"Ellipse");
         startingValues = new StartingValues(shipDomain);
     }
 
@@ -86,6 +94,38 @@ public class ShipDomainTest {
     }
 
     @Test
+    public void testUpdate_StarboardOffset() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertNotEquals(shipDomain.getStarboardOffset(), startingValues.starboardOffset);
+    }
+
+    @Test
+    public void testUpdate_AftOffset() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertNotEquals(shipDomain.getAftOffset(), startingValues.aftOffset);
+    }
+
+    @Test
+    public void testUpdate_height() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertNotEquals(shipDomain.getHeight(), startingValues.height);
+    }
+
+    @Test
+    public void testUpdate_width() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertNotEquals(shipDomain.getWidth(), startingValues.width);
+    }
+
+    @Test
     public void testUpdate_UpdatedTacticalDiameter_ToCorrectValue() {
         //Act
         shipDomain.Update(20,5);
@@ -128,6 +168,38 @@ public class ShipDomainTest {
         shipDomain.Update(20,5);
         //Assert
         assertEquals(shipDomain.getRadiusPort(), 16.937554700962654);
+    }
+
+    @Test
+    public void testUpdate_StarboardOffset_ToCorrectValue() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertEquals(shipDomain.getStarboardOffset(), 22.25007293461687);
+    }
+
+    @Test
+    public void testUpdate_aftOffset_ToCorrectValue() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertEquals(shipDomain.getAftOffset(), 19.15140986064626);
+    }
+
+    @Test
+    public void testUpdate_height_ToCorrectValue() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertEquals(shipDomain.getHeight(), 52.45422958193878);
+    }
+
+    @Test
+    public void testUpdate_width_ToCorrectValue() {
+        //Act
+        shipDomain.Update(20,5);
+        //Assert
+        assertEquals(shipDomain.getWidth(), 39.187627635579524);
     }
 
 }
