@@ -1,14 +1,28 @@
 package Dibbidut.Classes;
 
+import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
+import math.geom2d.polygon.Rectangle2D;
+
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 
 public abstract class Obstacle {
-    public Point position;
+    public Vector2D position;
     public Velocity velocity;
-    public ArrayList<Point> trajectory;
+    public ArrayList<Vector2D> trajectory;
 
     public Obstacle() {
 
+    }
+
+    public Obstacle(Vector2D position) {
+        this.position = position;
+    }
+
+    public Obstacle(double longitude, double latitude) {
+        position = new Vector2D(longitude, latitude);
     }
 }
