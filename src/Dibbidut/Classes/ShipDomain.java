@@ -2,7 +2,6 @@ package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IDomain;
 
-import java.lang.reflect.Array;
 
 public class ShipDomain implements IDomain {
     private double height;
@@ -67,6 +66,7 @@ public class ShipDomain implements IDomain {
         return aftOffset;
     }
 
+    @Override
     public ShipDomain Update(float SOG, float COG) {
         calculateDiameters(SOG);
         if (this.Shape.equals("Ellipse")) {
