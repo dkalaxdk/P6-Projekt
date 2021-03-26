@@ -9,12 +9,10 @@ import math.geom2d.polygon.Polygons2D;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 
 public class Display extends JPanel implements IDisplay {
@@ -48,7 +46,7 @@ public class Display extends JPanel implements IDisplay {
     }
 
     private void clearDisplay() {
-        repaint(0,0,1000, 1000);
+        repaint(0,0,this.getWidth(), this.getHeight());
     }
 
     public Dimension getPreferredSize() {
@@ -66,51 +64,51 @@ public class Display extends JPanel implements IDisplay {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
-        g2.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
-        g2.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+        drawGUIElements(g2);
+        drawOwnShip(g2, ownShip);
+        drawTargetShips(g2, ships);
+    }
 
-        // Draw OS
-        g2.setColor(Color.blue);
+    private void drawGUIElements(Graphics2D g) {
+        g.setColor(Color.gray);
 
-        Vector2D drawOwnShipFrom = getCoordinatesToDrawDomainFrom(ownShip);
+        g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
+        g.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+    }
 
-//        Shape shape = new Ellipse2D.Double(
-//                drawOwnShipFrom.x(),
-//                drawOwnShipFrom.y(),
-//                this.ownShip.width,
-//                this.ownShip.length);
+    private void drawOwnShip(Graphics2D g, Ship ship) {
+        g.setColor(Color.blue);
 
-        Shape shape = ownShip.domain.getDomainAsEllipse();
+        g.draw(drawShip(ship));
+        g.draw(drawShipDomain(ship));
+    }
 
-//        shape = AffineTransform.getRotateInstance(
-//                degreesToRadians(ownShip.heading),
-//                ownShip.position.x(),
-//                ownShip.position.y())
-//                .createTransformedShape(shape);
+    private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
+        g.setColor(Color.black);
 
-        g2.draw(shape);
+        for (Ship ship : targetShips) {
 
-        Point2D.Double point = new Point2D.Double((this.getWidth() / 2) + 30, (this.getHeight() / 2) + 30);
-
-        Shape shape1 = new Ellipse2D.Double(point.getX() - 3, point.getY() - 3, 6, 6);
-
-        if (shape.contains(point)) {
-            g2.setColor(Color.red);
+            g.draw(drawShip(ship));
+            g.draw(drawShipDomain(ship));
         }
+    }
 
-        g2.draw(shape1);
+    private Shape drawShip(Ship ship) {
+        Vector2D p = getCoordinatesToDrawShipFrom(ship);
 
-        // Draw TS'sS
-        g2.setColor(Color.black);
+        Shape shape = new Rectangle2D.Double(p.x(), p.y(), ship.width, ship.length);
 
-        for (Ship ship : ships) {
+        return AffineTransform.getRotateInstance(
+                degreesToRadians(ship.heading),
+                ship.position.x(),
+                ship.position.y())
+                .createTransformedShape(shape);
+    }
 
-            shape = new Ellipse2D.Double(ship.position.x() + 20, ship.position.y() + 45, 10.0, 10.0);
-            g2.draw(shape);
+    private Shape drawShipDomain(Ship ship) {
+        Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
-            shape = new Ellipse2D.Double(ship.position.x(), ship.position.y(), 50, 100);
-            g2.draw(shape);
-        }
+        return ship.domain.getDomainAsPolygon();
     }
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {

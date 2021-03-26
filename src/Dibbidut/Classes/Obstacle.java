@@ -14,15 +14,7 @@ public abstract class Obstacle {
     public Velocity velocity;
     public ArrayList<Vector2D> trajectory;
 
-    public Obstacle() {
-
-    }
-
     public Obstacle(Vector2D position) {
         this.position = position;
-    }
-
-    public Obstacle(double longitude, double latitude) {
-        position = new Vector2D(longitude, latitude);
     }
 }
