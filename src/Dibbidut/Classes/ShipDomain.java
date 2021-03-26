@@ -137,11 +137,17 @@ public class ShipDomain implements IDomain {
     }
     private void updatePentagonDomain() {
         this.pentagonDomain = new Path2D.Double();
+        // P1
         pentagonDomain.moveTo(Lat + dimensions[1],Long - dimensions[4]);
+        // P2
         pentagonDomain.lineTo(Lat + dimensions[1],Long + dimensions[3]);
+        // P3
         pentagonDomain.lineTo(Lat + dimensions[2],Long);
+        // P4
         pentagonDomain.lineTo(Lat - dimensions[0],Long + dimensions[3]);
+        // P5
         pentagonDomain.lineTo(Lat - dimensions[0], Long - dimensions[4]);
+        // Enclose path to create pentagon
         pentagonDomain.closePath();
     }
 
