@@ -6,6 +6,7 @@ import Dibbidut.Classes.AISSource;
 import Dibbidut.Classes.AISStream;
 import Dibbidut.Classes.System;
 import Dibbidut.Interfaces.IDataInput;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UpdateShipListTest {
 
     @Test
+    @Disabled
     public void emptyListNonEmptyBuffer_shouldAddElementToList() {
 
         System system = new System();
