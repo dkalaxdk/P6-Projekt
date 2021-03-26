@@ -17,8 +17,11 @@ public class Main {
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(new Vector2D(500, 500), 100, 50, 0);
-        ownShip.domain = new ShipDomain(ownShip.length, ownShip.width);
+        Ship ownShip = new Ship(500,500);
+        ownShip.heading = 0;
+        ownShip.length = 100;
+        ownShip.width = 50;
+        ownShip.domain = new ShipDomain(50, 6);
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);

@@ -98,6 +98,7 @@ public class ShipDomain implements IDomain {
         updateEllipseDomain();
         updatePentagonDomain();
         return this;
+
     }
 
     private void calculateOffsets() {
@@ -121,8 +122,8 @@ public class ShipDomain implements IDomain {
 
     private void calculateDimensions(){
         dimensions[0] = 0.9 * radiusStarboard;
-        dimensions[1] = -0.9 * radiusPort;
-        dimensions[2] = -0.9 * radiusAft;
+        dimensions[1] = - 0.9 * radiusPort;
+        dimensions[2] = - 0.9 * radiusAft;
         dimensions[3] = 0.75 * radiusFore - 0.25 * radiusAft;
         dimensions[4] = 1.1 * radiusFore;
     }
@@ -130,23 +131,23 @@ public class ShipDomain implements IDomain {
     private void updateEllipseDomain() {
 
         // Updating the ellipseDomain
-        this.ellipseDomain.x = Long;
-        this.ellipseDomain.y = Lat;
+        this.ellipseDomain.x = Long - width/2;
+        this.ellipseDomain.y = Lat - height/2;
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }
     private void updatePentagonDomain() {
         this.pentagonDomain = new Path2D.Double();
         // P1
-        pentagonDomain.moveTo(Lat + dimensions[1],Long - dimensions[4]);
+        pentagonDomain.moveTo(Long + dimensions[1], Lat + dimensions[4]);
         // P2
-        pentagonDomain.lineTo(Lat + dimensions[1],Long + dimensions[3]);
+        pentagonDomain.lineTo(Long + dimensions[1] , Lat  + dimensions[3]);
         // P3
-        pentagonDomain.lineTo(Lat + dimensions[2],Long);
+        pentagonDomain.lineTo(Long, Lat + dimensions[2]);
         // P4
-        pentagonDomain.lineTo(Lat - dimensions[0],Long + dimensions[3]);
+        pentagonDomain.lineTo(Long + dimensions[0], Lat + dimensions[3]);
         // P5
-        pentagonDomain.lineTo(Lat - dimensions[0], Long - dimensions[4]);
+        pentagonDomain.lineTo(Long + dimensions[0], Lat  + dimensions[4]);
         // Enclose path to create pentagon
         pentagonDomain.closePath();
     }
