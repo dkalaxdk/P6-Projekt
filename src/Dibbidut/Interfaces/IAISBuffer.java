@@ -1,6 +1,6 @@
 package Dibbidut.Interfaces;
 
-import Dibbidut.Classes.AISData;
+import Dibbidut.Classes.InputManagement.AISData;
 
 public interface IAISBuffer {
     public AISData Pop();

@@ -1,7 +1,7 @@
 package InputTest;
 
-import Dibbidut.Classes.AISData;
-import Dibbidut.Classes.FileParser;
+import Dibbidut.Classes.InputManagement.AISData;
+import Dibbidut.Classes.InputSimulation.FileParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package Dibbidut.Classes;
+package Dibbidut.Classes.InputManagement;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;

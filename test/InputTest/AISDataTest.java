@@ -1,6 +1,6 @@
 package InputTest;
 
-import Dibbidut.Classes.AISData;
+import Dibbidut.Classes.InputManagement.AISData;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -21,6 +21,13 @@ public class AISDataTest {
 
         // Assert
         assertTrue(data.dateTime.equals(time));
+    }
+
+    @Test
+    public void CompareTo_ResultsInCorrectSortingOfArrayList(){
+        // todo: lav compareTo metode i AISData
+        // lav en liste med to elementer, sorter den og tjek at det er rigtigt
+
     }
 
 }
