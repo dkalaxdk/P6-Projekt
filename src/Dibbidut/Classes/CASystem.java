@@ -20,8 +20,6 @@ public class CASystem {
 
     public CASystem() {
         running = true;
-
-        
     }
 
     public void Start() {
