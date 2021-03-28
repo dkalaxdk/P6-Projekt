@@ -32,5 +32,5 @@ public class AISBufferTest {
 
         // Assert
         assertThrows(Exception.class, () -> {buffer.Push(data);});
-    }*/
+    }
 }

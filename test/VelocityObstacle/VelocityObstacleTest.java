@@ -7,6 +7,7 @@ import Dibbidut.Classes.Ship;
 import Dibbidut.Classes.Velocity;
 import Dibbidut.Classes.VelocityObstacle;
 import Dibbidut.utils.Vector;
+import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -29,16 +30,18 @@ public class VelocityObstacleTest {
 
         Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
         Velocity velA = new Velocity(1, 1);
-        Ship shipA = new Ship(new Point2D.Double(0, 0), velA, confA);
+        Vector2D posA = new Vector2D(0, 0);
+        Ship shipA = new Ship(posA, velA, confA);
 
         Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
         Velocity velB = new Velocity(0, 0);
-        Ship shipB = new Ship(new Point2D.Double(5, 5), velB, confB);
+        Vector2D posB = new Vector2D(5, 5);
+        Ship shipB = new Ship(posB, velB, confB);
         double time = 5;
 
         Area relVO = VO.RelativeVO(shipA, shipB, time);
 
-        assertTrue(relVO.contains(shipB.position));
+        assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y())));
     }
 
     @Test
@@ -54,8 +57,8 @@ public class VelocityObstacleTest {
     public void displacement_calculatesTheDisplacementFromAToB() {
         VelocityObstacle VO = new VelocityObstacle();
 
-        Point pointA = new Point(0, 0);
-        Point pointB = new Point(2, 2);
+        Vector2D pointA = new Vector2D(0, 0);
+        Vector2D pointB = new Vector2D(2, 2);
 
         assertEquals(VO.Displacement(pointA, pointB), new Vector(2, 2));
     }
@@ -64,8 +67,8 @@ public class VelocityObstacleTest {
     public void displacement_calculatesTheDisplacementFromBToA() {
         VelocityObstacle VO = new VelocityObstacle();
 
-        Point pointA = new Point(0, 0);
-        Point pointB = new Point(2, 2);
+        Vector2D pointA = new Vector2D(0, 0);
+        Vector2D pointB = new Vector2D(2, 2);
 
         assertEquals(VO.Displacement(pointB, pointA), new Vector(-2, -2));
     }

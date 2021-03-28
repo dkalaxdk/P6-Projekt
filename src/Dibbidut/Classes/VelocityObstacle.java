@@ -2,6 +2,7 @@ package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IVelocityObstacle;
 import Dibbidut.utils.Vector;
+import math.geom2d.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -51,8 +52,8 @@ public class VelocityObstacle implements IVelocityObstacle {
     }
 
     // This finds the velocity needed to place Point A at Point B
-    public Vector Displacement(Point2D a, Point2D b) {
-        return new Vector(b.getX() - a.getX(), b.getY() - a.getY());
+    public Vector Displacement(Vector2D a, Vector2D b) {
+        return new Vector(b.x() - a.x(), b.y() - a.y());
     }
 
     // The currentVel should be the relative velocity,

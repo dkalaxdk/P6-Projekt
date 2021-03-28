@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.utils.Vector;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
@@ -14,11 +15,18 @@ public class Ship extends Obstacle {
     public int heading;
     public float manoeuvrability;
     public Shape conflictRegion;
+    public Velocity velocity;
 
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position);
         this.length = length;
         this.width = width;
         this.heading = heading;
+    }
+
+    public Ship(Vector2D position, Velocity velocity, Shape conflictRegion) {
+        super(position);
+        this.velocity = velocity;
+        this.conflictRegion = conflictRegion;
     }
 }
