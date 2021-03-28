@@ -24,8 +24,7 @@ public class AISBufferTest {
         assertEquals(data, buffer.Pop());
     }
 
-    @Test
-    @Disabled
+
     public void push_shouldThrowExceptionOnFailedPush() {
         // Arrange
         AISBuffer buffer = new AISBuffer();
@@ -33,5 +32,5 @@ public class AISBufferTest {
 
         // Assert
         assertThrows(Exception.class, () -> {buffer.Push(data);});
-    }
+    }*/
 }

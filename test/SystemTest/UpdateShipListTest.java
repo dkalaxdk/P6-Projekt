@@ -1,12 +1,7 @@
 package SystemTest;
 
 import Dibbidut.Classes.*;
-import Dibbidut.Classes.AISData;
-import Dibbidut.Classes.AISSource;
-import Dibbidut.Classes.AISStream;
-import Dibbidut.Classes.System;
-import Dibbidut.Interfaces.IDataInput;
-import org.junit.jupiter.api.Disabled;
+import Dibbidut.Classes.CASystem;
 import org.junit.jupiter.api.Test;
 
 

@@ -1,6 +1,9 @@
 package Dibbidut.Interfaces;
 
+import Dibbidut.Classes.ShipDomain;
+
+
 public interface IDomain {
 
-    public void Update();
+    public ShipDomain Update(float SOG, float COG, float Lat, float Long);
 }
