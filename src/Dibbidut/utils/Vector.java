@@ -13,6 +13,14 @@ public class Vector {
         Y = y;
     }
 
+    public Vector Scale(double factor) {
+        return new Vector(X * factor, Y * factor);
+    }
+
+    public Vector DivideByScalar(double factor) {
+        return new Vector(X / factor, Y / factor);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

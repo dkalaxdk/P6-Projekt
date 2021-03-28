@@ -9,28 +9,32 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VectorTest {
 
-    @Test
-    public void vector_constructorWithNoArgumentsReturnsZeroVector() {
-        Vector vec = new Vector();
+    @Nested
+    @DisplayName("Vector constructor tests")
+    class ConstructorTests {
+        @Test
+        public void vector_constructorWithNoArgumentsReturnsZeroVector() {
+            Vector vec = new Vector();
 
-        assertEquals(0, vec.X);
-        assertEquals(0, vec.Y);
-    }
+            assertEquals(0, vec.X);
+            assertEquals(0, vec.Y);
+        }
 
-    @Test
-    public void vector_constructorWithArgumentsSetsComponentValues() {
-        Vector vec = new Vector(1, 2);
+        @Test
+        public void vector_constructorWithArgumentsSetsComponentValues() {
+            Vector vec = new Vector(1, 2);
 
-        assertEquals(1, vec.X);
-        assertEquals(2, vec.Y);
-    }
+            assertEquals(1, vec.X);
+            assertEquals(2, vec.Y);
+        }
 
-    @Test
-    public void vector_acceptsParametersOfTypeDouble() {
-        Vector vec = new Vector(2.5, 2.5);
+        @Test
+        public void vector_acceptsParametersOfTypeDouble() {
+            Vector vec = new Vector(2.5, 2.5);
 
-        assertEquals(2.5, vec.X);
-        assertEquals(2.5, vec.Y);
+            assertEquals(2.5, vec.X);
+            assertEquals(2.5, vec.Y);
+        }
     }
 
     @Nested
@@ -41,7 +45,7 @@ public class VectorTest {
             Vector vec1 = new Vector(1, 1);
             Vector vec2 = new Vector(1, 1);
 
-        /* IntelliJ suggest simplifying this assertion
+        /* IntelliJ suggests simplifying this assertion
          However I think this assertion best explains what is tested */
             assertTrue(vec1.equals(vec2));
         }
@@ -67,6 +71,37 @@ public class VectorTest {
             Vector vec2 = new Vector(1, 2);
 
             assertFalse(vec1.equals(vec2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Vector.Scale")
+    class ScaleTests {
+
+        @Test
+        public void scale_MultipliesComponentsByScalar() {
+            Vector vec = new Vector(1, 1);
+
+            // Multiple asserts chosen over multiple tests for brevity
+            assertEquals(new Vector(1, 1), vec.Scale(1));
+            assertEquals(new Vector(0.5, 0.5), vec.Scale(0.5));
+            assertEquals(new Vector(0, 0), vec.Scale(0));
+            assertEquals(new Vector(5, 5), vec.Scale(5));
+        }
+    }
+
+    @Nested
+    @DisplayName("Vector.DivideByScalar")
+    class DivideByScalarTests {
+
+        @Test
+        public void divideByScalar_DividesComponentsByScalar() {
+            Vector vec = new Vector(10, 10);
+
+            assertEquals(new Vector(5, 5), vec.DivideByScalar(2));
+            assertEquals(new Vector(10, 10 ), vec.DivideByScalar(1));
+            assertEquals(new Vector(20, 20), vec.DivideByScalar(0.5));
+            assertEquals(new Vector(4, 4), vec.DivideByScalar(2.5));
         }
     }
 }
