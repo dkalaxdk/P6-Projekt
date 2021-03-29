@@ -9,6 +9,7 @@ import math.geom2d.polygon.Polygons2D;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,14 +24,6 @@ public class Display extends JPanel implements IDisplay {
     Random random;
 
     public Display(Ship ownShip, ArrayList<Ship> shipsInRange) {
-
-//        Timer timer = new Timer(1, new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                clearDisplay();
-//            }
-//        });
-//
-//        timer.start();
 
         ships = shipsInRange;
         this.ownShip = ownShip;
@@ -61,19 +54,40 @@ public class Display extends JPanel implements IDisplay {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
-        drawGUIElements(g2);
+        // Translate so that own ship is in the center
+        g2.translate(((double) this.getWidth() / 2) - ownShip.position.x(),
+                ((double) this.getHeight() / 2) - ownShip.position.y());
+
+        drawGUIElements(g2, ownShip, ships);
+
+        // Rotate so that north is at the top of the screen
+        g2.rotate(Math.PI, ownShip.position.x(), ownShip.position.y());
+
+        // Rotate so that own ship is pointing at the top of the screen
+//        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.x(), ownShip.position.y());
+
         drawOwnShip(g2, ownShip);
         drawTargetShips(g2, ships);
     }
 
-    private void drawGUIElements(Graphics2D g) {
+    private void drawGUIElements(Graphics2D g, Ship ownShip, ArrayList<Ship> ships) {
         g.setColor(Color.gray);
 
-        g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
-        g.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+        // Horizontal
+        g.draw(new Line2D.Double(ownShip.position.x() - this.getWidth(),
+                ownShip.position.y(),
+                ownShip.position.x() + this.getWidth(),
+                ownShip.position.y()));
+
+        // Vertical
+        g.draw(new Line2D.Double(ownShip.position.x(),
+                ownShip.position.y() - this.getHeight(),
+                ownShip.position.x(),
+                ownShip.position.y() + this.getHeight()));
     }
 
     private void drawOwnShip(Graphics2D g, Ship ship) {
@@ -81,6 +95,7 @@ public class Display extends JPanel implements IDisplay {
 
         g.draw(drawShip(ship));
         g.draw(drawShipDomain(ship));
+        g.draw(drawHeading(ship));
     }
 
     private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
@@ -90,6 +105,7 @@ public class Display extends JPanel implements IDisplay {
 
             g.draw(drawShip(ship));
             g.draw(drawShipDomain(ship));
+            g.draw(drawHeading(ship));
         }
     }
 
@@ -105,10 +121,18 @@ public class Display extends JPanel implements IDisplay {
                 .createTransformedShape(shape);
     }
 
+    private Shape drawHeading(Ship ship) {
+        Vector2D heading = new Vector2D(0, (double) ship.length / 2);
+        heading = heading.rotate(degreesToRadians(ship.heading));
+        Vector2D point = ship.position.plus(heading);
+
+        return new Line2D.Double(ship.position.x(), ship.position.y(), point.x(), point.y());
+    }
+
     private Shape drawShipDomain(Ship ship) {
         Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
-        return ship.domain.getDomainAsPolygon();
+        return ship.domain.getDomainAsEllipse();
     }
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {

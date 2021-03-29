@@ -23,4 +23,9 @@ public class AISBuffer implements IAISBuffer {
     public void Push(AISData data) {
 
     }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 }

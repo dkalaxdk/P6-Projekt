@@ -19,5 +19,7 @@ public class Ship extends Obstacle {
         this.length = length;
         this.width = width;
         this.heading = heading;
+
+        domain = new ShipDomain(length, width);
     }
 }

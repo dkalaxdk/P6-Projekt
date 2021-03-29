@@ -3,6 +3,7 @@ package Dibbidut.Classes;
 import Dibbidut.Interfaces.*;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class CASystem {
 
@@ -19,15 +20,43 @@ public class CASystem {
 
 
     public CASystem() {
+        shipsInRange = new ArrayList<Ship>();
+        buffer = new AISBuffer();
+
+
         running = true;
     }
 
     public void Start() {
+
+        long start = 0;
+        long end = 0;
+        long duration = 0;
+
         while(running) {
-//            UpdateOwnShip();
-//            UpdateShipList();
-//            UpdateVelocityObstacles();
-//            UpdateDisplay();
+
+            if (buffer.size() > 0) {
+
+                start = System.nanoTime();
+
+                UpdateShipList();
+                UpdateVelocityObstacles();
+                UpdateDisplay();
+
+                end = System.nanoTime();
+
+                duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+            }
+
+            try {
+                wait(10000 - (duration));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            start = 0;
+            end = 0;
+            duration = 0;
         }
     }
 

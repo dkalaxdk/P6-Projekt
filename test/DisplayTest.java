@@ -130,4 +130,16 @@ public class DisplayTest {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void drawHeading_shipPointingNorth() {
+        // Arrange
+        Display display = new Display(createStandardShip(), new ArrayList<>());
+
+
+
+        // Act
+
+        // Assert
+    }
 }
