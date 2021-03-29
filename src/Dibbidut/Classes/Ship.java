@@ -15,9 +15,22 @@ public class Ship extends Obstacle {
     public float manoeuvrability;
 
     public Ship(Vector2D position, int length, int width, int heading) {
-        super(position);
+        super(position, new Vector2D(0,0));
+
         this.length = length;
         this.width = width;
         this.heading = heading;
+
+        domain = new ShipDomain(length, width);
+    }
+
+    public Ship(Vector2D position, int length, int width, int heading, double sog, double cog) {
+        super(position, new Vector2D(0, sog).rotate(cog * (Math.PI / 180)));
+
+        this.length = length;
+        this.width = width;
+        this.heading = heading;
+
+        domain = new ShipDomain(length, width);
     }
 }

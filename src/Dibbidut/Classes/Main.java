@@ -3,21 +3,20 @@ package Dibbidut.Classes;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.System;
 
 public class Main {
     public static void main(String[] args) {
         DisplayTest();
+
+        CASystem caSystem = new CASystem();
+        caSystem.Start();
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(new Vector2D(500, 500), 100, 50, 0);
+        Ship ownShip = new Ship(new Vector2D(200, 200), 100, 50, 0);
         ownShip.domain = new ShipDomain(ownShip.length, ownShip.width);
         ArrayList<Ship> s = new ArrayList<>();
 
@@ -28,12 +27,7 @@ public class Main {
         s.add(new Ship(new Vector2D(0,0), 100, 50, 45));
         s.add(new Ship(new Vector2D(0,0), 50, 25, 135));
         s.add(new Ship(new Vector2D(0,0), 200, 50, 280));
-
-        s.get(0).domain = new ShipDomain(s.get(0).length, s.get(0).width);
-        s.get(1).domain = new ShipDomain(s.get(1).length, s.get(1).width);
-        s.get(2).domain = new ShipDomain(s.get(2).length, s.get(2).width);
-
-        Random rand = new Random();
+        s.add(new Ship(new Vector2D(500, 0), 20, 10, 0));
 
         int i = 0;
         while (true) {
