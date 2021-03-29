@@ -29,12 +29,12 @@ public class VelocityObstacleTest {
         VelocityObstacle VO = new VelocityObstacle();
 
         Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
-        Velocity velA = new Velocity(1, 1);
+        Vector2D velA = new Vector2D(1, 1);
         Vector2D posA = new Vector2D(0, 0);
         Ship shipA = new Ship(posA, velA, confA);
 
         Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
-        Velocity velB = new Velocity(0, 0);
+        Vector2D velB = new Vector2D(0, 0);
         Vector2D posB = new Vector2D(5, 5);
         Ship shipB = new Ship(posB, velB, confB);
         double time = 5;
@@ -78,7 +78,7 @@ public class VelocityObstacleTest {
         VelocityObstacle VO = new VelocityObstacle();
 
         Point2D pointA = new Point2D.Double(1,1);
-        Vector vel = new Vector(1, 1);
+        Vector2D vel = new Vector2D(1, 1);
         Shape target = new Ellipse2D.Double(4, 4, 1, 1);
         double time = 4;
         assertTrue(VO.WillCollide(pointA, vel, target, time));
@@ -89,7 +89,7 @@ public class VelocityObstacleTest {
         VelocityObstacle VO = new VelocityObstacle();
 
         Point2D pointA = new Point2D.Double(1,1);
-        Vector vel = new Vector(1, 1);
+        Vector2D vel = new Vector2D(1, 1);
         Shape target = new Ellipse2D.Double(4, 4, 1, 1);
         double time = 6;
         assertTrue(VO.WillCollide(pointA, vel, target, time));
@@ -100,7 +100,7 @@ public class VelocityObstacleTest {
         VelocityObstacle VO = new VelocityObstacle();
 
         Point2D pointA = new Point2D.Double(1,1);
-        Vector vel = new Vector(1, 1);
+        Vector2D vel = new Vector2D(1, 1);
         Shape target = new Ellipse2D.Double(10, 5, 1, 1);
         double time = 15;
         assertFalse(VO.WillCollide(pointA, vel, target, time));
@@ -111,7 +111,7 @@ public class VelocityObstacleTest {
         VelocityObstacle VO = new VelocityObstacle();
 
         Point2D pointA = new Point2D.Double(1,1);
-        Vector vel = new Vector(1, 1);
+        Vector2D vel = new Vector2D(1, 1);
         Shape target = new Ellipse2D.Double(10, 10, 1, 1);
         double time = 6;
         assertFalse(VO.WillCollide(pointA, vel, target, time));
