@@ -34,9 +34,30 @@ public class FileParserTest {
             assertNotNull(parser.GetNextInput());
         }
 
-        @Test
-        public void GetNextInput_ReturnsCorrectAISDate(){
+        // Assert
+        assertNotNull(parser.GetNextInput());
+    }
 
+    @Test
+    public void GetNextInput_ReturnsCorrectAISDate(){
+        // Arrange
+        try {
+            parser = new FileParser("test/TestFiles/TestInputTwoElementsWrongOrder.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Assert
+        assertEquals(parser.GetNextInput().mmsi, 265781000);
+    }
+
+    @Test
+    public void GetInputList_ReturnsList(){
+        // Arrange
+        try {
+            parser = new FileParser("test/TestFiles/TestInputOneElement.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

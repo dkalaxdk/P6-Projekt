@@ -10,7 +10,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class AISData {
+public class AISData implements Comparable{
 
     @CsvBindByName(column = "Timestamp")
     public String timestampString;
@@ -65,5 +65,16 @@ public class AISData {
     public void AddDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         this.dateTime = LocalDateTime.parse(this.timestampString, formatter);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        if (this.dateTime.isBefore(((AISData)o).dateTime))
+            return -1;
+        else if (this.dateTime.isAfter(((AISData)o).dateTime))
+            return 1;
+        else
+            return 0;
     }
 }

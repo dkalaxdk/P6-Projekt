@@ -8,34 +8,41 @@ import java.lang.System;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FileParser implements IDataInput {
 
     public Reader reader;
-    private ArrayList<AISData> data;
+    private ArrayList<AISData> dataList;
+    int listIterator;
 
 
     public FileParser(String fileSource) throws IOException {
         reader = new BufferedReader(new FileReader(fileSource));
-        data = new ArrayList<>();
+        dataList = new ArrayList<>();
+        listIterator = 0;
 
         CheckFileFormat();
     }
 
     public AISData GetNextInput(){
-        return new AISData();
+        AISData nextElement = dataList.get(listIterator);
+        listIterator++;
+        return nextElement;
     }
 
     public ArrayList<AISData> GetInputList(){
-        data = (ArrayList<AISData>) new CsvToBeanBuilder(reader).withType(AISData.class).build().parse();
+        dataList = (ArrayList<AISData>) new CsvToBeanBuilder(reader).withType(AISData.class).build().parse();
 
-        for (AISData datapoint: data) {
+        for (AISData datapoint: dataList) {
             datapoint.AddDateTime();
         }
 
-        PrintData(data.get(0));
-        // todo: sorter data her
-        return data;
+        Collections.sort(dataList);
+
+        PrintData(dataList.get(0));
+
+        return dataList;
     }
 
     public void CheckFileFormat() throws IOException {
