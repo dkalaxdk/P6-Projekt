@@ -2,11 +2,8 @@ package VelocityObstacle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Dibbidut.Classes.Obstacle;
 import Dibbidut.Classes.Ship;
-import Dibbidut.Classes.Velocity;
 import Dibbidut.Classes.VelocityObstacle;
-import Dibbidut.utils.Vector;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +57,7 @@ public class VelocityObstacleTest {
         Vector2D pointA = new Vector2D(0, 0);
         Vector2D pointB = new Vector2D(2, 2);
 
-        assertEquals(VO.Displacement(pointA, pointB), new Vector(2, 2));
+        assertEquals(VO.Displacement(pointA, pointB), new Vector2D(2, 2));
     }
 
     @Test
@@ -70,7 +67,7 @@ public class VelocityObstacleTest {
         Vector2D pointA = new Vector2D(0, 0);
         Vector2D pointB = new Vector2D(2, 2);
 
-        assertEquals(VO.Displacement(pointB, pointA), new Vector(-2, -2));
+        assertEquals(VO.Displacement(pointB, pointA), new Vector2D(-2, -2));
     }
 
     @Test

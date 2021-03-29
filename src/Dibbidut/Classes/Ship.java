@@ -1,11 +1,8 @@
 package Dibbidut.Classes;
 
-import Dibbidut.utils.Vector;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
-import java.io.InvalidClassException;
 
 public class Ship extends Obstacle {
     public ShipDomain domain;

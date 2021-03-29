@@ -1,19 +1,20 @@
 package Dibbidut.Classes;
 
-import Dibbidut.utils.Vector;
+
+import math.geom2d.Vector2D;
 
 public class Velocity {
 
-    public Vector Vec;
+    public Vector2D Vec;
 
     public Velocity(double componentX, double componentY) {
-        Vec = new Vector(componentX, componentY);
+        Vec = new Vector2D(componentX, componentY);
     }
 
     public Velocity RelativeVelocity(Velocity other) {
         return new Velocity(
-                Vec.X - other.Vec.X,
-                Vec.Y - other.Vec.Y
+                Vec.x() - other.Vec.x(),
+                Vec.y() - other.Vec.y()
         );
     }
 }

@@ -1,8 +1,7 @@
 import Dibbidut.Classes.Velocity;
-import Dibbidut.utils.Vector;
+import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,7 +11,7 @@ public class VelocityTest {
     public void velocity_SetsValuesOfComponents() {
         Velocity vel = new Velocity(2.5, 1.5);
 
-        assertEquals(new Vector(2.5, 1.5), vel.Vec);
+        assertEquals(new Vector2D(2.5, 1.5), vel.Vec);
     }
 
     @Test
@@ -22,7 +21,7 @@ public class VelocityTest {
 
         Velocity actual = v1.RelativeVelocity(v2);
 
-        assertEquals(3, actual.Vec.X);
-        assertEquals(-1, actual.Vec.Y);
+        assertEquals(3, actual.Vec.x());
+        assertEquals(-1, actual.Vec.y());
     }
 }
