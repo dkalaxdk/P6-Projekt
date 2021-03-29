@@ -60,9 +60,17 @@ public class FileParserTest {
         }
     }
 
+
+        @Test
+        public void GetNextInput_ReturnsNullAtEndOfList() {
+            // todo: lava test
+        }
+    }
+
     @Nested
     @DisplayName("FileParser.GetInputList")
     class GetInputList {
+
         @Test
         public void GetInputList_DoesNotReturnNull(){
             FileParser parser = createFileParser(InputOneElement);
