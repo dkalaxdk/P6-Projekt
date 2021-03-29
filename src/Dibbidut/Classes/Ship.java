@@ -14,11 +14,10 @@ public class Ship extends Obstacle {
     public int heading;
     public float manoeuvrability;
 
-    public Ship(Vector2D position) {
+    public Ship(Vector2D position, int length, int width, int heading) {
         super(position);
-    }
-
-    public Ship(double longitude, double latitude) {
-        super(longitude, latitude);
+        this.length = length;
+        this.width = width;
+        this.heading = heading;
     }
 }
