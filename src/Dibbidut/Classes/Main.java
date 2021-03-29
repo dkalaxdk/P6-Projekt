@@ -3,11 +3,7 @@ package Dibbidut.Classes;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.System;
 
@@ -36,7 +32,6 @@ public class Main {
         int i = 0;
         while (true) {
             ownShip.heading = (ownShip.heading + 1) % 360;
-//            ownShip.heading = 45;
             ownShip.domain.Update(5, 0, (float) ownShip.position.x(), (float) ownShip.position.y());
 
             s.get(0).position = new Vector2D(100, (i % 60) + 30);

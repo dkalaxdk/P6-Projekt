@@ -11,10 +11,11 @@ import java.util.ArrayList;
 
 public abstract class Obstacle {
     public Vector2D position;
-    public Velocity velocity;
+    public Vector2D velocity;
     public ArrayList<Vector2D> trajectory;
 
-    public Obstacle(Vector2D position) {
+    public Obstacle(Vector2D position, Vector2D velocity) {
         this.position = position;
+        this.velocity = velocity;
     }
 }
