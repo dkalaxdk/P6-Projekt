@@ -40,11 +40,18 @@ public class FileParser implements IDataInput {
 
         Collections.sort(dataList);
 
+        //FIXME This side effect is not clear from the name or context of the method
+        // It also appears untested
         PrintData(dataList.get(0));
 
         return dataList;
     }
 
+    //FIXME It is possible that the functionality of this method is unclear
+    // When checking file format, one could expect a respone of ok/not ok
+    // How/where is the result of this function expressed
+    // What happens when the file format is not correct?
+    //      How does the caller find out, and what should they do
     public void CheckFileFormat() throws IOException {
         reader.mark(2);
         if(reader.read() != '#'){
