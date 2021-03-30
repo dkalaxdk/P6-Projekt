@@ -4,10 +4,7 @@ import Dibbidut.Interfaces.IVelocityObstacle;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public class VelocityObstacle implements IVelocityObstacle {
     public VO velocities;
@@ -37,15 +34,27 @@ public class VelocityObstacle implements IVelocityObstacle {
         Vector2D displacement = Displacement(object.position, obstacle.position);
 
         Area combinedRelativeVO = new Area();
+
+        Rectangle2D confBounds = obstacle.conflictRegion.getBounds2D();
+
         for(int i = 0; i <= timeframe; i++) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
-            //TODO Add the size of OS ship domain to that of the TS
-            //TODO Center this new domain around centerCollision
-            //TODO Add this area to the combinedRelativeVO
-        }
+            //TODO Create a Velocity Obstacle that ensures that neither ships domain is violated
 
-        // To pass the initial test
-        combinedRelativeVO.add(new Area(obstacle.conflictRegion));
+            //FIXME This approach will likely only work with domains that do not change
+            // As it assumes that the point the domain is drawn from keeps the same displacement
+            // at all times
+
+            // Redraw confRegion around centerCollision
+            Rectangle2D.Double newBounds = new Rectangle2D.Double(
+                    confBounds.getX() + relativeVel.x() * i,
+                    confBounds.getY() + relativeVel.y() * i,
+                    confBounds.getWidth(),
+                    confBounds.getHeight()
+            );
+            combinedRelativeVO.add(new Area(newBounds));
+        }
+        
         return combinedRelativeVO;
     }
 
