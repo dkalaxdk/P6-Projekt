@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import Dibbidut.Classes.Ship;
 import Dibbidut.Classes.VelocityObstacle;
 import math.geom2d.Vector2D;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,26 +21,24 @@ public class VelocityObstacleTest {
     @Nested
     @DisplayName("VelocityObstacle.RelativeVO")
     class RelativeVO {
-        @Test
-        public void relativeVO_returnsAreaOfPositionVectorsThatCausesCollision() {
-            VelocityObstacle VO = new VelocityObstacle();
-            // Check that VO contains points on the edge but not points beyond that
-            // Check a few points
-        }
-
-        @Test
-        public void relativeVO_containsTargetShipPosition() {
-            VelocityObstacle VO = new VelocityObstacle();
-
+        VelocityObstacle VO = new VelocityObstacle();
+        Ship shipA;
+        Ship shipB;
+        @BeforeEach
+        public void setUp() {
             Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
             Vector2D velA = new Vector2D(1, 1);
             Vector2D posA = new Vector2D(0, 0);
-            Ship shipA = new Ship(posA, velA, confA);
+            shipA = new Ship(posA, velA, confA);
 
             Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
             Vector2D velB = new Vector2D(0, 0);
             Vector2D posB = new Vector2D(5, 5);
-            Ship shipB = new Ship(posB, velB, confB);
+            shipB = new Ship(posB, velB, confB);
+        }
+
+        @Test
+        public void relativeVO_containsTargetShipPosition() {
             double time = 5;
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
@@ -49,17 +48,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void relativeVO_containsTargetShipPositionAtAllTimeSteps() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
-            Vector2D velA = new Vector2D(1, 1);
-            Vector2D posA = new Vector2D(0, 0);
-            Ship shipA = new Ship(posA, velA, confA);
-
-            Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
-            Vector2D velB = new Vector2D(0, 0);
-            Vector2D posB = new Vector2D(5, 5);
-            Ship shipB = new Ship(posB, velB, confB);
             double time = 5;
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
@@ -74,17 +62,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void relativeVO_ContainsTargetShipConflictRegionAtSingleTimeStep() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
-            Vector2D velA = new Vector2D(1, 1);
-            Vector2D posA = new Vector2D(0, 0);
-            Ship shipA = new Ship(posA, velA, confA);
-
-            Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
-            Vector2D velB = new Vector2D(0, 0);
-            Vector2D posB = new Vector2D(5, 5);
-            Ship shipB = new Ship(posB, velB, confB);
             double time = 1;
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
@@ -94,17 +71,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void relativeVO_ContainsTargetShipConflictRegionAtEveryTimeStep() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
-            Vector2D velA = new Vector2D(1, 1);
-            Vector2D posA = new Vector2D(0, 0);
-            Ship shipA = new Ship(posA, velA, confA);
-
-            Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
-            Vector2D velB = new Vector2D(0, 0);
-            Vector2D posB = new Vector2D(5, 5);
-            Ship shipB = new Ship(posB, velB, confB);
             double time = 5;
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
@@ -138,22 +104,24 @@ public class VelocityObstacleTest {
     @Nested
     @DisplayName("VelocityObstacle.Displacement")
     class Displacement {
+        VelocityObstacle VO;
+        Vector2D pointA;
+        Vector2D pointB;
+        @BeforeEach
+        public void setUp() {
+            VO = new VelocityObstacle();
+
+            pointA = new Vector2D(0, 0);
+            pointB = new Vector2D(2, 2);
+        }
         @Test
         public void displacement_calculatesTheDisplacementFromAToB() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Vector2D pointA = new Vector2D(0, 0);
-            Vector2D pointB = new Vector2D(2, 2);
 
             assertEquals(VO.Displacement(pointA, pointB), new Vector2D(2, 2));
         }
 
         @Test
         public void displacement_calculatesTheDisplacementFromBToA() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Vector2D pointA = new Vector2D(0, 0);
-            Vector2D pointB = new Vector2D(2, 2);
 
             assertEquals(VO.Displacement(pointB, pointA), new Vector2D(-2, -2));
         }
@@ -162,12 +130,17 @@ public class VelocityObstacleTest {
     @Nested
     @DisplayName("VelocityObstacle.WillCollide")
     class WillCollide {
+        VelocityObstacle VO;
+        Point2D pointA;
+        Vector2D vel;
+        @BeforeEach
+        public void setUP() {
+            VO = new VelocityObstacle();
+            pointA = new Point2D.Double(1,1);
+            vel = new Vector2D(1, 1);
+        }
         @Test
         public void willCollide_returnsTrueIfTheVelocityWillCauseCollisionAtGivenTime() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Point2D pointA = new Point2D.Double(1,1);
-            Vector2D vel = new Vector2D(1, 1);
             Shape target = new Ellipse2D.Double(4, 4, 1, 1);
             double time = 4;
             assertTrue(VO.WillCollide(pointA, vel, target, time));
@@ -175,10 +148,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void willCollide_returnsTrueIfTheVelocityWillCauseCollisionBeforeGivenTime() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Point2D pointA = new Point2D.Double(1,1);
-            Vector2D vel = new Vector2D(1, 1);
             Shape target = new Ellipse2D.Double(4, 4, 1, 1);
             double time = 6;
             assertTrue(VO.WillCollide(pointA, vel, target, time));
@@ -186,10 +155,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void willCollide_returnsFalseIfVelocityWillNeverCauseCollision() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Point2D pointA = new Point2D.Double(1,1);
-            Vector2D vel = new Vector2D(1, 1);
             Shape target = new Ellipse2D.Double(10, 5, 1, 1);
             double time = 15;
             assertFalse(VO.WillCollide(pointA, vel, target, time));
@@ -197,10 +162,6 @@ public class VelocityObstacleTest {
 
         @Test
         public void willCollide_returnsFalseIfVelocityWillNotCauseCollisionBeforeGivenTime() {
-            VelocityObstacle VO = new VelocityObstacle();
-
-            Point2D pointA = new Point2D.Double(1,1);
-            Vector2D vel = new Vector2D(1, 1);
             Shape target = new Ellipse2D.Double(10, 10, 1, 1);
             double time = 6;
             assertFalse(VO.WillCollide(pointA, vel, target, time));
