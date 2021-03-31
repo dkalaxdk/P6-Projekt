@@ -21,7 +21,7 @@ public class Main {
         ownShip.heading = 0;
         ownShip.length = 100;
         ownShip.width = 50;
-        ownShip.domain = new ShipDomain(50, 6);
+        ownShip.domain = new ShipDomain(50, 6,"Pentagon");
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);
