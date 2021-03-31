@@ -60,6 +60,8 @@ public class AISData implements Comparable{
         this.longitude = longitude;
         this.width = width;
         this.length = length;
+
+        AddDateTime();
     }
 
     public void AddDateTime() {

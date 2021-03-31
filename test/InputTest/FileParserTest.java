@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,32 +39,7 @@ public class FileParserTest {
         return fileParser;
     }
 
-    @Nested
-    @DisplayName("FileParser.GetNextInput")
-    class GetNextInput {
-        @Test
-        public void GetNextInput_DoesNotReturnNull() {
-            // Arrange
-            FileParser parser = createFileParser(InputOneElement);
 
-            // Assert
-            assertNotNull(parser.GetNextInput());
-        }
-
-        @Test
-        public void GetNextInput_ReturnsCorrectAISData() {
-            FileParser parser = createFileParser(InputWithWrongOrder);
-
-            assertEquals(parser.GetNextInput().mmsi, 265781000);
-        }
-    }
-
-
-        @Test
-        public void GetNextInput_ReturnsNullAtEndOfList() {
-            // todo: lava test
-        }
-    }
 
     @Nested
     @DisplayName("FileParser.GetInputList")
@@ -172,11 +146,11 @@ public class FileParserTest {
     @DisplayName("FileParser.CheckFileFormat")
     class CheckFileFormat {
         @Test
-        public void CheckFileFormat_HashtagIsSkippedWhenFileStartsWithHashtag(){
+        public void SkipHashtagIfPresent_HashtagIsSkippedWhenFileStartsWithHashtag(){
             try {
                 FileParser parser = new FileParser(InputOneElement);
 
-                parser.CheckFileFormat();
+                parser.SkipHashtagIfPresent();
 
                 assertTrue(parser.reader.read() != '#');
             } catch (IOException e) {
@@ -185,11 +159,11 @@ public class FileParserTest {
         }
 
         @Test
-        public void CheckFileFormat_FileDoesNotStartWithHashtag(){
+        public void SkipHashtagIfPresent_FileDoesNotStartWithHashtag(){
             try {
                 FileParser parser = new FileParser(InputWithoutHashtag);
 
-                parser.CheckFileFormat();
+                parser.SkipHashtagIfPresent();
 
                 assertTrue(parser.reader.read() == 'T');
             } catch (IOException e) {

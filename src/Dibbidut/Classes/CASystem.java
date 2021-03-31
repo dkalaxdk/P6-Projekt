@@ -1,13 +1,17 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.*;
+
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class CASystem {
 
     public ArrayList<Ship> shipsInRange;
-    public IAISBuffer buffer;
+    public BlockingQueue<AISData> buffer;
 
     public IOwnShip OS;
     public Ship ownShip;
@@ -20,6 +24,7 @@ public class CASystem {
 
     public CASystem() {
         running = true;
+        buffer = new LinkedBlockingQueue<>();
 
         
     }
