@@ -10,8 +10,12 @@ public class VelocityObstacle implements IVelocityObstacle {
     public VO velocities;
 
     @Override
-    public VO Calculate(Obstacle ownShip, Obstacle other) {
-        return null;
+    public Area Calculate(Ship ownShip, Ship other, double timeFrame) {
+        AffineTransform translation = new AffineTransform();
+        translation.translate(other.velocity.x(), other.velocity.y());
+        Area relativeVO = RelativeVO(ownShip, other, timeFrame);
+
+        return relativeVO.createTransformedArea(translation);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Rectangle2D confBounds = obstacle.conflictRegion.getBounds2D();
 
-        for(int i = 0; i <= timeframe; i++) {
+        for(int i = 1; i <= timeframe; i++) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
             //TODO Create a Velocity Obstacle that ensures that neither ships domain is violated
 
@@ -45,16 +49,15 @@ public class VelocityObstacle implements IVelocityObstacle {
             // As it assumes that the point the domain is drawn from keeps the same displacement
             // at all times
 
-            // Redraw confRegion around centerCollision
-            Rectangle2D.Double newBounds = new Rectangle2D.Double(
-                    confBounds.getX() + relativeVel.x() * i,
-                    confBounds.getY() + relativeVel.y() * i,
-                    confBounds.getWidth(),
-                    confBounds.getHeight()
-            );
-            combinedRelativeVO.add(new Area(newBounds));
+            // Calculate the translation that will place the conflictRegion at centerCollision
+            Vector2D translationVec = Displacement(obstacle.position, centerCollision);
+            AffineTransform translation = new AffineTransform();
+            translation.translate(translationVec.x(), translationVec.y());
+            Area conflictArea = new Area(obstacle.conflictRegion).createTransformedArea(translation);
+
+            combinedRelativeVO.add(conflictArea);
         }
-        
+
         return combinedRelativeVO;
     }
 
