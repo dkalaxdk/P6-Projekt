@@ -28,7 +28,7 @@ public class ShipDomain implements IDomain {
     private Path2D.Double pentagonDomain;
     private Shape pentagonDomainAsShape;
     private final DomainDimensions DomainDimensions;
-    private float COG;
+    private float Heading;
 
 
     public ShipDomain(int shipLength, int shipWidth) {
@@ -101,10 +101,10 @@ public class ShipDomain implements IDomain {
     }
 
     @Override
-    public ShipDomain Update(float SOG, float COG, float Lat, float Long) {
+    public ShipDomain Update(float SOG, float Heading, float Lat, float Long) {
         this.Lat = Lat;
         this.Long = Long;
-        this.COG = COG;
+        this.Heading = Heading;
         calculateDiameters(SOG);
         calculateRadii();
         calculateOffsets();
@@ -171,13 +171,13 @@ public class ShipDomain implements IDomain {
     private void rotateDomains() {
         ellipseDomainAsShape = this.ellipseDomain;
         ellipseDomainAsShape = AffineTransform.getRotateInstance(
-                Math.toRadians(COG),
+                Math.toRadians(Heading),
                 Long ,
                 Lat)
                 .createTransformedShape(ellipseDomainAsShape);
         pentagonDomainAsShape = this.pentagonDomain;
         pentagonDomainAsShape = AffineTransform.getRotateInstance(
-                Math.toRadians(COG),
+                Math.toRadians(Heading),
                 Long,
                 Lat)
                 .createTransformedShape(pentagonDomainAsShape);
