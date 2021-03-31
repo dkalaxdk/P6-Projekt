@@ -56,7 +56,7 @@ public class CASystem {
             }
 
             try {
-                wait(10000 - (duration));
+                TimeUnit.MILLISECONDS.sleep(10000 - (duration));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -70,6 +70,7 @@ public class CASystem {
     }
 
     public void UpdateShipList() {
+        // Get new elements from buffer, and update exiting ones
         while (buffer.size() > 0) {
             AISData data = buffer.poll();
 
@@ -88,7 +89,7 @@ public class CASystem {
             }
 
             if (!found) {
-                shipsInRange.add(new Ship(data));
+                shipsInRange.add(new Ship(data, this.ownShip.longitude));
             }
         }
     }

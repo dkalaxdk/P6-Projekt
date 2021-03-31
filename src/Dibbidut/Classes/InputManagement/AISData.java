@@ -30,9 +30,28 @@ public class AISData implements Comparable{
 
     //public String navigationalStatus;
     //public String ROT;
-    //public String SOG;
-    //public String COG;
-    //public String heading;
+
+    @CsvBindByName(column = "SOG")
+    public double SOG;
+
+    @CsvBindByName(column = "COG")
+    public double COG;
+
+    @CsvBindByName(column = "Heading")
+    public int heading;
+
+    @CsvBindByName(column = "A")
+    public int distanceFore;
+
+    @CsvBindByName(column = "B")
+    public int distanceAft;
+
+    @CsvBindByName(column = "C")
+    public int distancePort;
+
+    @CsvBindByName(column = "D")
+    public int distanceStarboard;
+
     //public String IMO;
     //public String callsign;
     //public String name;
