@@ -56,20 +56,3 @@ public class FileParser implements IDataInput {
         System.out.println("-----------------------");
     }
 }
-
-
-// todo: her er oversigten over hvad der skal ske
-// next step: put data from list into buffer (how do we handle the timing??)
-
-// sorter efter timestamp
-
-//start timer ved ældste datapunkt
-
-// trhreads: blocking queue i java
-
-// frasorter skibe der er for langt væk
-
-//midlertidig sluk tråd: sleep
-//    tag tid på udregning og træk det fra tiden der skal gå inden næste gang vi kører den
-
-
