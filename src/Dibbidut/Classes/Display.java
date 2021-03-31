@@ -81,6 +81,7 @@ public class Display extends JPanel implements IDisplay {
 
         g.draw(drawShip(ship));
         g.draw(drawShipDomain(ship));
+        g.draw(ship.domain.getScaledShipDomain(2));
     }
 
     private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {

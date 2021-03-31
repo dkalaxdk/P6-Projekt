@@ -29,6 +29,7 @@ public class ShipDomain implements IDomain {
     private Shape pentagonDomainAsShape;
     private final DomainDimensions DomainDimensions;
     private boolean domainType;
+    private float Heading;
 
 
     public ShipDomain(int shipLength, int shipWidth , String domainType ) {
@@ -99,13 +100,13 @@ public class ShipDomain implements IDomain {
 
     public Shape getDomain() {
         if (domainType) {
-            return pentagonDomainAsShape;
+            return rotateDomain(this.Heading,pentagonDomainAsShape);
         }
-        return ellipseDomainAsShape;
+        return rotateDomain(this.Heading,ellipseDomainAsShape);
     }
     @Override
     public ShipDomain Update(float SOG, float Heading, float Lat, float Long) {
-
+        this.Heading = Heading;
         this.Lat = Lat;
         this.Long = Long;
         calculateDiameters(SOG);
@@ -117,7 +118,6 @@ public class ShipDomain implements IDomain {
         } else {
             updateEllipseDomain();
         }
-        rotateDomains(Heading);
         return this;
     }
 
@@ -134,8 +134,8 @@ public class ShipDomain implements IDomain {
     }
 
     private void calculateRadii() {
-        radiusFore = (float)shipLength/2 +(1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
-        radiusAft = (float)shipLength/2 +(1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusFore = (float)shipLength/2 + (1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusAft = (float)shipLength/2 + (1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
         radiusStarboard = (float)shipWidth/2 + (0.2 + tacticalDiameter) * shipLength;
         radiusPort = (float)shipWidth/2 + (0.2 + 0.75 * tacticalDiameter) * shipLength;
     }
@@ -184,24 +184,40 @@ public class ShipDomain implements IDomain {
         pentagonDomain.closePath();
     }
 
-    private void rotateDomains(float heading) {
-        if (domainType) {
-            pentagonDomainAsShape = this.pentagonDomain;
-            pentagonDomainAsShape = AffineTransform.getRotateInstance(
-                    Math.toRadians(heading),
+    private Shape scalePentagonDomain(float scalar) {
+        Path2D.Double tempPath = new Path2D.Double();
+
+        // P5
+        tempPath.moveTo(Long - DomainDimensions.One/scalar, Lat + DomainDimensions.Three/scalar);
+        // P4
+        tempPath.lineTo(Long - DomainDimensions.One/scalar, Lat + DomainDimensions.Four/scalar);
+        // P3
+        tempPath.lineTo(Long, Lat + DomainDimensions.Five/scalar);
+        // P2
+        tempPath.lineTo(Long - DomainDimensions.Two/scalar, Lat + DomainDimensions.Four/scalar);
+        // P1
+        tempPath.lineTo(Long - DomainDimensions.Two/scalar, Lat + DomainDimensions.Three/scalar);
+
+        // Enclose path to create pentagon
+        tempPath.closePath();
+
+        return tempPath;
+    }
+
+
+    private Shape rotateDomain(float heading, Shape inputShape) {
+        return AffineTransform.getRotateInstance(
+                Math.toRadians(heading),
                     Long, Lat)
-                    .createTransformedShape(pentagonDomainAsShape);
-        } else {
-            ellipseDomainAsShape = this.ellipseDomain;
-            ellipseDomainAsShape = AffineTransform.getRotateInstance(
-                    Math.toRadians(heading),
-                    Long, Lat)
-                    .createTransformedShape(ellipseDomainAsShape);
-        }
+                    .createTransformedShape(inputShape);
     }
 
     public Shape getScaledShipDomain(float scalar) {
-        return scaleEllipseDomain(scalar);
+        if (scalar == 0) scalar = 1;
+        if (domainType) {
+            return rotateDomain(Heading,scalePentagonDomain(scalar));
+        }
+        return rotateDomain(Heading,scaleEllipseDomain(scalar));
     }
 
 }

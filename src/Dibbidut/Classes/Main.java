@@ -21,7 +21,7 @@ public class Main {
         ownShip.heading = 0;
         ownShip.length = 100;
         ownShip.width = 50;
-        ownShip.domain = new ShipDomain(50, 6,"Pentagon");
+        ownShip.domain = new ShipDomain(50, 6,"Ellipse");
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);
@@ -42,6 +42,7 @@ public class Main {
         while (true) {
             ownShip.heading = (ownShip.heading + 1) % 360;
             ownShip.domain.Update(5, ownShip.heading, (float) ownShip.position.x(), (float) ownShip.position.y());
+
 
             /*s.get(0).position = new Vector2D(100, (i % 60) + 30);
 
