@@ -4,6 +4,7 @@ import Dibbidut.Classes.*;
 import Dibbidut.Classes.CASystem;
 import Dibbidut.Classes.InputManagement.AISData;
 import math.geom2d.Vector2D;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 
@@ -91,4 +92,49 @@ public class UpdateShipListTest {
 
         assertEquals(20, system.shipsInRange.get(0).length);
     }
+
+    @Nested
+    class RemoveShipsOutOfRange {
+        @Test
+        public void ShipsAreWithinRange_NoChange() {
+            CASystem system = new CASystem();
+
+            Ship target1 = new Ship(new Vector2D(1,0), 10, 10, 0);
+            Ship target2 = new Ship(new Vector2D(2,0), 10, 10, 0);
+
+            system.shipsInRange.add(target1);
+            system.shipsInRange.add(target2);
+
+            system.RemoveShipsOutOfRange(new Vector2D(0,0), system.shipsInRange, 10);
+
+            assertEquals(system.shipsInRange.size(), 2);
+        }
+
+        @Test
+        public void OneShipOutOfRange_RemoveOneShip() {
+            CASystem system = new CASystem();
+
+            Ship target1 = new Ship(new Vector2D(11,0), 10, 10, 0);
+            Ship target2 = new Ship(new Vector2D(1,0), 10, 10, 0);
+
+            system.shipsInRange.add(target1);
+            system.shipsInRange.add(target2);
+
+            system.RemoveShipsOutOfRange(new Vector2D(0,0), system.shipsInRange, 10);
+
+            assertEquals(system.shipsInRange.get(0).position, target2.position);
+        }
+
+        @Test
+        public void MultipleShipsOutOfRange_RemoveShips() {
+
+        }
+
+        @Test
+        public void AllShipOutOfRange_EmptyList() {
+
+        }
+    }
+
+
 }

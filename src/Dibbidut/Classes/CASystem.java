@@ -4,6 +4,7 @@ import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
+import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -22,12 +23,16 @@ public class CASystem {
     public Display display;
     public IVelocityObstacle MVO;
 
+    public double range;
+
 
     public CASystem() {
         shipsInRange = new ArrayList<>();
         buffer = new LinkedBlockingQueue<>();
         ownShip = new Ship(new Vector2D(0,0), 20, 5, 0);
         display = new Display(ownShip, shipsInRange);
+
+        range = 10;
     }
 
     public void Start() {
@@ -69,10 +74,13 @@ public class CASystem {
 
     }
 
+    // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
-        // Get new elements from buffer, and update exiting ones
+
         while (buffer.size() > 0) {
             AISData data = buffer.poll();
+
+            //TODO: Check if the ship is within range. If it isn't, discard
 
             boolean found = false;
             int i = 0;
@@ -92,10 +100,24 @@ public class CASystem {
                 shipsInRange.add(new Ship(data, this.ownShip.longitude));
             }
         }
+
+        RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
+    }
+
+    public void RemoveShipsOutOfRange(Vector2D ownShipPosition, ArrayList<Ship> ships, double range) {
+        for (Ship ship : shipsInRange) {
+            Vector2D toTarget = ship.position.minus(ownShip.position);
+
+            double magnitude = Math.sqrt(Math.pow(toTarget.x(), 2) + Math.pow(toTarget.y(), 2));
+
+            if (magnitude > range) {
+                shipsInRange.remove(ship);
+            }
+        }
     }
 
     public void UpdateShip(Ship ship, AISData data) {
-
+        // TODO: Update ship with new data
     }
 
     public void UpdateVelocityObstacles() {
