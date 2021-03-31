@@ -22,13 +22,10 @@ public class Display extends JPanel implements IDisplay {
     private final Ship ownShip;
     private double zoom;
 
-    Random random;
-
     public Display(Ship ownShip, ArrayList<Ship> shipsInRange) {
 
         ships = shipsInRange;
         this.ownShip = ownShip;
-        random = new Random();
         zoom = 2;
     }
 

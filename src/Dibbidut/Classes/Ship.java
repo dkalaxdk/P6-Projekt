@@ -33,4 +33,10 @@ public class Ship extends Obstacle {
 
         domain = new ShipDomain(length, width);
     }
+
+    public Ship(AISData data) {
+        super(new Vector2D(0,0), new Vector2D(0,0));
+
+        this.mmsi = data.mmsi;
+    }
 }
