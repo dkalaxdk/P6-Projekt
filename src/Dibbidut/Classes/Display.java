@@ -20,6 +20,7 @@ public class Display extends JPanel implements IDisplay {
 
     private final ArrayList<Ship> ships;
     private final Ship ownShip;
+    private double zoom;
 
     Random random;
 
@@ -28,6 +29,7 @@ public class Display extends JPanel implements IDisplay {
         ships = shipsInRange;
         this.ownShip = ownShip;
         random = new Random();
+        zoom = 2;
     }
 
     public ArrayList<Ship> getShips() {
@@ -58,20 +60,32 @@ public class Display extends JPanel implements IDisplay {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
+        double displayWith = this.getWidth();
+        double displayHeight = this.getHeight();
+
+        // Mirror across the x-axis so that up is north. Rotation is dealt with in other places
+        g2.scale(1, -1);
+
         // Translate so that own ship is in the center
-        g2.translate(((double) this.getWidth() / 2) - ownShip.position.x(),
-                ((double) this.getHeight() / 2) - ownShip.position.y());
+        g2.translate(((displayWith / 2) - ownShip.position.x()),
+                ((displayHeight / 2) - ownShip.position.y()) - displayHeight
+        );
 
         drawGUIElements(g2, ownShip, ships);
 
         // Rotate so that north is at the top of the screen
-        g2.rotate(Math.PI, ownShip.position.x(), ownShip.position.y());
+//        g2.rotate(Math.PI, ownShip.position.x(), ownShip.position.y());
 
         // Rotate so that own ship is pointing at the top of the screen
 //        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.x(), ownShip.position.y());
 
         drawOwnShip(g2, ownShip);
         drawTargetShips(g2, ships);
+    }
+
+    //TODO: Use me
+    public Vector2D getZoomedPosition(Vector2D ownShip, Vector2D targetShip, double zoom) {
+        return ownShip.plus(targetShip.minus(ownShip).times(zoom));
     }
 
     private void drawGUIElements(Graphics2D g, Ship ownShip, ArrayList<Ship> ships) {
@@ -115,7 +129,7 @@ public class Display extends JPanel implements IDisplay {
         Shape shape = new Rectangle2D.Double(p.x(), p.y(), ship.width, ship.length);
 
         return AffineTransform.getRotateInstance(
-                degreesToRadians(ship.heading),
+                degreesToRadians(360 - ship.heading),
                 ship.position.x(),
                 ship.position.y())
                 .createTransformedShape(shape);
@@ -123,7 +137,7 @@ public class Display extends JPanel implements IDisplay {
 
     private Shape drawHeading(Ship ship) {
         Vector2D heading = new Vector2D(0, (double) ship.length / 2);
-        heading = heading.rotate(degreesToRadians(ship.heading));
+        heading = heading.rotate(degreesToRadians(360 - ship.heading));
         Vector2D point = ship.position.plus(heading);
 
         return new Line2D.Double(ship.position.x(), ship.position.y(), point.x(), point.y());
@@ -136,6 +150,8 @@ public class Display extends JPanel implements IDisplay {
     }
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {
+
+        Vector2D position = getZoomedPosition(this.ownShip.position, ship.position, this.zoom);
 
         double x = ship.position.x() - (((double) ship.width) / 2);
         double y = ship.position.y() - (((double) ship.length) / 2);

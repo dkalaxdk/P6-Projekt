@@ -4,6 +4,7 @@ import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -132,14 +133,212 @@ public class DisplayTest {
     }
 
     @Test
-    public void drawHeading_shipPointingNorth() {
-        // Arrange
-        Display display = new Display(createStandardShip(), new ArrayList<>());
+    public void getZoomedPosition_bothShipsOrigo_zoom1_noChange() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        double zoom = 1;
 
+        Display display = new Display(ownShip, new ArrayList<>());
 
+        Vector2D expectedTarget = new Vector2D(0,0);
 
-        // Act
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
-        // Assert
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_bothShipsOrigo_zoom2_noChange() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(0,0);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom1_noChange() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        double zoom = 1;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(1,1);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(2,2);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom1Point5_Change() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        double zoom = 1.5;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(1.5,1.5);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetPosPos_zoom1_noChange() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
+        double zoom = 1;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(2,2);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetPosPos_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(3,3);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetPosPos_zoom1Point5_Change() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
+        double zoom = 1.5;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(2.5,2.5);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetPosNeg_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(1,-1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(2,-2);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetNegPos_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(-1,1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(-2,2);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownShipOrigo_targetNegNeg_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(-1,-1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(-2,-2);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetPosNeg_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(1,-1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(1,-3);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetNegNeg_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(-1,-1), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(-3,-3);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
+    }
+
+    @Test
+    public void getZoomedPosition_ownPosPos_targetOrigo_zoom2_Change() {
+        Ship ownShip = new Ship(new Vector2D(1,1), 10, 10, 0);
+        Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
+        double zoom = 2;
+
+        Display display = new Display(ownShip, new ArrayList<>());
+
+        Vector2D expectedTarget = new Vector2D(-1,-1);
+
+        Vector2D actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
+
+        assertEquals(expectedTarget, actualTarget);
     }
 }

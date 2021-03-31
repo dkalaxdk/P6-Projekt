@@ -65,7 +65,9 @@ public class CASystem {
     }
 
     public void UpdateShipList() {
-        
+        while (buffer.size() > 0) {
+            AISData data = buffer.Pop();
+        }
     }
 
     public void UpdateVelocityObstacles() {
