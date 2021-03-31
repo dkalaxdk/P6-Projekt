@@ -1,12 +1,14 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Classes.InputManagement.AISData;
+import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
 import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
 import java.awt.Graphics2D;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CASystem {
 
+    public InputSimulator inputSimulator;
     public ArrayList<Ship> shipsInRange;
     public BlockingQueue<AISData> buffer;
 
@@ -27,8 +30,15 @@ public class CASystem {
 
 
     public CASystem() {
-        shipsInRange = new ArrayList<>();
         buffer = new LinkedBlockingQueue<>();
+
+        try {
+            inputSimulator = new InputSimulator(buffer,"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        shipsInRange = new ArrayList<>();
         ownShip = new Ship(new Vector2D(0,0), 20, 5, 0);
         display = new Display(ownShip, shipsInRange);
 
@@ -36,7 +46,7 @@ public class CASystem {
     }
 
     public void Start() {
-
+        inputSimulator.start();
         SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
         boolean running = true;
