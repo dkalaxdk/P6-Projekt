@@ -3,46 +3,53 @@ package Dibbidut.Classes;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.System;
 
 public class Main {
     public static void main(String[] args) {
         DisplayTest();
+
+        CASystem caSystem = new CASystem();
+        caSystem.Start();
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(500,500);
-        ownShip.heading = 0;
-        ownShip.length = 100;
-        ownShip.width = 50;
+        double zoom = 1;
+
+        double ownShipLong = 9.87823;
+
+        Vector2D tomasimo = Mercator.projection(9.87823, 57.0565, ownShipLong);
+        Vector2D bijou = Mercator.projection(9.87835, 57.05677, ownShipLong);
+        Vector2D ladyBird = Mercator.projection(9.87856, 57.05646, ownShipLong);
+        Vector2D missJane = Mercator.projection(9.87754, 57.0562, ownShipLong);
+
+
+
+
+        Ship ownShip = new Ship(tomasimo, 9, 3, 37);
+        ownShip.domain = new ShipDomain(ownShip.length, ownShip.width);
         ArrayList<Ship> s = new ArrayList<>();
 
         Display display = new Display(ownShip, s);
 
         SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
-        s.add(new Ship(new Vector2D(0,0)));
-        s.add(new Ship(new Vector2D(0,0)));
-        s.add(new Ship(new Vector2D(0,0)));
-
-        Random rand = new Random();
+        s.add(new Ship(bijou, 11, 4, 284));
+        s.add(new Ship(ladyBird, 11, 3, 170));
+        s.add(new Ship(missJane, 15, 5, 0));
 
         int i = 0;
         while (true) {
-            ownShip.heading = (ownShip.heading + 1) % 360;
-            ownShip.position = ownShip.position.plus(new Vector2D(1, 0));
+//            ownShip.heading = (ownShip.heading + 1) % 360;
+//            ownShip.domain.Update(5, 0, (float) ownShip.position.x(), (float) ownShip.position.y());
 
-            s.get(0).position = new Vector2D(100, (i % 60) + 30);
-
-            s.get(1).position = new Vector2D((i % 30) + 700, 300);
-
-            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
+//            s.get(0).position = new Vector2D(100, (i % 60) + 30);
+//
+//            s.get(1).position = new Vector2D((i % 200) + 700, 300);
+//
+//            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
 
             display.Update();
             try {

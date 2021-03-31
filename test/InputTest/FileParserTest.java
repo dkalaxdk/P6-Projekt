@@ -18,6 +18,7 @@ public class FileParserTest {
     private String InputThreeElements = "test/TestFiles/TestInputThreeElements.csv";
     private String InputWithoutHashtag = "test/TestFiles/TestInputWithoutHashtag.csv";
     private String InputWithWrongOrder = "test/TestFiles/TestInputTwoElementsWrongOrder.csv";
+    private String InputNothing = "test/TestFiles/TestInputNothing.csv";
 
     /*
     Creates and returns a new FileParser called with the given string.
@@ -139,6 +140,204 @@ public class FileParserTest {
             ArrayList<AISData> list = parser.GetInputList();
 
             assertEquals(list.get(0).length, actualLength);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectSOG(){
+            FileParser parser = createFileParser(InputOneElement);
+            double actualSOG = 8.7;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).SOG, actualSOG);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectCOG(){
+            FileParser parser = createFileParser(InputOneElement);
+            double actualCOG = 270.3;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).COG, actualCOG);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectHeading(){
+            FileParser parser = createFileParser(InputOneElement);
+            int actualHeading = 180;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).heading, actualHeading);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectDistanceToFore(){
+            FileParser parser = createFileParser(InputOneElement);
+            int actualDistance = 11;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).distanceFore, actualDistance);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectDistanceToAft(){
+            FileParser parser = createFileParser(InputOneElement);
+            int actualDistance = 12;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).distanceAft, actualDistance);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectDistanceToPort(){
+            FileParser parser = createFileParser(InputOneElement);
+            int actualDistance = 3;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).distancePort, actualDistance);
+        }
+
+        @Test
+        public void GetInputList_ReturnsAISDataWithCorrectDistanceToStarboard(){
+            FileParser parser = createFileParser(InputOneElement);
+            int actualDistance = 3;
+
+            ArrayList<AISData> list = parser.GetInputList();
+
+            assertEquals(list.get(0).distanceStarboard, actualDistance);
+        }
+
+
+
+        @Nested
+        @DisplayName("FileParser.GetInputList.EmptyCSVFile")
+        class FromEmptyFile {
+
+            @Test
+            public void GetInputList_EmptyFile_MMSIIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualMMSI = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).mmsi, actualMMSI);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_LatitudeIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualLatitude = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).latitude, actualLatitude);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_LongitudeIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualLongitude = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).longitude, actualLongitude);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_SOGIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                double actualSOG = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).SOG, actualSOG);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_COGIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                double actualCOG = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).COG, actualCOG);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_HeadingIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualHeading = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).heading, actualHeading);
+            }
+
+
+            @Test
+            public void GetInputList_EmptyFile_DistanceToForeIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualDistance = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).distanceFore, actualDistance);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_DistanceToAftIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualDistance = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).distanceAft, actualDistance);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_DistanceToPortIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualDistance = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).distancePort, actualDistance);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_DistanceToStarboardIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualDistance = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).distanceStarboard, actualDistance);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_LengthIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualLength = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).length, actualLength);
+            }
+
+            @Test
+            public void GetInputList_EmptyFile_WidthIs0(){
+                FileParser parser = createFileParser(InputNothing);
+                int actualWidth = 0;
+
+                ArrayList<AISData> list = parser.GetInputList();
+
+                assertEquals(list.get(0).width, actualWidth);
+            }
         }
     }
 

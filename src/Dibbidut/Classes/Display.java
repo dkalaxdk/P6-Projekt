@@ -9,34 +9,24 @@ import math.geom2d.polygon.Polygons2D;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
+import java.awt.font.GlyphVector;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 
 public class Display extends JPanel implements IDisplay {
 
     private final ArrayList<Ship> ships;
     private final Ship ownShip;
-
-    Random random;
+    private double zoom;
 
     public Display(Ship ownShip, ArrayList<Ship> shipsInRange) {
 
-//        Timer timer = new Timer(1, new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                clearDisplay();
-//            }
-//        });
-//
-//        timer.start();
-
         ships = shipsInRange;
         this.ownShip = ownShip;
-        random = new Random();
+        zoom = 2;
     }
 
     public ArrayList<Ship> getShips() {
@@ -48,7 +38,7 @@ public class Display extends JPanel implements IDisplay {
     }
 
     private void clearDisplay() {
-        repaint(0,0,1000, 1000);
+        repaint(0,0,this.getWidth(), this.getHeight());
     }
 
     public Dimension getPreferredSize() {
@@ -63,55 +53,102 @@ public class Display extends JPanel implements IDisplay {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
-        g2.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
-        g2.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+        double displayWith = this.getWidth();
+        double displayHeight = this.getHeight();
 
-        // Draw OS
-        g2.setColor(Color.blue);
+        // Mirror across the x-axis so that up is north. Rotation is dealt with in other places
+        g2.scale(1, -1);
 
-        Vector2D drawOwnShipFrom = getCoordinatesToDrawShipFrom(ownShip);
+        // Translate so that own ship is in the center
+        g2.translate(((displayWith / 2) - ownShip.position.x()),
+                ((displayHeight / 2) - ownShip.position.y()) - displayHeight
+        );
 
-        Shape shape = new Ellipse2D.Double(
-                drawOwnShipFrom.x(),
-                drawOwnShipFrom.y(),
-                this.ownShip.width,
-                this.ownShip.length);
+        drawGUIElements(g2, ownShip, ships);
 
-        shape = AffineTransform.getRotateInstance(
-                degreesToRadians(ownShip.heading),
+        // Rotate so that north is at the top of the screen
+//        g2.rotate(Math.PI, ownShip.position.x(), ownShip.position.y());
+
+        // Rotate so that own ship is pointing at the top of the screen
+//        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.x(), ownShip.position.y());
+
+        drawOwnShip(g2, ownShip);
+        drawTargetShips(g2, ships);
+    }
+
+    //TODO: Use me
+    public Vector2D getZoomedPosition(Vector2D ownShip, Vector2D targetShip, double zoom) {
+        return ownShip.plus(targetShip.minus(ownShip).times(zoom));
+    }
+
+    private void drawGUIElements(Graphics2D g, Ship ownShip, ArrayList<Ship> ships) {
+        g.setColor(Color.gray);
+
+        // Horizontal
+        g.draw(new Line2D.Double(ownShip.position.x() - this.getWidth(),
+                ownShip.position.y(),
+                ownShip.position.x() + this.getWidth(),
+                ownShip.position.y()));
+
+        // Vertical
+        g.draw(new Line2D.Double(ownShip.position.x(),
+                ownShip.position.y() - this.getHeight(),
                 ownShip.position.x(),
-                ownShip.position.y())
-                .createTransformedShape(shape);
+                ownShip.position.y() + this.getHeight()));
+    }
 
-        g2.draw(shape);
+    private void drawOwnShip(Graphics2D g, Ship ship) {
+        g.setColor(Color.blue);
 
-        Point2D.Double point = new Point2D.Double((this.getWidth() / 2) + 30, (this.getHeight() / 2) + 30);
+        g.draw(drawShip(ship));
+        g.draw(drawShipDomain(ship));
+        g.draw(drawHeading(ship));
+    }
 
-        Shape shape1 = new Ellipse2D.Double(point.getX() - 3, point.getY() - 3, 6, 6);
+    private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
+        g.setColor(Color.black);
 
-        if (shape.contains(point)) {
-            g2.setColor(Color.red);
-        }
+        for (Ship ship : targetShips) {
 
-        g2.draw(shape1);
-
-        // Draw TS'sS
-        g2.setColor(Color.black);
-
-        for (Ship ship : ships) {
-
-            shape = new Ellipse2D.Double(ship.position.x() + 20, ship.position.y() + 45, 10.0, 10.0);
-            g2.draw(shape);
-
-            shape = new Ellipse2D.Double(ship.position.x(), ship.position.y(), 50, 100);
-            g2.draw(shape);
+            g.draw(drawShip(ship));
+            g.draw(drawShipDomain(ship));
+            g.draw(drawHeading(ship));
         }
     }
 
+    private Shape drawShip(Ship ship) {
+        Vector2D p = getCoordinatesToDrawShipFrom(ship);
+
+        Shape shape = new Rectangle2D.Double(p.x(), p.y(), ship.width, ship.length);
+
+        return AffineTransform.getRotateInstance(
+                degreesToRadians(360 - ship.heading),
+                ship.position.x(),
+                ship.position.y())
+                .createTransformedShape(shape);
+    }
+
+    private Shape drawHeading(Ship ship) {
+        Vector2D heading = new Vector2D(0, (double) ship.length / 2);
+        heading = heading.rotate(degreesToRadians(360 - ship.heading));
+        Vector2D point = ship.position.plus(heading);
+
+        return new Line2D.Double(ship.position.x(), ship.position.y(), point.x(), point.y());
+    }
+
+    private Shape drawShipDomain(Ship ship) {
+        Vector2D p = getCoordinatesToDrawDomainFrom(ship);
+
+        return ship.domain.getDomainAsEllipse();
+    }
+
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {
+
+        Vector2D position = getZoomedPosition(this.ownShip.position, ship.position, this.zoom);
 
         double x = ship.position.x() - (((double) ship.width) / 2);
         double y = ship.position.y() - (((double) ship.length) / 2);
