@@ -195,30 +195,6 @@ public class ShipDomainTest {
         public void getDomainAsPolygon_Returns_Polygon() {
             assertNotNull(shipDomain.getDomainAsPolygon());
         }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_X() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().x, 80.84859013935375);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Y() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().y, 77.74992706538313);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Height() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().height, 52.45422958193878);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Width() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().width, 39.187627635579524);
-        }
     }
 
 }

@@ -2,6 +2,8 @@ package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IDomain;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 
@@ -22,8 +24,11 @@ public class ShipDomain implements IDomain {
     private double Lat;
     private double Long;
     private final Ellipse2D.Double ellipseDomain;
+    private Shape ellipseDomainAsShape;
     private Path2D.Double pentagonDomain;
+    private Shape pentagonDomainAsShape;
     private final DomainDimensions DomainDimensions;
+    private float COG;
 
 
     public ShipDomain(int shipLength, int shipWidth) {
@@ -87,26 +92,27 @@ public class ShipDomain implements IDomain {
         return DomainDimensions;
     }
 
-    public Ellipse2D.Double getDomainAsEllipse() {
-        return ellipseDomain;
+    public Shape getDomainAsEllipse() {
+        return ellipseDomainAsShape;
     }
 
-    public Path2D getDomainAsPolygon() {
-        return pentagonDomain;
+    public Shape getDomainAsPolygon() {
+        return pentagonDomainAsShape;
     }
 
     @Override
     public ShipDomain Update(float SOG, float COG, float Lat, float Long) {
         this.Lat = Lat;
         this.Long = Long;
+        this.COG = COG;
         calculateDiameters(SOG);
         calculateRadii();
         calculateOffsets();
         calculateDimensions();
         updateEllipseDomain();
         updatePentagonDomain();
+        rotateDomains();
         return this;
-
     }
 
     private void calculateOffsets() {
@@ -162,5 +168,19 @@ public class ShipDomain implements IDomain {
         pentagonDomain.closePath();
     }
 
+    private void rotateDomains() {
+        ellipseDomainAsShape = this.ellipseDomain;
+        ellipseDomainAsShape = AffineTransform.getRotateInstance(
+                Math.toRadians(COG),
+                Long ,
+                Lat)
+                .createTransformedShape(ellipseDomainAsShape);
+        pentagonDomainAsShape = this.pentagonDomain;
+        pentagonDomainAsShape = AffineTransform.getRotateInstance(
+                Math.toRadians(COG),
+                Long,
+                Lat)
+                .createTransformedShape(pentagonDomainAsShape);
+    }
 
 }

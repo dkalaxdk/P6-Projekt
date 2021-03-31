@@ -17,7 +17,7 @@ public class Main {
     }
 
     public static void DisplayTest() {
-        Ship ownShip = new Ship(500,500);
+        Ship ownShip = new Ship(new Vector2D(500, 500), 100, 50, 0);
         ownShip.heading = 0;
         ownShip.length = 100;
         ownShip.width = 50;
@@ -28,26 +28,26 @@ public class Main {
 
         SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
-        s.add(new Ship(new Vector2D(0,0), 100, 50, 45));
+      /*  s.add(new Ship(new Vector2D(0,0), 100, 50, 45));
         s.add(new Ship(new Vector2D(0,0), 50, 25, 135));
         s.add(new Ship(new Vector2D(0,0), 200, 50, 280));
 
         s.get(0).domain = new ShipDomain(s.get(0).length, s.get(0).width);
         s.get(1).domain = new ShipDomain(s.get(1).length, s.get(1).width);
-        s.get(2).domain = new ShipDomain(s.get(2).length, s.get(2).width);
+        s.get(2).domain = new ShipDomain(s.get(2).length, s.get(2).width);*/
 
         Random rand = new Random();
 
         int i = 0;
         while (true) {
             ownShip.heading = (ownShip.heading + 1) % 360;
-            ownShip.domain.Update(5, 0, (float) ownShip.position.x(), (float) ownShip.position.y());
+            ownShip.domain.Update(5, ownShip.heading, (float) ownShip.position.x(), (float) ownShip.position.y());
 
-            s.get(0).position = new Vector2D(100, (i % 60) + 30);
+            /*s.get(0).position = new Vector2D(100, (i % 60) + 30);
 
             s.get(1).position = new Vector2D((i % 200) + 700, 300);
 
-            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
+            s.get(2).position = new Vector2D((-i % 100) + 300, 600);*/
 
             display.Update();
             try {
