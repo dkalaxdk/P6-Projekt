@@ -14,21 +14,13 @@ public class FileParser implements IDataInput {
 
     public Reader reader;
     private ArrayList<AISData> dataList;
-    int listIterator;
 
 
     public FileParser(String fileSource) throws IOException {
         reader = new BufferedReader(new FileReader(fileSource));
         dataList = new ArrayList<>();
-        listIterator = 0;
 
-        CheckFileFormat();
-    }
-
-    public AISData GetNextInput(){
-        AISData nextElement = dataList.get(listIterator);
-        listIterator++;
-        return nextElement;
+        SkipHashtagIfPresent();
     }
 
     public ArrayList<AISData> GetInputList(){
@@ -40,19 +32,13 @@ public class FileParser implements IDataInput {
 
         Collections.sort(dataList);
 
-        //FIXME This side effect is not clear from the name or context of the method
-        // It also appears untested
+        //todo: slet evt print ting
         PrintData(dataList.get(0));
 
         return dataList;
     }
 
-    //FIXME It is possible that the functionality of this method is unclear
-    // When checking file format, one could expect a respone of ok/not ok
-    // How/where is the result of this function expressed
-    // What happens when the file format is not correct?
-    //      How does the caller find out, and what should they do
-    public void CheckFileFormat() throws IOException {
+    public void SkipHashtagIfPresent() throws IOException {
         reader.mark(2);
         if(reader.read() != '#'){
             reader.reset();
