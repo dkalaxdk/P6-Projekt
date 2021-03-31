@@ -39,7 +39,7 @@ public class ShipDomainTest {
 
     @BeforeEach
     public void setUp() {
-        shipDomain = new ShipDomain(5,10);
+        shipDomain = new ShipDomain(5,10,"Pentagon");
         startingValues = new StartingValues(shipDomain);
         shipDomain.Update(20,5,100,100);
     }
@@ -187,14 +187,10 @@ public class ShipDomainTest {
         }
 
         @Test
-        public void getDomainAsEllipse_Returns_Ellipse() {
-            assertNotNull(shipDomain.getDomainAsEllipse());
+        public void getDomain_Returns_Shape() {
+            assertNotNull(shipDomain.getDomain());
         }
 
-        @Test
-        public void getDomainAsPolygon_Returns_Polygon() {
-            assertNotNull(shipDomain.getDomainAsPolygon());
-        }
     }
 
 }

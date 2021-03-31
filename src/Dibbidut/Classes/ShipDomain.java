@@ -28,9 +28,15 @@ public class ShipDomain implements IDomain {
     private Path2D.Double pentagonDomain;
     private Shape pentagonDomainAsShape;
     private final DomainDimensions DomainDimensions;
+    private boolean domainType;
 
 
-    public ShipDomain(int shipLength, int shipWidth) {
+    public ShipDomain(int shipLength, int shipWidth , String domainType ) {
+        if (domainType.equals("Pentagon")) {
+            this.domainType = true;
+        } else if(domainType.equals("Ellipse")) {
+            this.domainType = false;
+        }
         this.shipLength = shipLength;
         this.shipWidth = shipWidth;
         this.ellipseDomain = new Ellipse2D.Double();
@@ -91,24 +97,26 @@ public class ShipDomain implements IDomain {
         return DomainDimensions;
     }
 
-    public Shape getDomainAsEllipse() {
+    public Shape getDomain() {
+        if (domainType) {
+            return pentagonDomainAsShape;
+        }
         return ellipseDomainAsShape;
     }
-
-    public Shape getDomainAsPolygon() {
-        return pentagonDomainAsShape;
-    }
-
     @Override
     public ShipDomain Update(float SOG, float Heading, float Lat, float Long) {
+
         this.Lat = Lat;
         this.Long = Long;
         calculateDiameters(SOG);
         calculateRadii();
         calculateOffsets();
         calculateDimensions();
-        updateEllipseDomain();
-        updatePentagonDomain();
+        if (domainType) {
+            updatePentagonDomain();
+        } else {
+            updateEllipseDomain();
+        }
         rotateDomains(Heading);
         return this;
     }
@@ -148,6 +156,15 @@ public class ShipDomain implements IDomain {
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }
+    private Ellipse2D.Double scaleEllipseDomain(float scalar) {
+        Ellipse2D.Double tempEllipse = new Ellipse2D.Double();
+        // Updating the ellipseDomain
+        tempEllipse.x = (Long - aftOffset);
+        tempEllipse.y = (Lat - starboardOffset);
+        tempEllipse.width = width / scalar;
+        tempEllipse.height = height / scalar;
+        return tempEllipse;
+    }
 
     private void updatePentagonDomain() {
         this.pentagonDomain = new Path2D.Double();
@@ -168,16 +185,23 @@ public class ShipDomain implements IDomain {
     }
 
     private void rotateDomains(float heading) {
-        ellipseDomainAsShape = this.ellipseDomain;
-        ellipseDomainAsShape = AffineTransform.getRotateInstance(
-                Math.toRadians(heading),
-                Long, Lat)
-                .createTransformedShape(ellipseDomainAsShape);
-        pentagonDomainAsShape = this.pentagonDomain;
-        pentagonDomainAsShape = AffineTransform.getRotateInstance(
-                Math.toRadians(heading),
-                Long, Lat)
-                .createTransformedShape(pentagonDomainAsShape);
+        if (domainType) {
+            pentagonDomainAsShape = this.pentagonDomain;
+            pentagonDomainAsShape = AffineTransform.getRotateInstance(
+                    Math.toRadians(heading),
+                    Long, Lat)
+                    .createTransformedShape(pentagonDomainAsShape);
+        } else {
+            ellipseDomainAsShape = this.ellipseDomain;
+            ellipseDomainAsShape = AffineTransform.getRotateInstance(
+                    Math.toRadians(heading),
+                    Long, Lat)
+                    .createTransformedShape(ellipseDomainAsShape);
+        }
+    }
+
+    public Shape getScaledShipDomain(float scalar) {
+        return scaleEllipseDomain(scalar);
     }
 
 }
