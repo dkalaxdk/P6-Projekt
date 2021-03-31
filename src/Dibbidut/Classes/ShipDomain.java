@@ -121,21 +121,21 @@ public class ShipDomain implements IDomain {
     }
 
     private void calculateDiameters(float SOG) {
-        advanceDiameter =  Math.pow(10, 0.3591 * Math.log10(SOG) + 0.0952);
+        advanceDiameter = Math.pow(10, 0.3591 * Math.log10(SOG) + 0.0952);
         tacticalDiameter = Math.pow(10, 0.5441 * Math.log10(SOG) - 0.0795);
     }
 
     private void calculateRadii() {
-        radiusFore = (1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter,2) + Math.pow(tacticalDiameter /2,2))) * shipLength;
-        radiusAft =  (1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter,2) + Math.pow(tacticalDiameter /2,2))) * shipLength;
-        radiusStarboard = (0.2 + tacticalDiameter) * shipLength;
-        radiusPort = (0.2 + 0.75 * tacticalDiameter) * shipLength;
+        radiusFore = (float)shipLength/2 +(1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusAft = (float)shipLength/2 +(1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusStarboard = (float)shipWidth/2 + (0.2 + tacticalDiameter) * shipLength;
+        radiusPort = (float)shipWidth/2 + (0.2 + 0.75 * tacticalDiameter) * shipLength;
     }
 
-    private void calculateDimensions(){
+    private void calculateDimensions() {
         DomainDimensions.One = 0.9 * radiusStarboard;
-        DomainDimensions.Two = - 0.9 * radiusPort;
-        DomainDimensions.Three = - 0.9 * radiusAft;
+        DomainDimensions.Two = -0.9 * radiusPort;
+        DomainDimensions.Three = -0.9 * radiusAft;
         DomainDimensions.Four = 0.75 * radiusFore - 0.25 * radiusAft;
         DomainDimensions.Five = 1.1 * radiusFore;
     }
@@ -143,11 +143,12 @@ public class ShipDomain implements IDomain {
     private void updateEllipseDomain() {
 
         // Updating the ellipseDomain
-        this.ellipseDomain.x = (Long - aftOffset) ;
-        this.ellipseDomain.y = (Lat - starboardOffset) ;
+        this.ellipseDomain.x = (Long - aftOffset);
+        this.ellipseDomain.y = (Lat - starboardOffset);
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }
+
     private void updatePentagonDomain() {
         this.pentagonDomain = new Path2D.Double();
 
@@ -158,7 +159,7 @@ public class ShipDomain implements IDomain {
         // P3
         pentagonDomain.lineTo(Long, Lat + DomainDimensions.Five);
         // P2
-        pentagonDomain.lineTo(Long - DomainDimensions.Two, Lat  + DomainDimensions.Four);
+        pentagonDomain.lineTo(Long - DomainDimensions.Two, Lat + DomainDimensions.Four);
         // P1
         pentagonDomain.lineTo(Long - DomainDimensions.Two, Lat + DomainDimensions.Three);
 
@@ -170,14 +171,12 @@ public class ShipDomain implements IDomain {
         ellipseDomainAsShape = this.ellipseDomain;
         ellipseDomainAsShape = AffineTransform.getRotateInstance(
                 Math.toRadians(heading),
-                Long ,
-                Lat)
+                Long, Lat)
                 .createTransformedShape(ellipseDomainAsShape);
         pentagonDomainAsShape = this.pentagonDomain;
         pentagonDomainAsShape = AffineTransform.getRotateInstance(
                 Math.toRadians(heading),
-                Long,
-                Lat)
+                Long, Lat)
                 .createTransformedShape(pentagonDomainAsShape);
     }
 
