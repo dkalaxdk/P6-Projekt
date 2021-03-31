@@ -127,14 +127,36 @@ public class UpdateShipListTest {
 
         @Test
         public void MultipleShipsOutOfRange_RemoveShips() {
+            CASystem system = new CASystem();
 
+            Ship target1 = new Ship(new Vector2D(11,0), 10, 10, 0);
+            Ship target2 = new Ship(new Vector2D(12,0), 10, 10, 0);
+            Ship target3 = new Ship(new Vector2D(1,0), 10, 10, 0);
+
+            system.shipsInRange.add(target1);
+            system.shipsInRange.add(target2);
+            system.shipsInRange.add(target3);
+
+            system.RemoveShipsOutOfRange(new Vector2D(0,0), system.shipsInRange, 10);
+
+            assertEquals(system.shipsInRange.get(0).position, target3.position);
         }
 
         @Test
         public void AllShipOutOfRange_EmptyList() {
+            CASystem system = new CASystem();
 
+            Ship target1 = new Ship(new Vector2D(11,0), 10, 10, 0);
+            Ship target2 = new Ship(new Vector2D(12,0), 10, 10, 0);
+            Ship target3 = new Ship(new Vector2D(13,0), 10, 10, 0);
+
+            system.shipsInRange.add(target1);
+            system.shipsInRange.add(target2);
+            system.shipsInRange.add(target3);
+
+            system.RemoveShipsOutOfRange(new Vector2D(0,0), system.shipsInRange, 10);
+
+            assertEquals(system.shipsInRange.size(), 0);
         }
     }
-
-
 }

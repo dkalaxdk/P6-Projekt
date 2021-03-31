@@ -105,15 +105,22 @@ public class CASystem {
     }
 
     public void RemoveShipsOutOfRange(Vector2D ownShipPosition, ArrayList<Ship> ships, double range) {
-        for (Ship ship : shipsInRange) {
-            Vector2D toTarget = ship.position.minus(ownShip.position);
 
-            double magnitude = Math.sqrt(Math.pow(toTarget.x(), 2) + Math.pow(toTarget.y(), 2));
+        ArrayList<Ship> deletionList = new ArrayList<>();
 
-            if (magnitude > range) {
-                shipsInRange.remove(ship);
+        for (Ship ship : ships) {
+            if (GetDistance(ownShipPosition, ship.position) > range) {
+                deletionList.add(ship);
             }
         }
+
+        ships.removeAll(deletionList);
+    }
+
+    public double GetDistance(Vector2D from, Vector2D to) {
+        Vector2D difference = to.minus(from);
+
+        return Math.sqrt(Math.pow(difference.x(), 2) + Math.pow(difference.y(), 2));
     }
 
     public void UpdateShip(Ship ship, AISData data) {
