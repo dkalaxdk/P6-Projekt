@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 

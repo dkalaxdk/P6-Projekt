@@ -2,6 +2,8 @@ package SystemTest;
 
 import Dibbidut.Classes.*;
 import Dibbidut.Classes.CASystem;
+import Dibbidut.Classes.InputManagement.AISData;
+import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
 
@@ -23,7 +25,10 @@ public class UpdateShipListTest {
     public void emptyListNonEmptyBuffer_newElement_elementAddedToList() {
 
         CASystem system = new CASystem();
-        system.buffer.add(new AISData(0));
+
+        AISData data = new AISData();
+        data.mmsi = 0;
+        system.buffer.add(data);
 
         system.UpdateShipList();
 
@@ -34,8 +39,12 @@ public class UpdateShipListTest {
     public void emptyListNonEmptyBuffer_twoNewElements_elementsAddedToList() {
 
         CASystem system = new CASystem();
-        system.buffer.add(new AISData(0));
-        system.buffer.add(new AISData(1));
+        AISData data = new AISData();
+        data.mmsi = 0;
+        AISData data1 = new AISData();
+        data1.mmsi = 1;
+        system.buffer.add(data);
+        system.buffer.add(data1);
 
         system.UpdateShipList();
 
@@ -47,11 +56,12 @@ public class UpdateShipListTest {
     public void nonemptyListNonEmptyBuffer_newElement_elementAddedToList() {
 
         CASystem system = new CASystem();
-        system.buffer.add(new AISData(0));
+        AISData data1 = new AISData();
+        data1.mmsi = 1;
 
-        system.UpdateShipList();
+        system.shipsInRange.add(new Ship(new Vector2D(0,0), 10, 5, 0));
 
-        system.buffer.add(new AISData(1));
+        system.buffer.add(data1);
 
         system.UpdateShipList();
 
@@ -62,14 +72,23 @@ public class UpdateShipListTest {
     public void nonemptyListNonEmptyBuffer_existingElement_elementUpdated() {
 
         CASystem system = new CASystem();
-        system.buffer.add(new AISData(0));
+
+        AISData data = new AISData();
+        data.mmsi = 0;
+        data.length = 10;
+
+        system.buffer.add(data);
 
         system.UpdateShipList();
 
-        system.buffer.add(new AISData(0));
+        AISData data1 = new AISData();
+        data.mmsi = 0;
+        data.length = 20;
+
+        system.buffer.add(data1);
 
         system.UpdateShipList();
 
-        assertEquals(1, system.shipsInRange.get(1).mmsi);
+        assertEquals(20, system.shipsInRange.get(0).length);
     }
 }

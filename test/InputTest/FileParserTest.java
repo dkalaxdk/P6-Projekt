@@ -58,7 +58,7 @@ public class FileParserTest {
 
             assertEquals(parser.GetNextInput().mmsi, 265781000);
         }
-    }
+
 
 
         @Test
