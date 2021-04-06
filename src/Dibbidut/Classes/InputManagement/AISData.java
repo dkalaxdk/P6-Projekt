@@ -10,7 +10,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class AISData implements Comparable{
+public class AISData implements Comparable {
 
     @CsvBindByName(column = "Timestamp")
     public String timestampString;
@@ -29,7 +29,9 @@ public class AISData implements Comparable{
     public double longitude;
 
     //public String navigationalStatus;
-    //public String ROT;
+
+    @CsvBindByName(column = "ROT")
+    public double ROT;
 
     @CsvBindByName(column = "SOG")
     public double SOG;
@@ -69,6 +71,18 @@ public class AISData implements Comparable{
     //public String destination;
     //public String ETA;
     //public String dateSourceType;
+
+    boolean mmsiIsSet;
+    boolean headingIsSet;
+    boolean lengthIsSet;
+    boolean widthIsSet;
+    boolean sogIsSet;
+    boolean cogIsSet;
+    boolean rotIsSet;
+    boolean distanceForeIsSet;
+    boolean distanceAftIsSet;
+    boolean distancePortIsSet;
+    boolean distanceStarboardIsSet;
 
     public AISData(){ }
 
