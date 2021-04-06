@@ -102,6 +102,9 @@ public class UpdateShipListTest {
             Ship target1 = new Ship(new Vector2D(1,0), 10, 10, 0);
             Ship target2 = new Ship(new Vector2D(2,0), 10, 10, 0);
 
+            target1.mmsi = 0;
+            target2.mmsi = 1;
+
             system.shipsInRange.add(target1);
             system.shipsInRange.add(target2);
 
@@ -116,6 +119,9 @@ public class UpdateShipListTest {
 
             Ship target1 = new Ship(new Vector2D(11,0), 10, 10, 0);
             Ship target2 = new Ship(new Vector2D(1,0), 10, 10, 0);
+
+            target1.mmsi = 0;
+            target2.mmsi = 1;
 
             system.shipsInRange.add(target1);
             system.shipsInRange.add(target2);
@@ -133,6 +139,10 @@ public class UpdateShipListTest {
             Ship target2 = new Ship(new Vector2D(12,0), 10, 10, 0);
             Ship target3 = new Ship(new Vector2D(1,0), 10, 10, 0);
 
+            target1.mmsi = 0;
+            target2.mmsi = 1;
+            target3.mmsi = 2;
+
             system.shipsInRange.add(target1);
             system.shipsInRange.add(target2);
             system.shipsInRange.add(target3);
@@ -149,6 +159,10 @@ public class UpdateShipListTest {
             Ship target1 = new Ship(new Vector2D(11,0), 10, 10, 0);
             Ship target2 = new Ship(new Vector2D(12,0), 10, 10, 0);
             Ship target3 = new Ship(new Vector2D(13,0), 10, 10, 0);
+
+            target1.mmsi = 0;
+            target2.mmsi = 1;
+            target3.mmsi = 2;
 
             system.shipsInRange.add(target1);
             system.shipsInRange.add(target2);

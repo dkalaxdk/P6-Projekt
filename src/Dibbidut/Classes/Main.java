@@ -26,8 +26,6 @@ public class Main {
         Vector2D missJane = Mercator.projection(9.87754, 57.0562, ownShipLong);
 
 
-
-
         Ship ownShip = new Ship(tomasimo, 9, 3, 37);
         ownShip.domain = new ShipDomain(ownShip.length, ownShip.width);
         ArrayList<Ship> s = new ArrayList<>();

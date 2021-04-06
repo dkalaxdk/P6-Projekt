@@ -96,7 +96,7 @@ public class ShipDomain implements IDomain {
     }
 
     @Override
-    public ShipDomain Update(float SOG, float COG, float Lat, float Long) {
+    public ShipDomain Update(double SOG, double COG, double Lat, double Long) {
         this.Lat = Lat;
         this.Long = Long;
         calculateDiameters(SOG);
@@ -116,7 +116,7 @@ public class ShipDomain implements IDomain {
         height = radiusAft + radiusFore;
     }
 
-    private void calculateDiameters(float SOG) {
+    private void calculateDiameters(double SOG) {
         advanceDiameter =  Math.pow(10, 0.3591 * Math.log10(SOG) + 0.0952);
         tacticalDiameter = Math.pow(10, 0.5441 * Math.log10(SOG) - 0.0795);
     }

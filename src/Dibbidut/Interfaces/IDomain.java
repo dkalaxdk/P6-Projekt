@@ -5,6 +5,6 @@ import Dibbidut.Classes.ShipDomain;
 
 public interface IDomain {
 
-    public ShipDomain Update(float SOG, float COG, float Lat, float Long);
+    public ShipDomain Update(double SOG, double COG, double Lat, double Long);
 
 }

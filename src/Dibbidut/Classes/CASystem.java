@@ -80,28 +80,47 @@ public class CASystem {
         while (buffer.size() > 0) {
             AISData data = buffer.poll();
 
-            //TODO: Check if the ship is within range. If it isn't, discard
+            Ship potentialShip = new Ship(data, this.ownShip.longitude);
+
+            // If the potential ship is already out of range,
+            // check if there is a reference to the ship in the ship list, remove it if there is,
+            // and continue to next iteration
+            if (!isWithinRange(potentialShip.position, this.ownShip.position, this.range)) {
+                this.shipsInRange.remove(potentialShip);
+                continue;
+            }
 
             boolean found = false;
             int i = 0;
 
+            // See if the potential ship is already in the ship list.
             while (!found && i < shipsInRange.size()) {
                 Ship ship = shipsInRange.get(i);
 
-                if (ship.mmsi == data.mmsi) {
-                    UpdateShip(ship, data);
+                // If the ship is already in the list,
+                // update the ship in the list with the data from the potential ship.
+                if (ship.mmsi == potentialShip.mmsi) {
+                    ship.Update(potentialShip);
                     found = true;
                 }
-
-                i++;
+                else {
+                    i++;
+                }
             }
 
+            // If it is not in the list, create a new ship, and add it to the list.
             if (!found) {
-                shipsInRange.add(new Ship(data, this.ownShip.longitude));
+                shipsInRange.add(potentialShip);
             }
         }
 
+        // Own ship might have moved since the last update,
+        // so remove any ships that are now out of range
         RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
+    }
+
+    public boolean isWithinRange(Vector2D shipPosition, Vector2D ownShipPosition, double range) {
+        return GetDistance(ownShipPosition, shipPosition) < range;
     }
 
     public void RemoveShipsOutOfRange(Vector2D ownShipPosition, ArrayList<Ship> ships, double range) {
@@ -109,7 +128,7 @@ public class CASystem {
         ArrayList<Ship> deletionList = new ArrayList<>();
 
         for (Ship ship : ships) {
-            if (GetDistance(ownShipPosition, ship.position) > range) {
+            if (!isWithinRange(ownShipPosition, ship.position, range)) {
                 deletionList.add(ship);
             }
         }
@@ -121,10 +140,6 @@ public class CASystem {
         Vector2D difference = to.minus(from);
 
         return Math.sqrt(Math.pow(difference.x(), 2) + Math.pow(difference.y(), 2));
-    }
-
-    public void UpdateShip(Ship ship, AISData data) {
-        // TODO: Update ship with new data
     }
 
     public void UpdateVelocityObstacles() {
