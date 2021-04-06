@@ -1,3 +1,3 @@
 # Timestamp,Type of mobile,MMSI,Latitude,Longitude,Navigational status,ROT,SOG,COG,Heading,IMO,Callsign,Name,Ship type,Cargo type,Width,Length,Type of position fixing device,Draught,Destination,ETA,Data source type,A,B,C,D
 23/06/2017 12:34:56,Class A,211235220,91.000000,181.000000,Unknown value,,,,,Unknown,DBBR,THEO FISCHER,SAR,,6,23,GPS,1.7,SAR ON DUTY,01/01/2018 01:00:00,AIS,11,12,3,3
-23/06/2017 11:00:00,Class A,265781000,57.573963,11.777525,Unknown value,0.0,0.0,326.1,16,Unknown,,,Undefined,,,,Undefined,,,,AIS,,,,
+23/06/2017 12:34:55,Class A,265781000,57.573963,11.777525,Unknown value,0.0,0.0,326.1,16,Unknown,,,Undefined,,,,Undefined,,,,AIS,,,,
