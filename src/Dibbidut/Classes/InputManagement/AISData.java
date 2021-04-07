@@ -72,17 +72,17 @@ public class AISData implements Comparable {
     //public String ETA;
     //public String dateSourceType;
 
-    boolean mmsiIsSet;
-    boolean headingIsSet;
-    boolean lengthIsSet;
-    boolean widthIsSet;
-    boolean sogIsSet;
-    boolean cogIsSet;
-    boolean rotIsSet;
-    boolean distanceForeIsSet;
-    boolean distanceAftIsSet;
-    boolean distancePortIsSet;
-    boolean distanceStarboardIsSet;
+    public boolean mmsiIsSet;
+    public boolean headingIsSet;
+    public boolean lengthIsSet;
+    public boolean widthIsSet;
+    public boolean sogIsSet;
+    public boolean cogIsSet;
+    public boolean rotIsSet;
+    public boolean distanceForeIsSet;
+    public boolean distanceAftIsSet;
+    public boolean distancePortIsSet;
+    public boolean distanceStarboardIsSet;
 
     public AISData(){ }
 
