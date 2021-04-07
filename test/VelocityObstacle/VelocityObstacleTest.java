@@ -53,7 +53,6 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        @Disabled // This test fails if VO is not a cone
         public void Calculate_DoesNotContainVelocityThatLeadsToCollisionAfterTimeFrame() {
             double time = 10;
 
@@ -80,6 +79,7 @@ public class VelocityObstacleTest {
 
             Area absVO = VO.Calculate(shipA, shipB, time);
 
+
             assertFalse(absVO.contains(new Point2D.Double(2, 2)));
             assertFalse(absVO.contains(new Point2D.Double(2, 3)));
             assertFalse(absVO.contains(new Point2D.Double(3, 2)));
@@ -91,13 +91,16 @@ public class VelocityObstacleTest {
 
             Area absVO = VO.Calculate(shipA, shipB, time);
 
+            // TODO: Go through these and see which ones are actually relevant for Absolute VO
+            //assertFalse(absVO.contains(new Point2D.Double(0.75, 1)));     // Fails if VO is not cone
             assertFalse(absVO.contains(new Point2D.Double(0.5, 2)));
-            //assertFalse(absVO.contains(new Point2D.Double(0.5, 1)));      // Fails because VO is not cone
+            assertFalse(absVO.contains(new Point2D.Double(0.5, 1)));      // Fails because VO is not cone
             assertFalse(absVO.contains(new Point2D.Double(0.4, 0.5)));
-            //assertFalse(absVO.contains(new Point2D.Double(0.5, 0.5)));    // Fails because VO is not cone
+            assertFalse(absVO.contains(new Point2D.Double(0.5, 0.5)));    // Fails because VO is not cone
             assertFalse(absVO.contains(new Point2D.Double(0.5, 0)));
-            //assertFalse(absVO.contains(new Point2D.Double(0.75, 0.75)));  // Fails because VO is not cone
-            //assertFalse(absVO.contains(new Point2D.Double(0.75, 0.5)));   // Fails because VO is not cone
+            assertFalse(absVO.contains(new Point2D.Double(0.75, 0.75)));  // Fails because VO is not cone
+            assertFalse(absVO.contains(new Point2D.Double(0.75, 0.5)));   // Fails because VO is not cone
+            assertFalse(absVO.contains(new Point2D.Double(0.5, 4)));   // Fails if VO is not cone
         }
     }
 
@@ -170,28 +173,25 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        public void relativeVO_ContainsTargetShipConflictRegionAtEveryTimeStep() {
+        public void relativeVO_RelativeVOConeIsNarrowNearOwnShip() {
             double time = 5;
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
 
-            Double boundX = shipB.conflictRegion.getBounds2D().getX();
-            Double boundY = shipB.conflictRegion.getBounds2D().getY();
-            Double width = shipB.conflictRegion.getBounds2D().getWidth();
-            Double height = shipB.conflictRegion.getBounds2D().getHeight();
+            assertTrue(relVO.contains(new Point2D.Double(0.1, 0.1)));   // center of cone
+            assertFalse(relVO.contains(new Point2D.Double(0.1, 0.2)));  // 'under' cone
+            assertFalse(relVO.contains(new Point2D.Double(0.2, 0.1)));  // 'above' cone
+        }
 
-            assertTrue(relVO.intersects(shipB.conflictRegion.getBounds2D()));
+        @Test
+        public void relativeVO_RelativeVOConeIsWideNearTargetShip() {
+            double time = 5;
 
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y()))); //Center
-            // Check that it contains points just inside the edge of the conflictRegion
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y() + 0.49))); //Top
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y() - 0.49))); //Bottom
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x() - 0.49, shipB.position.y()))); //Left
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x() + 0.49, shipB.position.y()))); //Right
-            //assertTrue(relVO.contains(new Rectangle2D.Double(boundX + 1, boundY + 1, width, height)));
-            //assertTrue(relVO.contains(new Rectangle2D.Double(boundX + 2, boundY + 2, width, height)));
-            //assertTrue(relVO.contains(new Rectangle2D.Double(boundX + 3, boundY + 3, width, height)));
-            //assertTrue(relVO.contains(new Rectangle2D.Double(boundX + 4, boundY + 4, width, height)));
+            Area relVO = VO.RelativeVO(shipA, shipB, time);
+
+            assertTrue(relVO.contains(new Point2D.Double(5, 5)));
+            assertFalse(relVO.contains(new Point2D.Double(4.4, 5)));
+            assertFalse(relVO.contains(new Point2D.Double(5, 4.4)));
         }
     }
 

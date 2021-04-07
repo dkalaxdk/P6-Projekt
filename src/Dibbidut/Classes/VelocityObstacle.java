@@ -30,16 +30,9 @@ public class VelocityObstacle implements IVelocityObstacle {
     }
 
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
-        // Might have to use Area, as it is possible to add shapes to it.
-        Vector2D relativeVel = relativeVelocity(object.velocity, obstacle.velocity);
-        // For each timestep
-        // Find the area of velocities that lead to collision
-        // Need the positions/center of the shapes to find the displacement
         Vector2D displacement = Displacement(object.position, obstacle.position);
 
         Area combinedRelativeVO = new Area();
-
-        Rectangle2D confBounds = obstacle.conflictRegion.getBounds2D();
 
         for(int i = 1; i <= timeframe; i++) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
@@ -53,7 +46,8 @@ public class VelocityObstacle implements IVelocityObstacle {
             Vector2D translationVec = Displacement(obstacle.position, centerCollision);
             AffineTransform translation = new AffineTransform();
             translation.translate(translationVec.x(), translationVec.y());
-            Area conflictArea = new Area(obstacle.conflictRegion).createTransformedArea(translation);
+            // Area scaledDomain = obstacle.domain.GetScaledDomain(i);
+            Area conflictArea = new Area(obstacle.domain.getDomainAsEllipse()).createTransformedArea(translation);
 
             combinedRelativeVO.add(conflictArea);
         }
