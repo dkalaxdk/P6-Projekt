@@ -37,7 +37,7 @@ public class ShipDomain implements IDomain {
             this.domainType = true;
         } else if(domainType.equals("Ellipse")) {
             this.domainType = false;
-        }
+        } else throw new IllegalArgumentException();
         this.shipLength = shipLength;
         this.shipWidth = shipWidth;
         this.ellipseDomain = new Ellipse2D.Double();
@@ -100,9 +100,11 @@ public class ShipDomain implements IDomain {
 
     public Shape getDomain() {
         if (domainType) {
-            return rotateDomain(this.Heading,pentagonDomainAsShape);
+            updatePentagonDomain();
+            return rotateDomain(this.Heading,pentagonDomain);
         }
-        return rotateDomain(this.Heading,ellipseDomainAsShape);
+        updateEllipseDomain();
+        return rotateDomain(this.Heading,ellipseDomain);
     }
     @Override
     public ShipDomain Update(float SOG, float Heading, float Lat, float Long) {
