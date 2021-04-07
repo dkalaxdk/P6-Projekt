@@ -20,6 +20,9 @@ public class Ship extends Obstacle {
     public float manoeuvrability;
     public Hashtable<String, String> warnings;
 
+    private AISData oldData;
+    private AISData currentData;
+
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position, new Vector2D(0,0));
 
@@ -44,20 +47,33 @@ public class Ship extends Obstacle {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         warnings = new Hashtable<>();
+        currentData = data;
 
-        CreateNewShip(data, ownShipLongitude);
+        CreateNewShip(ownShipLongitude);
     }
 
-    public void CreateNewShip(AISData data, double ownShipLongitude) {
-        IShipDataHandler handler = new AISToShipHandler(this, data, ownShipLongitude, this.warnings);
+    public void CreateNewShip(double ownShipLongitude) {
+        IShipDataHandler handler = new AISToShipHandler(this, this.currentData, ownShipLongitude, this.warnings);
 
         handler.Run();
 
         domain = new ShipDomain(length, width);
     }
 
-    public void Update(Ship updatedShip) {
-        IShipDataHandler handler = new UpdateShipHandler(this, updatedShip, this.warnings);
+//    public void Update(Ship updatedShip) {
+//        IShipDataHandler handler = new UpdateShipHandler(this, updatedShip, this.warnings);
+//
+//        handler.Run();
+//
+//        domain.Update(sog, cog, latitude, longitude);
+//    }
+
+    public void Update(AISData data) {
+
+        oldData = currentData;
+        currentData = data;
+
+        IShipDataHandler handler = new UpdateShipHandler(this, this.currentData, this.oldData, this.warnings);
 
         handler.Run();
 

@@ -8,7 +8,6 @@ import java.util.Hashtable;
 
 public class AISToShipHandler extends ShipHandler {
     private final double ownShipLongitude;
-    private final AISData data;
 
     private final int lengthPlaceHolder = 0;
     private final int widthPlaceHolder = 0;
@@ -17,9 +16,7 @@ public class AISToShipHandler extends ShipHandler {
     private final Vector2D velocityPlaceHolder = new Vector2D(0,0);
 
     public AISToShipHandler(Ship myShip, AISData data, double ownShipLongitude, Hashtable<String, String> warnings) {
-        super(myShip, null, warnings);
-
-        this.data = data;
+        super(myShip, data, null, warnings);
         this.ownShipLongitude = ownShipLongitude;
     }
 

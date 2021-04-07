@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;
 
@@ -9,12 +10,21 @@ public abstract class ShipHandler implements IShipDataHandler {
     public Hashtable<String, String> warnings;
 
     public Ship myShip;
-    public Ship updatedShip;
+//    public Ship updatedShip;
 
+    public AISData data;
+    public AISData oldData;
 
-    public ShipHandler(Ship myShip, Ship updatedShip, Hashtable<String, String> warnings) {
+//    public ShipHandler(Ship myShip, Ship updatedShip, Hashtable<String, String> warnings) {
+//        this.myShip = myShip;
+//        this.updatedShip = updatedShip;
+//        this.warnings = warnings;
+//    }
+
+    public ShipHandler(Ship myShip, AISData data, AISData oldData, Hashtable<String, String> warnings) {
         this.myShip = myShip;
-        this.updatedShip = updatedShip;
+        this.data = data;
+        this.oldData = oldData;
         this.warnings = warnings;
     }
 

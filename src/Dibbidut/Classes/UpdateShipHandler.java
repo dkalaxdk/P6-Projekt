@@ -1,17 +1,23 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;
 
 import java.util.Hashtable;
 
-public class UpdateShipHandler extends ShipHandler{
+public class UpdateShipHandler extends ShipHandler {
 
-    public UpdateShipHandler(Ship myShip, Ship updatedShip, Hashtable<String, String> warnings) {
-        super(myShip, updatedShip, warnings);
+//    public UpdateShipHandler(Ship myShip, Ship updatedShip, Hashtable<String, String> warnings) {
+//        super(myShip, updatedShip, warnings);
+//    }
+
+    public UpdateShipHandler(Ship myShip, AISData updatedData, AISData oldData, Hashtable<String, String> warnings) {
+        super(myShip, updatedData, oldData, warnings);
     }
 
     public int HandleMMSI() {
+
         if (myShip.mmsi != updatedShip.mmsi) {
             warnings.put("MMSI", "MMSI changed, keeping original MMSI");
         }

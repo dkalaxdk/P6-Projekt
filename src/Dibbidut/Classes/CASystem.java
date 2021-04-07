@@ -109,8 +109,8 @@ public class CASystem {
 
                 // If the ship is already in the list,
                 // update the ship in the list with the data from the potential ship.
-                if (ship.mmsi == potentialShip.mmsi) {
-                    ship.Update(potentialShip);
+                if (ship.mmsi == data.mmsi) {
+                    ship.Update(data);
                     found = true;
                 }
                 else {
