@@ -2,6 +2,7 @@ package Dibbidut.Classes.InputSimulation;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IDataInput;
+import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.lang.System;
@@ -28,6 +29,7 @@ public class FileParser implements IDataInput {
 
         for (AISData datapoint: dataList) {
             datapoint.AddDateTime();
+            datapoint.SetBooleans();
         }
 
         Collections.sort(dataList);
@@ -55,4 +57,5 @@ public class FileParser implements IDataInput {
         System.out.println("Length: " + data.length);
         System.out.println("-----------------------");
     }
+
 }
