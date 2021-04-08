@@ -34,7 +34,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Area combinedRelativeVO = new Area();
 
-        for(int i = 1; i <= timeframe; i++) {
+        for(double i = 1; i <= timeframe; i = i + 0.1) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
             //TODO Create a Velocity Obstacle that ensures that neither ships domain is violated
 
@@ -47,11 +47,26 @@ public class VelocityObstacle implements IVelocityObstacle {
             AffineTransform translation = new AffineTransform();
             translation.translate(translationVec.x(), translationVec.y());
             // Area scaledDomain = obstacle.domain.GetScaledDomain(i);
-            Area conflictArea = new Area(obstacle.domain.getDomainAsEllipse()).createTransformedArea(translation);
+            //Area conflictArea = new Area(obstacle.domain.getDomain()).createTransformedArea(translation);
+
+            Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)i));
+            Area conflictArea = scaledDomain.createTransformedArea(translation);
 
             combinedRelativeVO.add(conflictArea);
         }
 
+/*
+        Vector2D centerCollision = displacement;
+
+        // Calculate the translation that will place the conflictRegion at centerCollision
+        Vector2D translationVec = Displacement(obstacle.position, centerCollision);
+        AffineTransform translation = new AffineTransform();
+        translation.translate(translationVec.x(), translationVec.y());
+        // Area scaledDomain = obstacle.domain.GetScaledDomain(i);
+        Area conflictArea = new Area(obstacle.domain.getDomain()).createTransformedArea(translation);
+
+        combinedRelativeVO.add(conflictArea);
+*/
         return combinedRelativeVO;
     }
 

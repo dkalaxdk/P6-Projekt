@@ -22,23 +22,9 @@ public class GrahamScan implements ConvexHull<Point2D> {
             }
         }
 
-        // List of points with coordinates relative to p0
-        /*
-        ArrayList<Point2D> relativePoints = new ArrayList<>(points);
-        relativePoints.remove(p0);
-
-        for(Point2D point : relativePoints) {
-            point.setLocation(point.getX() - p0.getX(), point.getY() - p0.getY());
-        }
-        */
         ArrayList<Point2D> sortedPoints = new ArrayList<>(points);
         sortedPoints.remove(p0);
         Collections.sort(sortedPoints, new PointPolarAngleComparator());
-
-        Stack<Point2D> stack = new Stack<>();
-        stack.push(p0);
-        stack.push(sortedPoints.get(0));
-        stack.push(sortedPoints.get(1));
 
         ArrayList<Point2D> lookaheadStack = new ArrayList<>();
         lookaheadStack.add(p0);

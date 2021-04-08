@@ -1,11 +1,12 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Interfaces.IDomain;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
 
 public class Ship extends Obstacle {
-    public ShipDomain domain;
+    public IDomain domain;
     public int mmsi;
     public int length;
     public int width;

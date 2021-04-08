@@ -122,10 +122,10 @@ public class Display extends JPanel implements IDisplay {
 
     public Vector2D getCoordinatesToDrawDomainFrom(Ship ship) {
 
-        double x = ship.position.x() - (ship.domain.getWidth() / 2);
-        double y = ship.position.y() - (ship.domain.getHeight() / 2);
+        //double x = ship.position.x() - (ship.domain.getWidth() / 2);
+        //double y = ship.position.y() - (ship.domain.getHeight() / 2);
 
-        return new Vector2D(x,y);
+        return new Vector2D(0,0);
     }
 
     @Override
