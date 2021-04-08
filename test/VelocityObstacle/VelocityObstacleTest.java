@@ -22,8 +22,8 @@ public class VelocityObstacleTest {
         mockDomain(Vector2D position, double radius) {
             this.radius = radius;
             domain = new Ellipse2D.Double(
-                    position.x() - radius/2, // Get top left position from center
-                    position.y() - radius/2,
+                    position.x() - radius, // Get top left position from center
+                    position.y() - radius,
                     radius, radius
             );
         }
@@ -41,12 +41,29 @@ public class VelocityObstacleTest {
         @Override
         public Shape getScaledShipDomain(float scalar) {
             Ellipse2D.Double scaledEllipse = new Ellipse2D.Double();
-            scaledEllipse.x = domain.getBounds2D().getX();
-            scaledEllipse.y = domain.getBounds2D().getY();
+            if(scalar > 1) {
+                scaledEllipse.x = domain.getBounds2D().getX() + radius/scalar;
+                scaledEllipse.y = domain.getBounds2D().getY() + radius/scalar;
+            }
+            else {
+                scaledEllipse.x = domain.getBounds2D().getX();
+                scaledEllipse.y = domain.getBounds2D().getY();
+            }
+
             scaledEllipse.width = radius/scalar;
             scaledEllipse.height = radius/scalar;
 
             return scaledEllipse;
+        }
+
+        @Override
+        public double getHeight() {
+            return 0;
+        }
+
+        @Override
+        public double getWidth() {
+            return 0;
         }
     }
     @Nested
@@ -74,7 +91,6 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        @Disabled
         public void Calculate_ContainsOwnShipCurrentVelocityIfTheyCollideWithinTimeFrame() {
             double time = 5;
 
@@ -102,7 +118,6 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        @Disabled
         public void Calculate_ContainsVelocitiesThatCauseCollision() {
             double time = 10;
 
@@ -127,7 +142,6 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        @Disabled
         public void Calculate_DoesNotContainVelocitiesWhereOwnShipReachesTargetShipAfterItPasses() {
             double time = 10;
 
@@ -217,7 +231,6 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        @Disabled
         public void relativeVO_RelativeVOConeIsNarrowNearOwnShip() {
             double time = 5;
 
