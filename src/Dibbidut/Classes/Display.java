@@ -140,6 +140,7 @@ public class Display extends JPanel implements IDisplay {
         return new Line2D.Double(ship.centeredPosition.x(), ship.centeredPosition.y(), point.x(), point.y());
     }
 
+    // TODO: Fix me
     private Shape drawShipDomain(Ship ship) {
         Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
