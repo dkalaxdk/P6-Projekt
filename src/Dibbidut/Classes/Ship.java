@@ -39,26 +39,12 @@ public class Ship extends Obstacle {
         domain = new ShipDomain(length, width);
     }
 
-    public Ship(Vector2D position, int length, int width, int heading, double sog, double cog) {
-        super(position, new Vector2D(0, sog).rotate(Math.toRadians(cog)));
-
-        this.length = length;
-        this.width = width;
-        this.heading = heading;
-
-        domain = new ShipDomain(length, width);
-    }
-
     public Ship(AISData data, double ownShipLongitude) {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         warnings = new Hashtable<>();
         currentData = data;
 
-        CreateNewShip(ownShipLongitude);
-    }
-
-    public void CreateNewShip(double ownShipLongitude) {
         IShipDataHandler handler = new AISToShipHandler(this, currentData, ownShipLongitude, warnings);
 
         handler.Run();
@@ -66,6 +52,11 @@ public class Ship extends Obstacle {
         domain = new ShipDomain(length, width);
     }
 
+    /**
+     * Updates the given ship with new data
+     * @param data The new data that the ship will be updated with
+     * @param ownShipLongitude The longitude of own ship
+     */
     public void Update(AISData data, double ownShipLongitude) {
 
         oldData = currentData;

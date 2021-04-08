@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.security.cert.TrustAnchor;
 import java.util.Hashtable;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -256,6 +257,440 @@ public class UpdateShipHandlerTest {
 
             assertTrue(newData.lengthIsSet);
         }
+    }
+
+    @Nested
+    class HandleVelocity {
+
+        @Nested
+        class NewSOGSetCOGSet {
+            @Test
+            public void Old_SOGSet_COGSet_UseOnlyNew() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGSet_UseOnlyNew() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGSet_COGNotSet_UseOnlyNew() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGNotSet_UseOnlyNew() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == current);
+            }
+        }
+
+        @Nested
+        class NewSOGNotSetCOGSet {
+
+            @Test
+            public void Old_SOGSet_COGSet_Use_NewCOG_OldSOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == old && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGSet_Use_NewCOG_PlaceholderSOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGSet_COGNotSet_Use_NewCOG_OldSOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == old && ship.cog == current);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGNotSet_Use_NewCOG_PlaceholderSOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == current);
+            }
+
+        }
+
+        @Nested
+        class NewSOGSetCOGNotSet {
+            @Test
+            public void Old_SOGSet_COGSet_Use_NewSOG_OldCOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == old);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGSet_Use_NewSOG_OldCOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == current && ship.cog == old);
+            }
+
+            @Test
+            public void Old_SOGSet_COGNotSet_Use_NewSOG_PlaceholderCOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == current && ship.cog == handler.cogPlaceholder);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGNotSet_Use_NewSOG_PlaceholderCOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = true;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == current && ship.cog == handler.cogPlaceholder);
+            }
+        }
+
+        @Nested
+        class NewSOGNotSetCOGNotSet {
+            @Test
+            public void Old_SOGSet_COGSet_Use_OnlyOld() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertTrue(ship.sog == old && ship.cog == old);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGSet_Use_OldCOG_PlaceholderSOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = true;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == old);
+            }
+
+            @Test
+            public void Old_SOGSet_COGNotSet_Use_OldSOG_PlaceholderCOG() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = true;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == old && ship.cog == handler.cogPlaceholder);
+            }
+
+            @Test
+            public void Old_SOGNotSet_COGNotSet_UseOnlyPlaceholders() {
+                int old = 10000;
+                int current = 20000;
+
+                AISData oldData = new AISData();
+                oldData.SOG = old;
+                oldData.sogIsSet = false;
+
+                oldData.COG = old;
+                oldData.cogIsSet = false;
+
+                AISData newData = new AISData();
+                newData.SOG = current;
+                newData.sogIsSet = false;
+
+                newData.COG = current;
+                newData.cogIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == handler.cogPlaceholder);
+            }
+        }
+
+
     }
 
 }

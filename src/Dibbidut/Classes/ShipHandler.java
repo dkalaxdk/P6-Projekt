@@ -12,8 +12,8 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     public final int lengthPlaceHolder = 10;
     public final int widthPlaceHolder = 5;
-    public final double sogPlaceHolder = 1;
-    public final double cogPlaceholder = 0;
+    public final double sogPlaceHolder = 2;
+    public final double cogPlaceholder = 2;
     public final int headingPlaceholder = 0;
 
     private final Ship myShip;
@@ -116,7 +116,7 @@ public abstract class ShipHandler implements IShipDataHandler {
     }
 
     public Vector2D GetVelocityPlaceHolder() {
-        return new Vector2D(0,0);
+        return CalculateVelocity(sogPlaceHolder, cogPlaceholder);
     }
 
     public Vector2D GetPositionPlaceHolder() {

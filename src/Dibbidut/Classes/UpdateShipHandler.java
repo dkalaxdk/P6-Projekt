@@ -12,6 +12,10 @@ public class UpdateShipHandler extends ShipHandler {
         super(myShip, data, oldData, ownShipLongitude, warnings);
     }
 
+    public UpdateShipHandler() {
+        super(null, null, null, 0, null);
+    }
+
     public int HandleMMSI() {
 
 //        if (data.mmsiIsSet && (myShip.mmsi != data.mmsi)) {
@@ -87,58 +91,24 @@ public class UpdateShipHandler extends ShipHandler {
 
     public Vector2D HandleVelocity() {
 
-        // SOG and COG have already been handled at this point
+        // SOG and COG have already been handled at this point, so we don't need to retain values.
+        // We can assume that the old data has been saved in the new data, if the new data was lacking
 
-        // If the new data is complete garbage
-        if (!data.cogIsSet && !data.sogIsSet) {
-
-            // If the old data was fantastic, use that instead
-            if (oldData.cogIsSet && oldData.sogIsSet) {
-                warnings.put("Velocity", "Lost SOG and COG, using old data instead");
-                return CalculateVelocity(oldData.SOG, oldData.COG);
-            }
-            // If the old data was somewhat better, use that
-            else if (oldData.cogIsSet && !oldData.sogIsSet) {
-                warnings.put("Velocity", "Lost COG, using old data. SOG unknown, using " + sogPlaceHolder + " as a placeholder");
-                return CalculateVelocity(sogPlaceHolder, oldData.COG);
-            }
-            // If nothing works, return a placeholder
-            else {
-                warnings.put("Velocity", "Velocity unknown, using " + GetVelocityPlaceHolder() + " as a placeholder");
-                return GetVelocityPlaceHolder();
-            }
-        }
-        // If the new data has COG, but not SOG
-        else if (data.cogIsSet && !data.sogIsSet) {
-
-            // If the old data has SOG, use that
-            if (oldData.sogIsSet) {
-                warnings.put("Velocity", "Lost SOG, using old data instead");
-                return CalculateVelocity(oldData.SOG, data.COG);
-            }
-            // If it doesn't, use the placeholder
-            else {
-                warnings.put("Velocity", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
-                return CalculateVelocity(sogPlaceHolder, data.COG);
-            }
-        }
-        // If the new data has SOG, but not COG
-        else if (!data.cogIsSet && data.sogIsSet) {
-            // If the old data has COG, use that
-            if (oldData.cogIsSet) {
-                warnings.put("Velocity", "Lost COG, using old data instead");
-                return CalculateVelocity(data.SOG, oldData.COG);
-            }
-            // If it doesn't, use the placeholder
-            else {
-                warnings.put("Velocity", "COG unknown, using " + cogPlaceholder + " as a placeholder");
-                return CalculateVelocity(data.SOG, cogPlaceholder);
-            }
-        }
-        // If the new data is fine
-        else {
+        if (data.cogIsSet && data.sogIsSet) {
             warnings.put("Velocity", "");
             return CalculateVelocity(data.SOG, data.COG);
+        }
+        else if (!data.cogIsSet && data.sogIsSet) {
+            warnings.put("Velocity", "COG unknown, using " + cogPlaceholder + " as a placeholder");
+            return CalculateVelocity(data.SOG, cogPlaceholder);
+        }
+        else if (data.cogIsSet) {
+            warnings.put("Velocity", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
+            return CalculateVelocity(sogPlaceHolder, data.COG);
+        }
+        else {
+            warnings.put("Velocity", "Velocity unknown, using " + GetVelocityPlaceHolder() + " as a placeholder");
+            return GetVelocityPlaceHolder();
         }
 
         // TODO: Måske se på om den nye velocity falder helt uden for skibets path / Er helt urealistisk?
@@ -285,6 +255,7 @@ public class UpdateShipHandler extends ShipHandler {
             }
         }
         else {
+            warnings.put("SOG", "");
             return data.SOG;
         }
     }
@@ -298,11 +269,12 @@ public class UpdateShipHandler extends ShipHandler {
                 return data.COG;
             }
             else {
-                warnings.put("COG", "COG is unknown, using " + 0 + " as a placeholder");
-                return 0;
+                warnings.put("COG", "COG is unknown, using " + cogPlaceholder + " as a placeholder");
+                return cogPlaceholder;
             }
         }
         else {
+            warnings.put("COG", "");
             return data.COG;
         }
     }

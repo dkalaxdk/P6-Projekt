@@ -167,6 +167,10 @@ public class CASystem {
 
     }
 
+    /**
+     * Creates the window where the simulation is shows
+     * @param display The display that will be shown
+     */
     private void createAndShowGUI(Display display) {
         // Check if we are running on the correct thread (?)
         System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
