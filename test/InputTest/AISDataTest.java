@@ -36,9 +36,61 @@ public class AISDataTest {
     @DisplayName("AISData.SetBooleans")
     class SetBooleans{
         @Test
-        public void SetBooleans_(){
-// todo: test at booleans sættes korrekt
+        public void SetBooleans_AllBooleansSetToTrue(){
+            AISData data = new AISData();
+            data.rotString = "1";
+            data.sogString = "1";
+            data.cogString = "1";
+            data.headingString = "1";
+            data.distanceForeString = "1";
+            data.distanceAftString = "1";
+            data.distancePortString = "1";
+            data.distanceStarboardString = "1";
+            data.widthString = "1";
+            data.lengthString = "1";
+
+            data.SetBooleans();
+
+            assertTrue(data.rotIsSet &
+                                data.sogIsSet &
+                                data.cogIsSet &
+                                data.headingIsSet &
+                                data.distanceForeIsSet &
+                                data.distanceAftIsSet &
+                                data.distancePortIsSet &
+                                data.distanceStarboardIsSet &
+                                data.widthIsSet &
+                                data.lengthIsSet);
         }
+
+        @Test
+        public void SetBooleans_AllBooleansSetToFalse(){
+            AISData data = new AISData();
+            data.rotString = null;
+            data.sogString = null;
+            data.cogString = null;
+            data.headingString = null;
+            data.distanceForeString = null;
+            data.distanceAftString = null;
+            data.distancePortString = null;
+            data.distanceStarboardString = null;
+            data.widthString = null;
+            data.lengthString = null;
+
+            data.SetBooleans();
+
+            assertTrue(!data.rotIsSet &
+                    !data.sogIsSet &
+                    !data.cogIsSet &
+                    !data.headingIsSet &
+                    !data.distanceForeIsSet &
+                    !data.distanceAftIsSet &
+                    !data.distancePortIsSet &
+                    !data.distanceStarboardIsSet &
+                    !data.widthIsSet &
+                    !data.lengthIsSet);
+        }
+
     }
 
     @Nested

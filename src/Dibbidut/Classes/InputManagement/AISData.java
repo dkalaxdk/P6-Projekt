@@ -34,50 +34,50 @@ public class AISData implements Comparable {
     public String rotString;
     @CsvBindByName(column = "ROT")
     public double ROT;
-    boolean rotIsSet;
+    public boolean rotIsSet;
 
     @CsvBindByName(column = "SOG")
     public String sogString;
     @CsvBindByName(column = "SOG")
     public double SOG;
-    boolean sogIsSet;
+    public boolean sogIsSet;
 
     @CsvBindByName(column = "COG")
     public String cogString;
     @CsvBindByName(column = "COG")
     public double COG;
-    boolean cogIsSet;
+    public boolean cogIsSet;
 
     @CsvBindByName(column = "Heading")
     public String headingString;
     @CsvBindByName(column = "Heading")
     public int heading;
-    boolean headingIsSet;
+    public boolean headingIsSet;
 
 
     @CsvBindByName(column = "A")
     public String distanceForeString;
     @CsvBindByName(column = "A")
     public int distanceFore;
-    boolean distanceForeIsSet;
+    public boolean distanceForeIsSet;
 
     @CsvBindByName(column = "B")
     public String distanceAftString;
     @CsvBindByName(column = "B")
     public int distanceAft;
-    boolean distanceAftIsSet;
+    public boolean distanceAftIsSet;
 
     @CsvBindByName(column = "C")
     public String distancePortString;
     @CsvBindByName(column = "C")
     public int distancePort;
-    boolean distancePortIsSet;
+    public boolean distancePortIsSet;
 
     @CsvBindByName(column = "D")
     public String distanceStarboardString;
     @CsvBindByName(column = "D")
     public int distanceStarboard;
-    boolean distanceStarboardIsSet;
+    public boolean distanceStarboardIsSet;
 
     //public String IMO;
     //public String callsign;
@@ -89,13 +89,13 @@ public class AISData implements Comparable {
     public String widthString;
     @CsvBindByName(column = "Width")
     public int width;
-    boolean widthIsSet;
+    public boolean widthIsSet;
 
     @CsvBindByName(column = "Length")
     public String lengthString;
     @CsvBindByName(column = "Length")
     public int length;
-    boolean lengthIsSet;
+    public boolean lengthIsSet;
 
 
     //public String typeOfPositionFixingDevice;
@@ -103,9 +103,6 @@ public class AISData implements Comparable {
     //public String destination;
     //public String ETA;
     //public String dateSourceType;
-
-
-    // todo: fix implementerting af boooleans ovenfor (se https://stackoverflow.com/questions/21130213/how-to-read-csv-file-by-using-headers-using-java)
 
     public AISData(){ }
 
