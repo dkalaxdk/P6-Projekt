@@ -146,7 +146,7 @@ public class Display extends JPanel implements IDisplay {
     private Shape drawShipDomain(Ship ship) {
         Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
-        return ship.domain.getDomainAsEllipse();
+        return ship.domain.getDomain();
     }
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {

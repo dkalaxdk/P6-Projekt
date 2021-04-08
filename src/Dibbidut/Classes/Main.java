@@ -16,7 +16,12 @@ public class Main {
     }
 
     public static void DisplayTest() {
-        double zoom = 1;
+        Ship ownShip = new Ship(new Vector2D(500, 500), 100, 50, 0);
+        ownShip.heading = 0;
+        ownShip.length = 100;
+        ownShip.width = 50;
+        ownShip.domain = new ShipDomain(50, 6,"Ellipse");
+        ArrayList<Ship> s = new ArrayList<>();
 
         double ownShipLong = 9.87823;
 
@@ -40,16 +45,7 @@ public class Main {
         s.add(new Ship(ladyBird, 11, 3, 170));
         s.add(new Ship(missJane, 15, 5, 0));
 
-        int i = 0;
-        while (true) {
-//            ownShip.heading = (ownShip.heading + 1) % 360;
-//            ownShip.domain.Update(5, 0, (float) ownShip.position.x(), (float) ownShip.position.y());
-
-//            s.get(0).position = new Vector2D(100, (i % 60) + 30);
-//
-//            s.get(1).position = new Vector2D((i % 200) + 700, 300);
-//
-//            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
+            s.get(2).position = new Vector2D((-i % 100) + 300, 600);
 
             display.Update();
             try {
