@@ -9,7 +9,7 @@ import java.lang.System;
 
 public class Main {
     public static void main(String[] args) {
-        DisplayTest();
+//        DisplayTest();
 
         CASystem caSystem = new CASystem();
         caSystem.Start();

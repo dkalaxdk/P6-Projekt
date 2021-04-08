@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CASystem {
 
@@ -27,23 +29,29 @@ public class CASystem {
     public Display display;
     public IVelocityObstacle MVO;
 
+    private Lock queueLock;
+
     public double range;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
+        
         // Set own ship's MMSI here:
-        ownShipMMSI = 1;
+        ownShipMMSI = 219002175;
+
+        queueLock = new ReentrantLock(true);
+
+        String inputFile = "test/TestFiles/TestInput1.csv";
 
         try {
             // Set AIS data input file here:
-            inputSimulator = new InputSimulator(ownShipMMSI, osBuffer, tsBuffer,"");
+            inputSimulator = new InputSimulator(ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         shipsInRange = new ArrayList<>();
-        display = new Display(ownShip, shipsInRange);
 
         range = 10;
         ownShipMMSI = 1;
@@ -51,7 +59,6 @@ public class CASystem {
 
     public void Start() {
         inputSimulator.start();
-        SwingUtilities.invokeLater(() -> createAndShowGUI(display));
 
         boolean running = true;
 
@@ -65,8 +72,13 @@ public class CASystem {
 
                 start = System.nanoTime();
 
+                queueLock.lock();
+
                 UpdateOwnShip();
                 UpdateShipList();
+
+                queueLock.unlock();
+
                 UpdateVelocityObstacles();
                 UpdateDisplay();
 
@@ -76,7 +88,7 @@ public class CASystem {
             }
 
             try {
-                TimeUnit.MILLISECONDS.sleep(10000 - (duration));
+                TimeUnit.MILLISECONDS.sleep(1000 - (duration));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -181,6 +193,10 @@ public class CASystem {
 
     public void UpdateDisplay() {
 
+        if (display == null) {
+            display = new Display(ownShip, shipsInRange);
+            SwingUtilities.invokeLater(() -> createAndShowGUI(display));
+        }
     }
 
     /**
