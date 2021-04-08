@@ -43,7 +43,6 @@ public class CASystem {
         }
 
         shipsInRange = new ArrayList<>();
-        ownShip = new Ship(new Vector2D(0,0), 20, 10, 0);
         display = new Display(ownShip, shipsInRange);
 
         range = 10;
@@ -87,50 +86,64 @@ public class CASystem {
     }
 
     public void UpdateOwnShip() {
-//        if (ownShip == null) {
-//            ownShip = new Ship(data, data.longitude);
-//        }
-//        else {
-//            ownShip.Update(data, data.longitude);
-//        }
+        if (osBuffer.size() > 0) {
+
+            ArrayList<AISData> dataList = new ArrayList<>();
+
+            osBuffer.drainTo(dataList);
+
+            if (ownShip == null) {
+                AISData data = dataList.remove(0);
+                ownShip = new Ship(data, data.longitude);
+            }
+
+            for (AISData data : dataList) {
+                ownShip.Update(data, data.longitude);
+            }
+        }
     }
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        while (tsBuffer.size() > 0) {
-            AISData data = tsBuffer.poll();
+        if (tsBuffer.size() > 0) {
+            ArrayList<AISData> dataList = new ArrayList<>();
 
-            // If the potential ship is already out of range,
-            // check if there is a reference to the ship in the ship list, remove it if there is,
-            // and continue to next iteration
-            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
-            if (!isWithinRange(shipPosition, ownShip.position, range)) {
-                this.shipsInRange.remove(new Ship(data.mmsi));
-                continue;
-            }
+            tsBuffer.drainTo(dataList);
 
-            boolean found = false;
-            int i = 0;
+            for (AISData data : dataList) {
 
-            // See if the potential ship is already in the ship list.
-            while (!found && i < shipsInRange.size()) {
-                Ship ship = shipsInRange.get(i);
-
-                // If the ship is already in the list,
-                // update the ship in the list with the data from the potential ship.
-                if (ship.mmsi == data.mmsi) {
-                    ship.Update(data, ownShip.longitude);
-                    found = true;
+                // If the potential ship is already out of range,
+                // check if there is a reference to the ship in the ship list, remove it if there is,
+                // and continue to next iteration
+                Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
+                if (!isWithinRange(shipPosition, ownShip.position, range)) {
+                    this.shipsInRange.remove(new Ship(data.mmsi));
+                    continue;
                 }
-                else {
-                    i++;
-                }
-            }
 
-            // If it is not in the list, create a new ship, and add it to the list.
-            if (!found) {
-                shipsInRange.add(new Ship(data, ownShip.longitude));
+                boolean found = false;
+                int i = 0;
+
+                // See if the potential ship is already in the ship list.
+                while (!found && i < shipsInRange.size()) {
+                    Ship ship = shipsInRange.get(i);
+
+                    // If the ship is already in the list,
+                    // update the ship in the list with the data from the potential ship.
+                    if (ship.mmsi == data.mmsi) {
+                        ship.Update(data, ownShip.longitude);
+                        found = true;
+                    }
+                    else {
+                        i++;
+                    }
+                }
+
+                // If it is not in the list, create a new ship, and add it to the list.
+                if (!found) {
+                    shipsInRange.add(new Ship(data, ownShip.longitude));
+                }
             }
         }
 

@@ -17,6 +17,9 @@ public class UpdateShipListTest {
 
         CASystem system = new CASystem();
 
+        system.ownShip = new Ship(new Vector2D(0,0), 50, 10, 0);
+        system.ownShip.longitude = 0;
+
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.size());
@@ -26,6 +29,9 @@ public class UpdateShipListTest {
     public void emptyListNonEmptyBuffer_newElement_elementAddedToList() {
 
         CASystem system = new CASystem();
+
+        system.ownShip = new Ship(new Vector2D(0,0), 50, 10, 0);
+        system.ownShip.longitude = 0;
 
         AISData data = new AISData();
         data.mmsi = 0;
@@ -40,10 +46,16 @@ public class UpdateShipListTest {
     public void emptyListNonEmptyBuffer_twoNewElements_elementsAddedToList() {
 
         CASystem system = new CASystem();
+
+        system.ownShip = new Ship(new Vector2D(0,0), 50, 10, 0);
+        system.ownShip.longitude = 0;
+
         AISData data = new AISData();
         data.mmsi = 0;
+
         AISData data1 = new AISData();
         data1.mmsi = 1;
+
         system.tsBuffer.add(data);
         system.tsBuffer.add(data1);
 
@@ -57,6 +69,10 @@ public class UpdateShipListTest {
     public void nonemptyListNonEmptyBuffer_newElement_elementAddedToList() {
 
         CASystem system = new CASystem();
+
+        system.ownShip = new Ship(new Vector2D(0,0), 50, 10, 0);
+        system.ownShip.longitude = 0;
+
         AISData data1 = new AISData();
         data1.mmsi = 1;
 
@@ -74,12 +90,15 @@ public class UpdateShipListTest {
 
         CASystem system = new CASystem();
 
+        system.ownShip = new Ship(new Vector2D(0,0), 50, 10, 0);
+        system.ownShip.longitude = 0;
+
         AISData data1 = new AISData();
         data1.mmsi = 10;
         data1.length = 10;
         data1.lengthIsSet = true;
 
-        system.buffer.add(data1);
+        system.tsBuffer.add(data1);
 
         system.UpdateShipList();
 
@@ -88,7 +107,7 @@ public class UpdateShipListTest {
         data2.length = 20;
         data2.lengthIsSet = true;
 
-        system.buffer.add(data2);
+        system.tsBuffer.add(data2);
 
         system.UpdateShipList();
 
@@ -135,7 +154,7 @@ public class UpdateShipListTest {
         data2.longitude = 10;
         data2.latitude = 10;
 
-        system.buffer.add(data2);
+        system.tsBuffer.add(data2);
 
         system.UpdateShipList();
 
