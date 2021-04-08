@@ -29,20 +29,20 @@ public class CASystem {
     public Display display;
     public IVelocityObstacle MVO;
 
-    private Lock queueLock;
+    private final Lock queueLock;
 
     public double range;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
-        
+
         // Set own ship's MMSI here:
-        ownShipMMSI = 219002175;
+        ownShipMMSI = 211235221;
 
         queueLock = new ReentrantLock(true);
 
-        String inputFile = "test/TestFiles/TestInput1.csv";
+        String inputFile = "test/TestFiles/TestInput2.csv";
 
         try {
             // Set AIS data input file here:
@@ -53,8 +53,7 @@ public class CASystem {
 
         shipsInRange = new ArrayList<>();
 
-        range = 10;
-        ownShipMMSI = 1;
+        range = 100000;
     }
 
     public void Start() {
@@ -65,6 +64,8 @@ public class CASystem {
         long start;
         long end;
         long duration = 0;
+
+        //TODO: Alle input strenge er sat til null
 
         while(running) {
 
