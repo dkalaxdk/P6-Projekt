@@ -17,11 +17,6 @@ public class UpdateShipHandler extends ShipHandler {
     }
 
     public int HandleMMSI() {
-
-//        if (data.mmsiIsSet && (myShip.mmsi != data.mmsi)) {
-//            warnings.put("MMSI", "MMSI changed, keeping original MMSI");
-//        }
-
         return data.mmsi;
     }
 
@@ -92,7 +87,7 @@ public class UpdateShipHandler extends ShipHandler {
     public Vector2D HandleVelocity() {
 
         // SOG and COG have already been handled at this point, so we don't need to retain values.
-        // We can assume that the old data has been saved in the new data, if the new data was lacking
+        // We can assume that the new data was overridden by the old data, if the new data was lacking
 
         if (data.cogIsSet && data.sogIsSet) {
             warnings.put("Velocity", "");

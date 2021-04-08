@@ -689,8 +689,5 @@ public class UpdateShipHandlerTest {
                 assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == handler.cogPlaceholder);
             }
         }
-
-
     }
-
 }
