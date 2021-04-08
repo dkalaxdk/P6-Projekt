@@ -32,44 +32,108 @@ public class AISDataTest {
         }
     }
 
-    @Test
-    public void CompareTo_ResultsInCorrectSortingOfArrayList(){
+    @Nested
+    @DisplayName("AISData.SetBooleans")
+    class SetBooleans{
+        @Test
+        public void SetBooleans_AllBooleansSetToTrue(){
+            AISData data = new AISData();
+            data.rotString = "1";
+            data.sogString = "1";
+            data.cogString = "1";
+            data.headingString = "1";
+            data.distanceForeString = "1";
+            data.distanceAftString = "1";
+            data.distancePortString = "1";
+            data.distanceStarboardString = "1";
+            data.widthString = "1";
+            data.lengthString = "1";
 
-        // Arrange
-        AISData data1 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
-        data1.AddDateTime();
-        AISData data2 = new AISData("23/06/2017 12:34:57", 123, 123, 123, 123, 123);
-        data2.AddDateTime();
+            data.SetBooleans();
 
-        ArrayList<AISData> list = new ArrayList<>();
-        list.add(data1);
-        list.add(data2);
+            assertTrue(data.rotIsSet &&
+                                data.sogIsSet &&
+                                data.cogIsSet &&
+                                data.headingIsSet &&
+                                data.distanceForeIsSet &&
+                                data.distanceAftIsSet &&
+                                data.distancePortIsSet &&
+                                data.distanceStarboardIsSet &&
+                                data.widthIsSet &&
+                                data.lengthIsSet);
+        }
 
-        // Act
-        Collections.sort(list);
+        @Test
+        public void SetBooleans_AllBooleansSetToFalse(){
+            AISData data = new AISData();
+            data.rotString = null;
+            data.sogString = null;
+            data.cogString = null;
+            data.headingString = null;
+            data.distanceForeString = null;
+            data.distanceAftString = null;
+            data.distancePortString = null;
+            data.distanceStarboardString = null;
+            data.widthString = null;
+            data.lengthString = null;
 
-        // Assert
-        assertTrue(list.get(0).equals(data2) && list.get(1).equals(data1));
+            data.SetBooleans();
+
+            assertTrue(!data.rotIsSet &&
+                    !data.sogIsSet &&
+                    !data.cogIsSet &&
+                    !data.headingIsSet &&
+                    !data.distanceForeIsSet &&
+                    !data.distanceAftIsSet &&
+                    !data.distancePortIsSet &&
+                    !data.distanceStarboardIsSet &&
+                    !data.widthIsSet &&
+                    !data.lengthIsSet);
+        }
+
     }
 
-    @Test
-    public void CompareTo_ResultsInCorrectSortingOfArrayList_SameValue(){
+    @Nested
+    @DisplayName("AISData.CompareTo")
+    class CompareTo{
+        @Test
+        public void CompareTo_ResultsInCorrectSortingOfArrayList(){
 
-        // Arrange
-        AISData data1 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
-        data1.AddDateTime();
-        AISData data2 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
-        data2.AddDateTime();
+            // Arrange
+            AISData data1 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
+            data1.AddDateTime();
+            AISData data2 = new AISData("23/06/2017 12:34:57", 123, 123, 123, 123, 123);
+            data2.AddDateTime();
 
-        ArrayList<AISData> list = new ArrayList<>();
-        list.add(data1);
-        list.add(data2);
+            ArrayList<AISData> list = new ArrayList<>();
+            list.add(data1);
+            list.add(data2);
 
-        // Act
-        Collections.sort(list);
+            // Act
+            Collections.sort(list);
 
-        // Assert
-        assertTrue(list.get(0).equals(data1) && list.get(1).equals(data2));
+            // Assert
+            assertTrue(list.get(0).equals(data2) && list.get(1).equals(data1));
+        }
+
+        @Test
+        public void CompareTo_ResultsInCorrectSortingOfArrayList_SameValue(){
+
+            // Arrange
+            AISData data1 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
+            data1.AddDateTime();
+            AISData data2 = new AISData("23/06/2017 12:34:58", 123, 123, 123, 123, 123);
+            data2.AddDateTime();
+
+            ArrayList<AISData> list = new ArrayList<>();
+            list.add(data1);
+            list.add(data2);
+
+            // Act
+            Collections.sort(list);
+
+            // Assert
+            assertTrue(list.get(0).equals(data1) && list.get(1).equals(data2));
+        }
     }
-
 }

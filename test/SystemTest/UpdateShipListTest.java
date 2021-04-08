@@ -29,7 +29,7 @@ public class UpdateShipListTest {
 
         AISData data = new AISData();
         data.mmsi = 0;
-        system.buffer.add(data);
+        system.tsBuffer.add(data);
 
         system.UpdateShipList();
 
@@ -44,8 +44,8 @@ public class UpdateShipListTest {
         data.mmsi = 0;
         AISData data1 = new AISData();
         data1.mmsi = 1;
-        system.buffer.add(data);
-        system.buffer.add(data1);
+        system.tsBuffer.add(data);
+        system.tsBuffer.add(data1);
 
         system.UpdateShipList();
 
@@ -62,7 +62,7 @@ public class UpdateShipListTest {
 
         system.shipsInRange.add(new Ship(new Vector2D(0,0), 10, 5, 0));
 
-        system.buffer.add(data1);
+        system.tsBuffer.add(data1);
 
         system.UpdateShipList();
 
@@ -108,7 +108,7 @@ public class UpdateShipListTest {
         data.longitude = 10;
         data.latitude = 10;
 
-        system.buffer.add(data);
+        system.tsBuffer.add(data);
 
         system.UpdateShipList();
 
@@ -128,7 +128,7 @@ public class UpdateShipListTest {
         data1.longitude = 0;
         data1.latitude = 0;
 
-        system.buffer.add(data1);
+        system.tsBuffer.add(data1);
 
         AISData data2 = new AISData();
         data2.mmsi = 1;

@@ -3,6 +3,7 @@ package Dibbidut.Classes.InputManagement;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 
+import java.security.interfaces.DSAPublicKey;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,6 @@ public class AISData implements Comparable {
 
     @CsvBindByName(column = "Timestamp")
     public String timestampString;
-
     public LocalDateTime dateTime;
 
     //public String typeOfMobile;
@@ -31,28 +31,53 @@ public class AISData implements Comparable {
     //public String navigationalStatus;
 
     @CsvBindByName(column = "ROT")
+    public String rotString;
+    @CsvBindByName(column = "ROT")
     public double ROT;
+    public boolean rotIsSet;
 
     @CsvBindByName(column = "SOG")
+    public String sogString;
+    @CsvBindByName(column = "SOG")
     public double SOG;
+    public boolean sogIsSet;
 
     @CsvBindByName(column = "COG")
+    public String cogString;
+    @CsvBindByName(column = "COG")
     public double COG;
+    public boolean cogIsSet;
 
     @CsvBindByName(column = "Heading")
+    public String headingString;
+    @CsvBindByName(column = "Heading")
     public int heading;
+    public boolean headingIsSet;
+
 
     @CsvBindByName(column = "A")
+    public String distanceForeString;
+    @CsvBindByName(column = "A")
     public int distanceFore;
+    public boolean distanceForeIsSet;
 
     @CsvBindByName(column = "B")
+    public String distanceAftString;
+    @CsvBindByName(column = "B")
     public int distanceAft;
+    public boolean distanceAftIsSet;
 
     @CsvBindByName(column = "C")
+    public String distancePortString;
+    @CsvBindByName(column = "C")
     public int distancePort;
+    public boolean distancePortIsSet;
 
     @CsvBindByName(column = "D")
+    public String distanceStarboardString;
+    @CsvBindByName(column = "D")
     public int distanceStarboard;
+    public boolean distanceStarboardIsSet;
 
     //public String IMO;
     //public String callsign;
@@ -61,28 +86,23 @@ public class AISData implements Comparable {
     //public String cargoType;
 
     @CsvBindByName(column = "Width")
+    public String widthString;
+    @CsvBindByName(column = "Width")
     public int width;
+    public boolean widthIsSet;
 
     @CsvBindByName(column = "Length")
+    public String lengthString;
+    @CsvBindByName(column = "Length")
     public int length;
+    public boolean lengthIsSet;
+
 
     //public String typeOfPositionFixingDevice;
     //public String draught;
     //public String destination;
     //public String ETA;
     //public String dateSourceType;
-
-    public boolean mmsiIsSet;
-    public boolean headingIsSet;
-    public boolean lengthIsSet;
-    public boolean widthIsSet;
-    public boolean sogIsSet;
-    public boolean cogIsSet;
-    public boolean rotIsSet;
-    public boolean distanceForeIsSet;
-    public boolean distanceAftIsSet;
-    public boolean distancePortIsSet;
-    public boolean distanceStarboardIsSet;
 
     public AISData(){ }
 
@@ -100,6 +120,28 @@ public class AISData implements Comparable {
     public void AddDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         this.dateTime = LocalDateTime.parse(this.timestampString, formatter);
+    }
+
+    public void SetBooleans(){
+        rotIsSet = rotString != null;
+
+        sogIsSet = sogString != null;
+
+        cogIsSet = cogString != null;
+
+        headingIsSet = headingString != null;
+
+        distanceForeIsSet = distanceForeString != null;
+
+        distanceAftIsSet = distanceAftString != null;
+
+        distancePortIsSet = distancePortString != null;
+
+        distanceStarboardIsSet = distanceStarboardString != null;
+
+        widthIsSet = widthString != null;
+
+        lengthIsSet = lengthString != null;
     }
 
     @Override
