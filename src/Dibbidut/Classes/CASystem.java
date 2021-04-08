@@ -22,6 +22,7 @@ public class CASystem {
 
     public IOwnShip OS;
     public Ship ownShip;
+    public int ownShipMMSI;
 
     public Display display;
     public IVelocityObstacle MVO;
@@ -39,10 +40,10 @@ public class CASystem {
         }
 
         shipsInRange = new ArrayList<>();
-        ownShip = new Ship(new Vector2D(0,0), 20, 5, 0);
         display = new Display(ownShip, shipsInRange);
 
         range = 10;
+        ownShipMMSI = 1;
     }
 
     public void Start() {
@@ -61,6 +62,7 @@ public class CASystem {
 
                 start = System.nanoTime();
 
+                UpdateOwnShip();
                 UpdateShipList();
                 UpdateVelocityObstacles();
                 UpdateDisplay();
@@ -81,7 +83,12 @@ public class CASystem {
     }
 
     public void UpdateOwnShip() {
-
+//        if (ownShip == null) {
+//            ownShip = new Ship(data, data.longitude);
+//        }
+//        else {
+//            ownShip.Update(data, data.longitude);
+//        }
     }
 
     // Get new ships from buffer, and update exiting ones
@@ -90,13 +97,12 @@ public class CASystem {
         while (buffer.size() > 0) {
             AISData data = buffer.poll();
 
-            Ship potentialShip = new Ship(data, this.ownShip.longitude);
-
             // If the potential ship is already out of range,
             // check if there is a reference to the ship in the ship list, remove it if there is,
             // and continue to next iteration
-            if (!isWithinRange(potentialShip.position, this.ownShip.position, this.range)) {
-                this.shipsInRange.remove(potentialShip);
+            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
+            if (!isWithinRange(shipPosition, ownShip.position, range)) {
+                this.shipsInRange.remove(new Ship(data.mmsi));
                 continue;
             }
 
@@ -110,7 +116,7 @@ public class CASystem {
                 // If the ship is already in the list,
                 // update the ship in the list with the data from the potential ship.
                 if (ship.mmsi == data.mmsi) {
-                    ship.Update(data);
+                    ship.Update(data, ownShip.longitude);
                     found = true;
                 }
                 else {
@@ -120,7 +126,7 @@ public class CASystem {
 
             // If it is not in the list, create a new ship, and add it to the list.
             if (!found) {
-                shipsInRange.add(potentialShip);
+                shipsInRange.add(new Ship(data, ownShip.longitude));
             }
         }
 

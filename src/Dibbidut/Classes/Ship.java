@@ -23,6 +23,12 @@ public class Ship extends Obstacle {
     private AISData oldData;
     private AISData currentData;
 
+    public Ship(int mmsi) {
+        super(new Vector2D(0,0), new Vector2D(0,0));
+
+        this.mmsi = mmsi;
+    }
+
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position, new Vector2D(0,0));
 
@@ -53,27 +59,19 @@ public class Ship extends Obstacle {
     }
 
     public void CreateNewShip(double ownShipLongitude) {
-        IShipDataHandler handler = new AISToShipHandler(this, this.currentData, ownShipLongitude, this.warnings);
+        IShipDataHandler handler = new AISToShipHandler(this, currentData, ownShipLongitude, warnings);
 
         handler.Run();
 
         domain = new ShipDomain(length, width);
     }
 
-//    public void Update(Ship updatedShip) {
-//        IShipDataHandler handler = new UpdateShipHandler(this, updatedShip, this.warnings);
-//
-//        handler.Run();
-//
-//        domain.Update(sog, cog, latitude, longitude);
-//    }
-
-    public void Update(AISData data) {
+    public void Update(AISData data, double ownShipLongitude) {
 
         oldData = currentData;
         currentData = data;
 
-        IShipDataHandler handler = new UpdateShipHandler(this, this.currentData, this.oldData, this.warnings);
+        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
 
         handler.Run();
 
@@ -88,6 +86,9 @@ public class Ship extends Obstacle {
         else if (obj.getClass() == AISData.class) {
             return this.mmsi == ((AISData) obj).mmsi;
         }
+//        else if (obj.getClass() == Integer.class) {
+//            return this.mmsi == ((int) obj);
+//        }
         else {
             return super.equals(obj);
         }

@@ -148,6 +148,7 @@ public class Display extends JPanel implements IDisplay {
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {
 
+        // TODO: Implement me
         Vector2D position = getZoomedPosition(this.ownShip.centeredPosition, ship.centeredPosition, this.zoom);
 
         double x = ship.centeredPosition.x() - (((double) ship.width) / 2);
