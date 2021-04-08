@@ -5,9 +5,7 @@ import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
-import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
-import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -18,10 +16,13 @@ public class CASystem {
 
     public InputSimulator inputSimulator;
     public ArrayList<Ship> shipsInRange;
-    public BlockingQueue<AISData> buffer;
+    public BlockingQueue<AISData> tsBuffer;
+    public BlockingQueue<AISData> osBuffer;
+
 
     public IOwnShip OS;
     public Ship ownShip;
+    public int ownShipMMSI;
 
     public Display display;
     public IVelocityObstacle MVO;
@@ -30,10 +31,14 @@ public class CASystem {
 
 
     public CASystem() {
-        buffer = new LinkedBlockingQueue<>();
+        osBuffer = new LinkedBlockingQueue<>();
+        tsBuffer = new LinkedBlockingQueue<>();
+        // Set own ship's MMSI here:
+        ownShipMMSI = 1;
 
         try {
-            inputSimulator = new InputSimulator(buffer,"");
+            // Set AIS data input file here:
+            inputSimulator = new InputSimulator(ownShipMMSI, osBuffer, tsBuffer,"");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +62,7 @@ public class CASystem {
 
         while(running) {
 
-            if (buffer.size() > 0) {
+            if (tsBuffer.size() > 0) {
 
                 start = System.nanoTime();
 
@@ -87,8 +92,8 @@ public class CASystem {
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        while (buffer.size() > 0) {
-            AISData data = buffer.poll();
+        while (tsBuffer.size() > 0) {
+            AISData data = tsBuffer.poll();
 
             //TODO: Check if the ship is within range. If it isn't, discard
 

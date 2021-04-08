@@ -59,7 +59,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.size(), 1);
+            assertEquals(1, list.size());
         }
 
         @Test
@@ -68,7 +68,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.size(), 3);
+            assertEquals(3, list.size());
         }
 
         @Test
@@ -78,7 +78,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).timestampString, actualTimestampString);
+            assertEquals(actualTimestampString, list.get(0).timestampString);
 
         }
 
@@ -89,7 +89,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).dateTime, actualDateTime);
+            assertEquals(actualDateTime, list.get(0).dateTime);
         }
 
         @Test
@@ -99,7 +99,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).mmsi, actualMMSI);
+            assertEquals(actualMMSI, list.get(0).mmsi);
         }
 
         @Test
@@ -109,7 +109,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).latitude, actualLatitude);
+            assertEquals(actualLatitude, list.get(0).latitude);
         }
 
         @Test
@@ -119,7 +119,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).longitude, actualLongitude);
+            assertEquals(actualLongitude, list.get(0).longitude);
         }
 
         @Test
@@ -129,7 +129,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).width, actualWidth);
+            assertEquals(actualWidth, list.get(0).width);
         }
 
         @Test
@@ -139,7 +139,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).length, actualLength);
+            assertEquals(actualLength, list.get(0).length);
         }
 
         @Test
@@ -149,7 +149,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).SOG, actualSOG);
+            assertEquals(actualSOG, list.get(0).SOG);
         }
 
         @Test
@@ -159,7 +159,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).COG, actualCOG);
+            assertEquals(actualCOG, list.get(0).COG);
         }
 
         @Test
@@ -169,7 +169,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).heading, actualHeading);
+            assertEquals(actualHeading, list.get(0).heading);
         }
 
         @Test
@@ -179,7 +179,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).distanceFore, actualDistance);
+            assertEquals(actualDistance, list.get(0).distanceFore);
         }
 
         @Test
@@ -189,7 +189,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).distanceAft, actualDistance);
+            assertEquals(actualDistance, list.get(0).distanceAft);
         }
 
         @Test
@@ -199,7 +199,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).distancePort, actualDistance);
+            assertEquals(actualDistance, list.get(0).distancePort);
         }
 
         @Test
@@ -209,7 +209,7 @@ public class FileParserTest {
 
             ArrayList<AISData> list = parser.GetInputList();
 
-            assertEquals(list.get(0).distanceStarboard, actualDistance);
+            assertEquals(actualDistance, list.get(0).distanceStarboard);
         }
 
 
@@ -225,7 +225,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).mmsi, actualMMSI);
+                assertEquals(actualMMSI, list.get(0).mmsi);
             }
 
             @Test
@@ -235,7 +235,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).latitude, actualLatitude);
+                assertEquals(actualLatitude, list.get(0).latitude);
             }
 
             @Test
@@ -245,7 +245,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).longitude, actualLongitude);
+                assertEquals(actualLongitude, list.get(0).longitude);
             }
 
             @Test
@@ -255,7 +255,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).SOG, actualSOG);
+                assertEquals(actualSOG, list.get(0).SOG);
             }
 
             @Test
@@ -265,7 +265,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).COG, actualCOG);
+                assertEquals(actualCOG, list.get(0).COG);
             }
 
             @Test
@@ -275,7 +275,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).heading, actualHeading);
+                assertEquals(actualHeading, list.get(0).heading);
             }
 
 
@@ -286,7 +286,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).distanceFore, actualDistance);
+                assertEquals(actualDistance, list.get(0).distanceFore);
             }
 
             @Test
@@ -296,7 +296,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).distanceAft, actualDistance);
+                assertEquals(actualDistance, list.get(0).distanceAft);
             }
 
             @Test
@@ -306,7 +306,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).distancePort, actualDistance);
+                assertEquals(actualDistance, list.get(0).distancePort);
             }
 
             @Test
@@ -316,7 +316,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).distanceStarboard, actualDistance);
+                assertEquals(actualDistance, list.get(0).distanceStarboard);
             }
 
             @Test
@@ -326,7 +326,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).length, actualLength);
+                assertEquals(actualLength, list.get(0).length);
             }
 
             @Test
@@ -336,7 +336,7 @@ public class FileParserTest {
 
                 ArrayList<AISData> list = parser.GetInputList();
 
-                assertEquals(list.get(0).width, actualWidth);
+                assertEquals(actualWidth, list.get(0).width);
             }
         }
     }

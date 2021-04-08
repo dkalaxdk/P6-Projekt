@@ -51,15 +51,15 @@ public class AISDataTest {
 
             data.SetBooleans();
 
-            assertTrue(data.rotIsSet &
-                                data.sogIsSet &
-                                data.cogIsSet &
-                                data.headingIsSet &
-                                data.distanceForeIsSet &
-                                data.distanceAftIsSet &
-                                data.distancePortIsSet &
-                                data.distanceStarboardIsSet &
-                                data.widthIsSet &
+            assertTrue(data.rotIsSet &&
+                                data.sogIsSet &&
+                                data.cogIsSet &&
+                                data.headingIsSet &&
+                                data.distanceForeIsSet &&
+                                data.distanceAftIsSet &&
+                                data.distancePortIsSet &&
+                                data.distanceStarboardIsSet &&
+                                data.widthIsSet &&
                                 data.lengthIsSet);
         }
 
@@ -79,15 +79,15 @@ public class AISDataTest {
 
             data.SetBooleans();
 
-            assertTrue(!data.rotIsSet &
-                    !data.sogIsSet &
-                    !data.cogIsSet &
-                    !data.headingIsSet &
-                    !data.distanceForeIsSet &
-                    !data.distanceAftIsSet &
-                    !data.distancePortIsSet &
-                    !data.distanceStarboardIsSet &
-                    !data.widthIsSet &
+            assertTrue(!data.rotIsSet &&
+                    !data.sogIsSet &&
+                    !data.cogIsSet &&
+                    !data.headingIsSet &&
+                    !data.distanceForeIsSet &&
+                    !data.distanceAftIsSet &&
+                    !data.distancePortIsSet &&
+                    !data.distanceStarboardIsSet &&
+                    !data.widthIsSet &&
                     !data.lengthIsSet);
         }
 
