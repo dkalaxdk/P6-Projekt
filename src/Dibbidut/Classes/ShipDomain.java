@@ -24,9 +24,7 @@ public class ShipDomain implements IDomain {
     private double Lat;
     private double Long;
     private final Ellipse2D.Double ellipseDomain;
-    private Shape ellipseDomainAsShape;
     private Path2D.Double pentagonDomain;
-    private Shape pentagonDomainAsShape;
     private final DomainDimensions DomainDimensions;
     private boolean domainType;
     private float Heading;
