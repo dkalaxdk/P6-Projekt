@@ -1,5 +1,7 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Handlers.AISToShipHandler;
+import Dibbidut.Classes.Handlers.UpdateShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;

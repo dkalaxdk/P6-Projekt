@@ -1,13 +1,14 @@
+package HandlerTest;
+
 import Dibbidut.Classes.*;
+import Dibbidut.Classes.Handlers.ShipHandler;
+import Dibbidut.Classes.Handlers.UpdateShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IShipDataHandler;
-import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.security.cert.TrustAnchor;
 import java.util.Hashtable;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
 

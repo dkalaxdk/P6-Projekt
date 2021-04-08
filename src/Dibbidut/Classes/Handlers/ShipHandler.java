@@ -1,6 +1,7 @@
-package Dibbidut.Classes;
+package Dibbidut.Classes.Handlers;
 
 import Dibbidut.Classes.InputManagement.AISData;
+import Dibbidut.Classes.Ship;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;
 
@@ -40,9 +41,11 @@ public abstract class ShipHandler implements IShipDataHandler {
         myShip.longitude = HandleLongitude();
         myShip.latitude = HandleLatitude();
 
+        // Has to happen before HandleVelocity
         myShip.sog = HandleSOG();
         myShip.cog = HandleCOG();
 
+        // Has to happen after HandleSOG and HandleCOG
         myShip.velocity = HandleVelocity();
 
         myShip.position = HandlePosition();

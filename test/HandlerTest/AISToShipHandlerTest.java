@@ -1,6 +1,7 @@
-import Dibbidut.Classes.AISToShipHandler;
+package HandlerTest;
+
+import Dibbidut.Classes.Handlers.AISToShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.Mercator;
 import Dibbidut.Classes.Ship;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Nested;

@@ -1,7 +1,8 @@
-package Dibbidut.Classes;
+package Dibbidut.Classes.Handlers;
 
 import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Interfaces.IShipDataHandler;
+import Dibbidut.Classes.Mercator;
+import Dibbidut.Classes.Ship;
 import math.geom2d.Vector2D;
 
 import java.util.Hashtable;

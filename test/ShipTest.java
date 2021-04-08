@@ -1,14 +1,3 @@
-import Dibbidut.Classes.AISToShipHandler;
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.Mercator;
-import Dibbidut.Classes.Ship;
-import math.geom2d.Vector2D;
-import org.junit.jupiter.api.Test;
-
-import java.util.Hashtable;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 public class ShipTest {
 
 //    @Test

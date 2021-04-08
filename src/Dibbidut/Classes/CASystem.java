@@ -29,7 +29,6 @@ public class CASystem {
 
     public double range;
 
-
     public CASystem() {
         buffer = new LinkedBlockingQueue<>();
 
