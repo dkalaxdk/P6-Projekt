@@ -55,23 +55,7 @@ public class VelocityObstacle implements IVelocityObstacle {
             combinedRelativeVO.add(conflictArea);
         }
 
-/*
-        Vector2D centerCollision = displacement;
-
-        // Calculate the translation that will place the conflictRegion at centerCollision
-        Vector2D translationVec = Displacement(obstacle.position, centerCollision);
-        AffineTransform translation = new AffineTransform();
-        translation.translate(translationVec.x(), translationVec.y());
-        // Area scaledDomain = obstacle.domain.GetScaledDomain(i);
-        Area conflictArea = new Area(obstacle.domain.getDomain()).createTransformedArea(translation);
-
-        combinedRelativeVO.add(conflictArea);
-*/
         return combinedRelativeVO;
-    }
-
-    private Vector2D relativeVelocity(Vector2D a, Vector2D b) {
-        return new Vector2D(a.x() - b.x(), a.y() - b.y());
     }
 
     // This finds the velocity needed to place Point A at Point B
