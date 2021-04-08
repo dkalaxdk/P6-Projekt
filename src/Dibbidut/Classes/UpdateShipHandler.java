@@ -160,6 +160,10 @@ public class UpdateShipHandler extends ShipHandler {
         int length = data.length;
         int width = data.width;
 
+        if (starboard + port != width || fore + aft != length) {
+            warnings.put("TransceiverAccuracy", "Position of ship may be inaccurate due to miscalibrated AIS transceiver");
+        }
+
         Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
 
         warnings.put("TransceiverPosition", "");

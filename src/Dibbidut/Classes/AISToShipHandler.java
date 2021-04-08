@@ -113,8 +113,7 @@ public class AISToShipHandler extends ShipHandler {
                 return MovePositionToCenterForePort(myShipPosition, fore, port, length, width);
             }
         }
-
-        if (data.distanceAftIsSet) {
+        else if (data.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
                 return MovePositionToCenterAftStarboard(myShipPosition, aft, starboard, length, width);
             }

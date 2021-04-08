@@ -86,9 +86,6 @@ public class Ship extends Obstacle {
         else if (obj.getClass() == AISData.class) {
             return this.mmsi == ((AISData) obj).mmsi;
         }
-//        else if (obj.getClass() == Integer.class) {
-//            return this.mmsi == ((int) obj);
-//        }
         else {
             return super.equals(obj);
         }
