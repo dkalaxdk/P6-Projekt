@@ -22,7 +22,7 @@ public class Ship extends Obstacle {
         this.width = width;
         this.heading = heading;
 
-        domain = new ShipDomain(length, width);
+        domain = new ShipDomain(length, width, "Ellipse");
     }
 
     public Ship(Vector2D position, int length, int width, int heading, double sog, double cog) {
@@ -32,11 +32,11 @@ public class Ship extends Obstacle {
         this.width = width;
         this.heading = heading;
 
-        domain = new ShipDomain(length, width);
+        domain = new ShipDomain(length, width, "Ellipse");
     }
 
     public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
-        super(position);
+        super(position, velocity);
         this.velocity = velocity;
         this.conflictRegion = conflictRegion;
     }
