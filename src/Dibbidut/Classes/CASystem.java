@@ -40,6 +40,7 @@ public class CASystem {
         }
 
         shipsInRange = new ArrayList<>();
+        ownShip = new Ship(new Vector2D(0,0), 20, 10, 0);
         display = new Display(ownShip, shipsInRange);
 
         range = 10;
