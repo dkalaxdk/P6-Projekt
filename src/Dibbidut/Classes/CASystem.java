@@ -49,7 +49,7 @@ public class CASystem {
             }
 
             try {
-                wait(10000 - (duration));
+                TimeUnit.MILLISECONDS.sleep(10000 - duration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
