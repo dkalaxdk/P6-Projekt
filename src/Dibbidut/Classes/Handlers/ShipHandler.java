@@ -14,7 +14,7 @@ public abstract class ShipHandler implements IShipDataHandler {
     public final int lengthPlaceHolder = 10;
     public final int widthPlaceHolder = 5;
     public final double sogPlaceHolder = 2;
-    public double cogPlaceholder = 2;
+    public double cogPlaceholder = 0;
     public final int headingPlaceholder = 0;
 
     private final Ship myShip;

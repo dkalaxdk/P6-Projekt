@@ -21,8 +21,6 @@ public class CASystem {
     public BlockingQueue<AISData> tsBuffer;
     public BlockingQueue<AISData> osBuffer;
 
-
-    public IOwnShip OS;
     public Ship ownShip;
     public int ownShipMMSI;
 
@@ -64,8 +62,6 @@ public class CASystem {
         long start;
         long end;
         long duration = 0;
-
-        //TODO: Alle input strenge er sat til null
 
         while(running) {
 
