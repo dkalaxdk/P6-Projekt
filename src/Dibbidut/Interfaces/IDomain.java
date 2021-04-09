@@ -7,9 +7,9 @@ import java.awt.*;
 
 public interface IDomain {
 
-    ShipDomain Update(float SOG, float COG, float Lat, float Long);
+    ShipDomain Update(double SOG, double Heading, double Lat, double Long);
     Shape getDomain();
-    Shape getScaledShipDomain(float scalar);
+    Shape getScaledShipDomain(double scalar);
     double getHeight();
     double getWidth();
 

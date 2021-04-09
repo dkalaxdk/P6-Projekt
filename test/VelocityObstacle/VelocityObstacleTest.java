@@ -31,7 +31,7 @@ public class VelocityObstacleTest {
         }
         // Not needed for these tests
         @Override
-        public ShipDomain Update(float SOG, float COG, float Lat, float Long) {
+        public ShipDomain Update(double SOG, double Heading, double Lat, double Long) {
             return null;
         }
 
@@ -41,7 +41,7 @@ public class VelocityObstacleTest {
         }
 
         @Override
-        public Shape getScaledShipDomain(float scalar) {
+        public Shape getScaledShipDomain(double scalar) {
             Ellipse2D.Double scaledEllipse = new Ellipse2D.Double();
             //scaledEllipse.x = domain.getBounds2D().getX();
             //scaledEllipse.y = domain.getBounds2D().getY();

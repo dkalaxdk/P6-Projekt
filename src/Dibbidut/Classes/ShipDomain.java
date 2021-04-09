@@ -27,7 +27,7 @@ public class ShipDomain implements IDomain {
     private Path2D.Double pentagonDomain;
     private final DomainDimensions DomainDimensions;
     private boolean domainType;
-    private float Heading;
+    private double Heading;
 
 
     public ShipDomain(int shipLength, int shipWidth , String domainType ) {
@@ -105,7 +105,7 @@ public class ShipDomain implements IDomain {
         return rotateDomain(this.Heading,ellipseDomain);
     }
     @Override
-    public ShipDomain Update(float SOG, float Heading, float Lat, float Long) {
+    public ShipDomain Update(double SOG, double Heading, double Lat, double Long) {
         this.Heading = Heading;
         this.Lat = Lat;
         this.Long = Long;
@@ -128,7 +128,7 @@ public class ShipDomain implements IDomain {
         height = radiusAft + radiusFore;
     }
 
-    private void calculateDiameters(float SOG) {
+    private void calculateDiameters(double SOG) {
         advanceDiameter = Math.pow(10, 0.3591 * Math.log10(SOG) + 0.0952);
         tacticalDiameter = Math.pow(10, 0.5441 * Math.log10(SOG) - 0.0795);
     }
@@ -156,7 +156,7 @@ public class ShipDomain implements IDomain {
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }
-    private Ellipse2D.Double scaleEllipseDomain(float scalar) {
+    private Ellipse2D.Double scaleEllipseDomain(double scalar) {
         Ellipse2D.Double tempEllipse = new Ellipse2D.Double();
         // Updating the ellipseDomain
         tempEllipse.x = (Long - aftOffset);
@@ -184,7 +184,7 @@ public class ShipDomain implements IDomain {
         pentagonDomain.closePath();
     }
 
-    private Shape scalePentagonDomain(float scalar) {
+    private Shape scalePentagonDomain(double scalar) {
         Path2D.Double tempPath = new Path2D.Double();
 
         // P5
@@ -205,14 +205,14 @@ public class ShipDomain implements IDomain {
     }
 
 
-    private Shape rotateDomain(float heading, Shape inputShape) {
+    private Shape rotateDomain(double heading, Shape inputShape) {
         return AffineTransform.getRotateInstance(
                 Math.toRadians(heading),
                     Long, Lat)
                     .createTransformedShape(inputShape);
     }
 
-    public Shape getScaledShipDomain(float scalar) {
+    public Shape getScaledShipDomain(double scalar) {
         if (scalar == 0) scalar = 1;
         if (domainType) {
             return rotateDomain(Heading,scalePentagonDomain(scalar));
