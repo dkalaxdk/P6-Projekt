@@ -44,8 +44,11 @@ public class InputSimulator extends Thread{
     @Override
     public void run() throws NullPointerException{
 
+        // tag lock her
         RunSetUp();
+        // slip lock her
 
+        // todo: gør det muligt at ændre på hvor hurtigt tiden går
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         executorService.scheduleAtFixedRate(new Runnable() {
@@ -57,81 +60,40 @@ public class InputSimulator extends Thread{
         }, 0, 1, TimeUnit.SECONDS);
     }
 
+    // todo: lav tests af RunSetUp(), AddNextInputToTSList() og AddDataToBuffers()
     public void RunSetUp(){
         nextInput = GetNextInput();
 
-        AddDataBeforeOSToTSList();
-
-        currentTime = nextInput.dateTime;
-        osBuffer.add(nextInput);
-        nextInput = GetNextInput();
-
-        while(nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
-            tsList.add(nextInput);
-            nextInput = GetNextInput();
-        }
-
-        AddTSListToTSBuffer();
-    }
-
-    public void AddDataBeforeOSToTSList(){
-        while (nextInput != null && nextInput.mmsi != osMMSI){
-            tsList.add(nextInput);
-            nextInput = GetNextInput();
-        }
-    }
-
-    public void AddDataAfterOSToTSList(){
-        int i = 0;
-        while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
-            while (tsList.size() > i){
-                if (tsList.get(i).mmsi == nextInput.mmsi){
-                    
-                }
-                i++;
+        while(nextInput != null && (currentTime ==null || !nextInput.dateTime.isAfter(currentTime))){
+            if (nextInput.mmsi != osMMSI){
+                AddNextInputToTSList();
             }
-            tsList.add(nextInput);
+            else {
+                currentTime = nextInput.dateTime;
+                osBuffer.add(nextInput);
+            }
             nextInput = GetNextInput();
         }
+        tsBuffer.addAll(tsList);
+
     }
 
-    public void AddTSListToTSBuffer(){
+    public void AddNextInputToTSList(){
         int i = 0;
+
         while (tsList.size() > i){
-            tsBuffer.add(tsList.get(i));
-            i++;
+            if (nextInput.mmsi == tsList.get(i).mmsi)
+                tsList.remove(i);
+            tsList.add(nextInput);
         }
-        tsList.clear();
     }
 
     public void AddDataToBuffers(){
-        // set listEmpty boolean
+
     }
 
 
-    // todo: gør det muligt at ændre på hvor hurtigt tiden går
-    public boolean AddListToBuffer(){
-        SetCurrentTime();
 
-        while(nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
-            tsBuffer.add(nextInput);
-            nextInput = GetNextInput();
-        }
-        // todo: start simulation fra own ship (lad ikke programmet køre i tid før OS)
-        //  lav starup metode der henter ting fra listen indtil vi starter
-
-        boolean listIsEmpty = nextInput == null;
-        return !listIsEmpty;
-
-        // todo: lav og implementer own ship buffer
-    }
-
-    public void SetCurrentTime(){
-        if (currentTime == null)
-            currentTime = nextInput.dateTime;
-        else
-            currentTime = currentTime.plusSeconds(1);
-    }
 
     public AISData GetNextInput() {
         if (dataListIterator < dataList.size()){
