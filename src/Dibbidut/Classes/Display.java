@@ -1,31 +1,26 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IDisplay;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.polygon.MultiPolygon2D;
-import math.geom2d.polygon.Polygons2D;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
 
 
 public class Display extends JPanel implements IDisplay {
 
     private final ArrayList<Ship> ships;
     private final Ship ownShip;
+    private final Area MVO;
     private double zoom;
 
-    public Display(Ship ownShip, ArrayList<Ship> shipsInRange) {
+    public Display(Ship ownShip, ArrayList<Ship> shipsInRange, Area mvo) {
 
         ships = shipsInRange;
         this.ownShip = ownShip;
+        this.MVO = mvo;
         zoom = 2;
     }
 
@@ -64,8 +59,8 @@ public class Display extends JPanel implements IDisplay {
         g2.scale(1, -1);
 
         // Translate so that own ship is in the center
-        g2.translate(((displayWith / 2) - ownShip.position.x()),
-                ((displayHeight / 2) - ownShip.position.y()) - displayHeight
+        g2.translate(((displayWith / 2) - ownShip.centeredPosition.x()),
+                ((displayHeight / 2) - ownShip.centeredPosition.y()) - displayHeight
         );
 
         drawGUIElements(g2, ownShip, ships);
@@ -78,6 +73,7 @@ public class Display extends JPanel implements IDisplay {
 
         drawOwnShip(g2, ownShip);
         drawTargetShips(g2, ships);
+        drawVelocityObstacles(g2, MVO);
     }
 
     //TODO: Use me
@@ -89,16 +85,16 @@ public class Display extends JPanel implements IDisplay {
         g.setColor(Color.gray);
 
         // Horizontal
-        g.draw(new Line2D.Double(ownShip.position.x() - this.getWidth(),
-                ownShip.position.y(),
-                ownShip.position.x() + this.getWidth(),
-                ownShip.position.y()));
+        g.draw(new Line2D.Double(ownShip.centeredPosition.x() - this.getWidth(),
+                ownShip.centeredPosition.y(),
+                ownShip.centeredPosition.x() + this.getWidth(),
+                ownShip.centeredPosition.y()));
 
         // Vertical
-        g.draw(new Line2D.Double(ownShip.position.x(),
-                ownShip.position.y() - this.getHeight(),
-                ownShip.position.x(),
-                ownShip.position.y() + this.getHeight()));
+        g.draw(new Line2D.Double(ownShip.centeredPosition.x(),
+                ownShip.centeredPosition.y() - this.getHeight(),
+                ownShip.centeredPosition.x(),
+                ownShip.centeredPosition.y() + this.getHeight()));
     }
 
     private void drawOwnShip(Graphics2D g, Ship ship) {
@@ -127,39 +123,51 @@ public class Display extends JPanel implements IDisplay {
 
         return AffineTransform.getRotateInstance(
                 degreesToRadians(360 - ship.heading),
-                ship.position.x(),
-                ship.position.y())
+                ship.centeredPosition.x(),
+                ship.centeredPosition.y())
                 .createTransformedShape(shape);
     }
 
     private Shape drawHeading(Ship ship) {
         Vector2D heading = new Vector2D(0, (double) ship.length / 2);
         heading = heading.rotate(degreesToRadians(360 - ship.heading));
-        Vector2D point = ship.position.plus(heading);
+        Vector2D point = ship.centeredPosition.plus(heading);
 
-        return new Line2D.Double(ship.position.x(), ship.position.y(), point.x(), point.y());
+        return new Line2D.Double(ship.centeredPosition.x(), ship.centeredPosition.y(), point.x(), point.y());
     }
 
     private Shape drawShipDomain(Ship ship) {
         Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
-        return ship.domain.getDomainAsEllipse();
+        ship.domain.Update(ship.sog, ship.heading, p.x(), p.y());
+
+        Shape shape = ship.domain.getDomain();
+
+        // TODO: We might need to rotate the domain again
+
+        ship.domain.Update(ship.sog, ship.heading, ship.position.x(), ship.position.y());
+
+        return shape;
+    }
+
+    private void drawVelocityObstacles(Graphics2D g, Area mvo) {
+        g.draw(mvo);
     }
 
     public Vector2D getCoordinatesToDrawShipFrom(Ship ship) {
 
-        Vector2D position = getZoomedPosition(this.ownShip.position, ship.position, this.zoom);
+        Vector2D position = getZoomedPosition(this.ownShip.centeredPosition, ship.centeredPosition, this.zoom);
 
-        double x = ship.position.x() - (((double) ship.width) / 2);
-        double y = ship.position.y() - (((double) ship.length) / 2);
+        double x = ship.centeredPosition.x() - (((double) ship.width) / 2);
+        double y = ship.centeredPosition.y() - (((double) ship.length) / 2);
 
         return new Vector2D(x, y);
     }
 
     public Vector2D getCoordinatesToDrawDomainFrom(Ship ship) {
 
-        double x = ship.position.x() - (ship.domain.getWidth() / 2);
-        double y = ship.position.y() - (ship.domain.getHeight() / 2);
+        double x = ship.centeredPosition.x() - (ship.domain.getWidth() / 2);
+        double y = ship.centeredPosition.y() - (ship.domain.getHeight() / 2);
 
         return new Vector2D(x,y);
     }

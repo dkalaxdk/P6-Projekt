@@ -11,7 +11,7 @@ public class Route implements IRoute {
     }
 
     public Velocity Calculate(VelocityObstacle obstacles, Ship ownShip) {
-        return new Velocity();
+        return new Velocity(0, 0);
     }
 
 }
