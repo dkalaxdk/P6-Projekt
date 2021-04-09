@@ -40,7 +40,7 @@ public class InputSimulatorTest {
 
         @Test
         public void run_StopsAtCorrectTime(){
-            int osMMSI = 1;
+            int osMMSI = 211235220;
             BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOneElement);
@@ -72,6 +72,23 @@ public class InputSimulatorTest {
 
             assertEquals(null, simulator.nextInput);
         }
+
+        @Test
+        public void run_AddsCorrectNumberOfItemsToTsBuffer() {
+            int osMMSI = 265785410;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
+
+            simulator.run();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            assertEquals(11, tsBuffer.size());
+        }
     }
 
     @Nested
@@ -90,7 +107,7 @@ public class InputSimulatorTest {
         }
 
         @Test
-        public void RunSetUp_AddsDataToTSList(){
+        public void RunSetUp_AddsDataToTSBuffer(){
             int osMMSI = 219007034;
             BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
@@ -100,18 +117,84 @@ public class InputSimulatorTest {
 
             assertEquals(10, tsBuffer.size());
         }
+
+        @Test
+        public void RunSetUp_ResetsTsList(){
+            int osMMSI = 219007034;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
+
+            simulator.RunSetUp();
+
+            assertEquals(0, simulator.tsList.size());
+        }
     }
 
     @Nested
     @DisplayName("InputSimulator.AddNextInputToTSList")
     class AddNextInputToTSList{
+        @Test
+        public void AddNextInputToTSList_AddsCorrectNumberOfItemsToList(){
+            int osMMSI = 219007034;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
 
+            simulator.nextInput = simulator.GetNextInput();
+            while (simulator.nextInput != null) {
+                simulator.AddNextInputToTSList();
+                simulator.nextInput = simulator.GetNextInput();
+            }
+
+            assertEquals(12, simulator.tsList.size());
+        }
     }
 
     @Nested
     @DisplayName("InputSimulator.AddDataToBuffers")
     class AddDataToBuffers{
+        @Test
+        public void AddDataToBuffers_AddsCorrectNumberOfItemsToTSBuffer(){
+            int osMMSI = 219002624;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputThreeElementsSameTime);
+            simulator.nextInput = simulator.GetNextInput();
+            simulator.currentTime = simulator.nextInput.dateTime;
 
+            simulator.AddDataToBuffers();
+
+            assertEquals(2, tsBuffer.size());
+        }
+
+        @Test
+        public void AddDataToBuffers_AddsCorrectNumberOfItemsToOSBuffer(){
+            int osMMSI = 219002624;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputThreeElementsSameTime);
+            simulator.nextInput = simulator.GetNextInput();
+            simulator.currentTime = simulator.nextInput.dateTime;
+
+            simulator.AddDataToBuffers();
+
+            assertEquals(1, osBuffer.size());
+        }
+
+        @Test
+        public void AddDataToBuffers_ResetsTSList(){
+            int osMMSI = 219002624;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputThreeElementsSameTime);
+            simulator.nextInput = simulator.GetNextInput();
+            simulator.currentTime = simulator.nextInput.dateTime;
+
+            simulator.AddDataToBuffers();
+
+            assertEquals(0, simulator.tsList.size());
+        }
     }
 
     @Nested
