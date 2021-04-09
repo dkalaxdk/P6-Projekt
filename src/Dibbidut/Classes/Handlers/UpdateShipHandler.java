@@ -245,6 +245,7 @@ public class UpdateShipHandler extends ShipHandler {
                 data.sogIsSet = true;
                 return data.SOG;
             }
+            //TODO: Calculate SOG based on previous position
             else {
                 warnings.put("SOG", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
                 return sogPlaceHolder;
@@ -263,6 +264,17 @@ public class UpdateShipHandler extends ShipHandler {
                 data.COG = oldData.COG;
                 data.cogIsSet = true;
                 return data.COG;
+            }
+            else if (data.headingIsSet) {
+                warnings.put("COG", "COG unknown, using heading instead");
+                cogPlaceholder = data.heading;
+                return data.heading;
+            }
+            else if (oldData.headingIsSet) {
+                warnings.put("COG", "Lost COG and heading, using old data heading");
+                cogPlaceholder = oldData.heading;
+                return oldData.heading;
+
             }
             else {
                 warnings.put("COG", "COG is unknown, using " + cogPlaceholder + " as a placeholder");

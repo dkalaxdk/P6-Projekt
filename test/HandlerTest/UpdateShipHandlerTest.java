@@ -264,7 +264,7 @@ public class UpdateShipHandlerTest {
     class HandleVelocity {
 
         @Nested
-        class NewSOGSetCOGSet {
+        class New_SOGSet_COGSet {
             @Test
             public void Old_SOGSet_COGSet_UseOnlyNew() {
                 int old = 10000;
@@ -367,7 +367,7 @@ public class UpdateShipHandlerTest {
         }
 
         @Nested
-        class NewSOGNotSetCOGSet {
+        class New_SOGNotSet_COGSet {
 
             @Test
             public void Old_SOGSet_COGSet_Use_NewCOG_OldSOG() {
@@ -476,7 +476,7 @@ public class UpdateShipHandlerTest {
         }
 
         @Nested
-        class NewSOGSetCOGNotSet {
+        class New_SOGSet_COGNotSet {
             @Test
             public void Old_SOGSet_COGSet_Use_NewSOG_OldCOG() {
                 int old = 10000;
@@ -583,7 +583,7 @@ public class UpdateShipHandlerTest {
         }
 
         @Nested
-        class NewSOGNotSetCOGNotSet {
+        class New_SOGNotSet_COGNotSet {
             @Test
             public void Old_SOGSet_COGSet_Use_OnlyOld() {
                 int old = 10000;
@@ -688,6 +688,469 @@ public class UpdateShipHandlerTest {
                 ShipHandler handler = new UpdateShipHandler();
 
                 assertTrue(ship.sog == handler.sogPlaceHolder && ship.cog == handler.cogPlaceholder);
+            }
+        }
+
+        @Nested
+        class New_COGSet_HeadingSet {
+
+            @Test
+            public void Old_COGSet_HeadingSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGSet_HeadingNotSetSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingNotSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+        }
+
+        @Nested
+        class New_COGNotSet_HeadingSet {
+            @Test
+            public void Old_COGSet_HeadingSet_UseOldCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(oldCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingSet_UseNewHeading() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentHeading, ship.cog);
+            }
+
+            @Test
+            public void Old_COGSet_HeadingNotSetSet_UseOldCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(oldCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingNotSet_UseNewHeading() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = true;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentHeading, ship.cog);
+            }
+        }
+
+        @Nested
+        class New_COGSet_HeadingNotSet {
+            @Test
+            public void Old_COGSet_HeadingSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGSet_HeadingNotSetSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingNotSet_UseNewCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = true;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(currentCOG, ship.cog);
+            }
+        }
+
+        @Nested
+        class New_COGNotSet_HeadingNotSet {
+            @Test
+            public void Old_COGSet_HeadingSet_UseOldCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(oldCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingSet_UseOldHeading() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = true;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(oldHeading, ship.cog);
+            }
+
+            @Test
+            public void Old_COGSet_HeadingNotSetSet_UseOldCOG() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = true;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                assertEquals(oldCOG, ship.cog);
+            }
+
+            @Test
+            public void Old_COGNotSet_HeadingNotSet() {
+                int oldCOG = 10000;
+                int currentCOG = 20000;
+
+                int oldHeading = 10;
+                int currentHeading = 20;
+
+                AISData oldData = new AISData();
+                oldData.COG = oldCOG;
+                oldData.cogIsSet = false;
+
+                oldData.heading = oldHeading;
+                oldData.headingIsSet = false;
+
+                AISData newData = new AISData();
+                newData.COG = currentCOG;
+                newData.cogIsSet = false;
+
+                newData.heading = currentHeading;
+                newData.headingIsSet = false;
+
+                Ship ship = new Ship(oldData, 0);
+                ship.Update(newData, 0);
+
+                ShipHandler handler = new UpdateShipHandler();
+
+                assertEquals(handler.cogPlaceholder, ship.cog);
             }
         }
     }

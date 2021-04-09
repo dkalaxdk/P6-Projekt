@@ -119,7 +119,7 @@ public class CASystem {
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (tsBuffer.size() > 0) {
+        if (ownShip != null) {
             ArrayList<AISData> dataList = new ArrayList<>();
 
             tsBuffer.drainTo(dataList);
@@ -198,6 +198,8 @@ public class CASystem {
             display = new Display(ownShip, shipsInRange);
             SwingUtilities.invokeLater(() -> createAndShowGUI(display));
         }
+
+        display.Update();
     }
 
     /**

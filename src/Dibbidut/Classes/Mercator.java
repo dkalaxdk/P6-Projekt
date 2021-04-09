@@ -12,7 +12,7 @@ public class Mercator {
         double radReference = Math.toRadians(ownShipLongitude);
 
         double x = earthRadius * (radLongitude - radReference);
-        double y = Mercator.earthRadius * Math.log(Math.tan((Math.PI / 4) + (radLatitude / 2)));
+        double y = earthRadius * Math.log(Math.tan((Math.PI / 4) + (radLatitude / 2)));
 
         return new Vector2D(x, y);
     }

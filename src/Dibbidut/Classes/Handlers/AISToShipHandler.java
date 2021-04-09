@@ -158,6 +158,12 @@ public class AISToShipHandler extends ShipHandler {
 
     public double HandleCOG() {
         if (!data.cogIsSet) {
+            if (data.headingIsSet) {
+                warnings.put("COG", "COG is unknown, using heading as a placeholder");
+                data.COG = data.heading;
+                return data.COG;
+            }
+
             warnings.put("COG", "COG is unknown, using 0 as a placeholder");
             return 0;
         }
