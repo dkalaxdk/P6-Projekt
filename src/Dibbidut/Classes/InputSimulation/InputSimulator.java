@@ -41,7 +41,9 @@ public class InputSimulator extends Thread{
     @Override
     public void run() throws NullPointerException{
 
-        // tag lock her
+        // todo: lav lock stuff
+
+        // tag lock her måske
         RunSetUp();
         // slip lock her
 
@@ -52,7 +54,9 @@ public class InputSimulator extends Thread{
             public void run() {
                 if (nextInput != null){
                     currentTime = currentTime.plusSeconds(1);
+                    // lock her måske
                     AddDataToBuffers();
+                    // og her
                 }
                 else
                     executorService.shutdown();
