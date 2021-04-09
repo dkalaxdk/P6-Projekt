@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,9 +26,10 @@ public class InputSimulatorTest {
 
 
     private InputSimulator createInputSimulator(int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) {
+        Lock bufferLock = new ReentrantLock(true);
         InputSimulator simulator = null;
         try {
-            simulator = new InputSimulator(osMMSI, osBuffer, tsBuffer, inputFile);
+            simulator = new InputSimulator(bufferLock, osMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -47,7 +47,7 @@ public class CASystem {
 
         try {
             // Set AIS data input file here:
-            inputSimulator = new InputSimulator(ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            inputSimulator = new InputSimulator(bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
