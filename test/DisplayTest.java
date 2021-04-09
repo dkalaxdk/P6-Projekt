@@ -11,7 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DisplayTest {
 
     private Ship createStandardShip() {
-        return new Ship(new Vector2D(0,0), 100, 50, 0);
+        Ship ship = new Ship(new Vector2D(0,0), 100, 50, 0);
+        ship.centeredPosition = new Vector2D(0,0);
+        return ship;
     }
 
 
@@ -87,10 +89,8 @@ public class DisplayTest {
         int shipWidth = 3;
         int shipHeading = 0;
 
-        Ship ship = new Ship(shipPosition, 100, 50, 0);
-        ship.length = shipLength;
-        ship.width = shipWidth;
-        ship.heading = shipHeading;
+        Ship ship = new Ship(shipPosition, shipLength, shipWidth, shipHeading);
+        ship.centeredPosition = shipPosition;
 
         double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
         double expectedY = shipPosition.y() - (((double) shipLength) / 2);
@@ -115,10 +115,8 @@ public class DisplayTest {
         int shipWidth = 3;
         int shipHeading = 45;
 
-        Ship ship = new Ship(shipPosition, 100, 50, 0);
-        ship.length = shipLength;
-        ship.width = shipWidth;
-        ship.heading = shipHeading;
+        Ship ship = new Ship(shipPosition, shipLength, shipWidth, shipHeading);
+        ship.centeredPosition = shipPosition;
 
         double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
         double expectedY = shipPosition.y() - (((double) shipLength) / 2);

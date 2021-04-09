@@ -1,19 +1,39 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Handlers.AISToShipHandler;
+import Dibbidut.Classes.Handlers.UpdateShipHandler;
+import Dibbidut.Classes.InputManagement.AISData;
+import Dibbidut.Interfaces.IShipDataHandler;
 import Dibbidut.Interfaces.IDomain;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
+import java.util.Hashtable;
 
 public class Ship extends Obstacle {
     public IDomain domain;
     public int mmsi;
     public int length;
     public int width;
+    public Vector2D centeredPosition;
     public int heading;
+    public double longitude;
+    public double latitude;
+    public double cog;
+    public double sog;
     public float manoeuvrability;
     public Shape conflictRegion;
     public Vector2D velocity;
+    public Hashtable<String, String> warnings;
+
+    private AISData oldData;
+    private AISData currentData;
+
+    public Ship(int mmsi) {
+        super(new Vector2D(0,0), new Vector2D(0,0));
+
+        this.mmsi = mmsi;
+    }
 
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position, new Vector2D(0,0));
@@ -25,14 +45,47 @@ public class Ship extends Obstacle {
         domain = new ShipDomain(length, width, "Ellipse");
     }
 
-    public Ship(Vector2D position, int length, int width, int heading, double sog, double cog) {
-        super(position, new Vector2D(0, sog).rotate(cog * (Math.PI / 180)));
+    public Ship(AISData data, double ownShipLongitude) {
+        super(new Vector2D(0,0), new Vector2D(0,0));
 
-        this.length = length;
-        this.width = width;
-        this.heading = heading;
+        warnings = new Hashtable<>();
+        currentData = data;
+
+        IShipDataHandler handler = new AISToShipHandler(this, currentData, ownShipLongitude, warnings);
+
+        handler.Run();
 
         domain = new ShipDomain(length, width, "Ellipse");
+    }
+
+    /**
+     * Updates the given ship with new data
+     * @param data The new data that the ship will be updated with
+     * @param ownShipLongitude The longitude of own ship
+     */
+    public void Update(AISData data, double ownShipLongitude) {
+
+        oldData = currentData;
+        currentData = data;
+
+        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
+
+        handler.Run();
+
+        domain.Update(sog, cog, latitude, longitude);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == Ship.class) {
+            return this.mmsi == ((Ship) obj).mmsi;
+        }
+        else if (obj.getClass() == AISData.class) {
+            return this.mmsi == ((AISData) obj).mmsi;
+        }
+        else {
+            return super.equals(obj);
+        }
     }
 
     public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
