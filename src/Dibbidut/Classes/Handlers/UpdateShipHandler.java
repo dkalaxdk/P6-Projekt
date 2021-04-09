@@ -287,6 +287,7 @@ public class UpdateShipHandler extends ShipHandler {
         }
     }
 
+    //TODO: Handle 91 and 181
     public double HandleLongitude() {
         // TODO: Tjek om det her er helt skørt
         return data.longitude;

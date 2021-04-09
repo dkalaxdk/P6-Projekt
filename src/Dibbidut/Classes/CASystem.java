@@ -39,11 +39,12 @@ public class CASystem {
         tsBuffer = new LinkedBlockingQueue<>();
 
         // Set own ship's MMSI here:
-        ownShipMMSI = 211235221;
+        ownShipMMSI = 219000733;
 
         bufferLock = new ReentrantLock(true);
 
-        String inputFile = "test/TestFiles/TestInput2.csv";
+        // TODO: Does not handle the big files
+        String inputFile = "test/TestFiles/TestInput1.csv";
 
         try {
             // Set AIS data input file here:
@@ -77,6 +78,9 @@ public class CASystem {
 
                 UpdateOwnShip();
                 UpdateShipList();
+
+
+
                 UpdateVelocityObstacles();
                 UpdateDisplay();
 

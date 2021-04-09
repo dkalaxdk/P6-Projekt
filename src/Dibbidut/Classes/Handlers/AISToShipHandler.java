@@ -171,6 +171,7 @@ public class AISToShipHandler extends ShipHandler {
         return data.COG;
     }
 
+    //TODO: Handle 91 and 181
     public double HandleLongitude() {
         if (data.longitude != 0) {
             return data.longitude;

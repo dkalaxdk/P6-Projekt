@@ -139,13 +139,13 @@ public class Display extends JPanel implements IDisplay {
     private Shape drawShipDomain(Ship ship) {
         Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
-        ship.domain.Update(ship.sog, ship.heading, p.x(), p.y());
+        ship.domain.Update(ship.sog, ship.heading, p.y(), p.x());
 
         Shape shape = ship.domain.getDomain();
 
         // TODO: We might need to rotate the domain again
 
-        ship.domain.Update(ship.sog, ship.heading, ship.position.x(), ship.position.y());
+        ship.domain.Update(ship.sog, ship.heading, ship.position.y(), ship.position.x());
 
         return shape;
     }
