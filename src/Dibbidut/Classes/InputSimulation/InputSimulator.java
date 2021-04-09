@@ -9,6 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 
 public class InputSimulator extends Thread{
 
@@ -24,7 +25,11 @@ public class InputSimulator extends Thread{
     public LocalDateTime currentTime;
     public AISData nextInput;
 
-    public InputSimulator(int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+    Lock bufferLock;
+
+    public InputSimulator(Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+        this.bufferLock = bufferLock;
+
         this.osMMSI = osMMSI;
         this.osBuffer = osBuffer;
         this.tsBuffer = tsBuffer;
@@ -40,10 +45,8 @@ public class InputSimulator extends Thread{
     // todo: lav evt flere tests til run()
     @Override
     public void run() throws NullPointerException{
-
-        // tag lock her
+        
         RunSetUp();
-        // slip lock her
 
         // todo: gør det muligt at ændre på hvor hurtigt tiden går
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
@@ -62,6 +65,7 @@ public class InputSimulator extends Thread{
 
     // todo: lav tests af RunSetUp() (hvad hvis os ikke er i input?) og AddDataToBuffers()
     public void RunSetUp(){
+        AISData os = null;
         nextInput = GetNextInput();
 
         while(nextInput != null && (currentTime == null || !nextInput.dateTime.isAfter(currentTime))){
@@ -70,11 +74,19 @@ public class InputSimulator extends Thread{
             }
             else {
                 currentTime = nextInput.dateTime;
-                osBuffer.add(nextInput);
+                os = nextInput;
             }
             nextInput = GetNextInput();
         }
+
+        bufferLock.lock();
+
+        if (os != null)
+            osBuffer.add(os);
         tsBuffer.addAll(tsList);
+
+        bufferLock.unlock();
+
         tsList.clear();
     }
 
@@ -93,14 +105,23 @@ public class InputSimulator extends Thread{
     }
 
     public void AddDataToBuffers(){
+        AISData os = null;
         while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
             if (nextInput.mmsi != osMMSI)
                 tsList.add(nextInput);
             else
-                osBuffer.add(nextInput);
+                os = nextInput;
             nextInput = GetNextInput();
         }
+
+        bufferLock.lock();
+
+        if (os != null)
+            osBuffer.add(os);
         tsBuffer.addAll(tsList);
+
+        bufferLock.unlock();
+
         tsList.clear();
     }
 
