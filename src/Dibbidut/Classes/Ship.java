@@ -21,18 +21,23 @@ public class Ship extends Obstacle {
     public double latitude;
     public double cog;
     public double sog;
-    public float manoeuvrability;
+    public double manoeuvrability;
     public Shape conflictRegion;
     public Vector2D velocity;
     public Hashtable<String, String> warnings;
 
-    private AISData oldData;
     private AISData currentData;
 
     public Ship(int mmsi) {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         this.mmsi = mmsi;
+    }
+
+    public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
+        super(position, velocity);
+        this.velocity = velocity;
+        this.conflictRegion = conflictRegion;
     }
 
     public Ship(Vector2D position, int length, int width, int heading) {
@@ -65,14 +70,14 @@ public class Ship extends Obstacle {
      */
     public void Update(AISData data, double ownShipLongitude) {
 
-        oldData = currentData;
+        AISData oldData = currentData;
         currentData = data;
 
         IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
 
         handler.Run();
 
-        domain.Update(sog, cog, latitude, longitude);
+        domain.Update(sog, heading, centeredPosition.y(), centeredPosition.x());
     }
 
     @Override
@@ -86,11 +91,5 @@ public class Ship extends Obstacle {
         else {
             return super.equals(obj);
         }
-    }
-
-    public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
-        super(position, velocity);
-        this.velocity = velocity;
-        this.conflictRegion = conflictRegion;
     }
 }

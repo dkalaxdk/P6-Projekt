@@ -6,6 +6,7 @@ import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
+import java.awt.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -25,11 +26,13 @@ public class CASystem {
     public int ownShipMMSI;
 
     public Display display;
-    public IVelocityObstacle MVO;
+    public IVelocityObstacle obstacleCalculator;
+    public Area MVO;
 
     private final Lock queueLock;
 
     public double range;
+    public double timeFrame;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
@@ -50,8 +53,11 @@ public class CASystem {
         }
 
         shipsInRange = new ArrayList<>();
+        obstacleCalculator = new VelocityObstacle();
+        MVO = new Area();
 
         range = 100000;
+        timeFrame = 200;
     }
 
     public void Start() {
@@ -154,11 +160,11 @@ public class CASystem {
                     shipsInRange.add(new Ship(data, ownShip.longitude));
                 }
             }
-        }
 
-        // Own ship might have moved since the last update,
-        // so remove any ships that are now out of range
-        RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
+            // Own ship might have moved since the last update,
+            // so remove any ships that are now out of range
+            RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
+        }
     }
 
     public boolean isWithinRange(Vector2D shipPosition, Vector2D ownShipPosition, double range) {
@@ -186,12 +192,18 @@ public class CASystem {
 
     public void UpdateVelocityObstacles() {
 
+        MVO.reset();
+
+        for (Ship ship : shipsInRange) {
+            Area area = obstacleCalculator.Calculate(this.ownShip, ship, timeFrame);
+            MVO.add(area);
+        }
     }
 
     public void UpdateDisplay() {
 
         if (display == null) {
-            display = new Display(ownShip, shipsInRange);
+            display = new Display(ownShip, shipsInRange, MVO);
             SwingUtilities.invokeLater(() -> createAndShowGUI(display));
         }
 

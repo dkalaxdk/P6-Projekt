@@ -31,7 +31,7 @@ public class VelocityObstacleTest {
         }
         // Not needed for these tests
         @Override
-        public ShipDomain Update(double SOG, double Heading, double Lat, double Long) {
+        public ShipDomain Update(double SOG, double Heading, double y, double x) {
             return null;
         }
 
