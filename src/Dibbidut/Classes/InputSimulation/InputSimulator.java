@@ -24,8 +24,6 @@ public class InputSimulator extends Thread{
     public LocalDateTime currentTime;
     public AISData nextInput;
 
-    boolean dataListEmpty;
-
     public InputSimulator(int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
         this.osMMSI = osMMSI;
         this.osBuffer = osBuffer;
@@ -37,7 +35,6 @@ public class InputSimulator extends Thread{
         tsList = new ArrayList<>();
 
         dataListIterator = 0;
-        dataListEmpty = false;
     }
 
     // todo: lav evt flere tests til run()
@@ -53,18 +50,21 @@ public class InputSimulator extends Thread{
 
         executorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
-                AddDataToBuffers();
-                if (dataListEmpty)
+                if (nextInput != null){
+                    currentTime = currentTime.plusSeconds(1);
+                    AddDataToBuffers();
+                }
+                else
                     executorService.shutdown();
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
 
-    // todo: lav tests af RunSetUp(), AddNextInputToTSList() og AddDataToBuffers()
+    // todo: lav tests af RunSetUp() (hvad hvis os ikke er i input?) og AddDataToBuffers()
     public void RunSetUp(){
         nextInput = GetNextInput();
 
-        while(nextInput != null && (currentTime ==null || !nextInput.dateTime.isAfter(currentTime))){
+        while(nextInput != null && (currentTime == null || !nextInput.dateTime.isAfter(currentTime))){
             if (nextInput.mmsi != osMMSI){
                 AddNextInputToTSList();
             }
@@ -75,24 +75,34 @@ public class InputSimulator extends Thread{
             nextInput = GetNextInput();
         }
         tsBuffer.addAll(tsList);
-
+        tsList.clear();
     }
 
     public void AddNextInputToTSList(){
         int i = 0;
 
-        while (tsList.size() > i){
-            if (nextInput.mmsi == tsList.get(i).mmsi)
-                tsList.remove(i);
-            tsList.add(nextInput);
+        if (tsList.size() > 0) {
+            while (tsList.size() > i) {
+                if (nextInput.mmsi == tsList.get(i).mmsi)
+                    tsList.remove(i);
+                i++;
+            }
         }
+
+        tsList.add(nextInput);
     }
 
     public void AddDataToBuffers(){
-
+        while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
+            if (nextInput.mmsi != osMMSI)
+                tsList.add(nextInput);
+            else
+                osBuffer.add(nextInput);
+            nextInput = GetNextInput();
+        }
+        tsBuffer.addAll(tsList);
+        tsList.clear();
     }
-
-
 
 
     public AISData GetNextInput() {
