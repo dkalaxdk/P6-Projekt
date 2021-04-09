@@ -2,6 +2,7 @@ package Dibbidut.Classes.InputManagement;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
+import org.apache.commons.lang3.StringUtils;
 
 import java.security.interfaces.DSAPublicKey;
 import java.sql.Timestamp;
@@ -32,50 +33,42 @@ public class AISData implements Comparable {
 
     @CsvBindByName(column = "ROT")
     public String rotString;
-    @CsvBindByName(column = "ROT")
     public double ROT;
     public boolean rotIsSet;
 
     @CsvBindByName(column = "SOG")
     public String sogString;
-    @CsvBindByName(column = "SOG")
     public double SOG;
     public boolean sogIsSet;
 
     @CsvBindByName(column = "COG")
     public String cogString;
-    @CsvBindByName(column = "COG")
     public double COG;
     public boolean cogIsSet;
 
     @CsvBindByName(column = "Heading")
     public String headingString;
-    @CsvBindByName(column = "Heading")
     public int heading;
     public boolean headingIsSet;
 
 
     @CsvBindByName(column = "A")
     public String distanceForeString;
-    @CsvBindByName(column = "A")
     public int distanceFore;
     public boolean distanceForeIsSet;
 
     @CsvBindByName(column = "B")
     public String distanceAftString;
-    @CsvBindByName(column = "B")
     public int distanceAft;
     public boolean distanceAftIsSet;
 
     @CsvBindByName(column = "C")
     public String distancePortString;
-    @CsvBindByName(column = "C")
     public int distancePort;
     public boolean distancePortIsSet;
 
     @CsvBindByName(column = "D")
     public String distanceStarboardString;
-    @CsvBindByName(column = "D")
     public int distanceStarboard;
     public boolean distanceStarboardIsSet;
 
@@ -87,13 +80,11 @@ public class AISData implements Comparable {
 
     @CsvBindByName(column = "Width")
     public String widthString;
-    @CsvBindByName(column = "Width")
     public int width;
     public boolean widthIsSet;
 
     @CsvBindByName(column = "Length")
     public String lengthString;
-    @CsvBindByName(column = "Length")
     public int length;
     public boolean lengthIsSet;
 
@@ -122,26 +113,36 @@ public class AISData implements Comparable {
         this.dateTime = LocalDateTime.parse(this.timestampString, formatter);
     }
 
-    public void SetBooleans(){
-        rotIsSet = rotString != null;
+    public void SetValuesAndBooleans(){
+        rotIsSet = !StringUtils.isEmpty(rotString);
+        ROT = rotIsSet ? Double.parseDouble(rotString) : 0;
 
-        sogIsSet = sogString != null;
+        sogIsSet = !StringUtils.isEmpty(sogString);
+        SOG = sogIsSet ? Double.parseDouble(sogString) : 0;
 
-        cogIsSet = cogString != null;
+        cogIsSet = !StringUtils.isEmpty(cogString);
+        COG = cogIsSet ? Double.parseDouble(cogString) : 0;
 
-        headingIsSet = headingString != null;
+        headingIsSet = !StringUtils.isEmpty(headingString);
+        heading = headingIsSet ? Integer.parseInt(headingString) : 0;
 
-        distanceForeIsSet = distanceForeString != null;
+        distanceForeIsSet = !StringUtils.isEmpty(distanceForeString);
+        distanceFore = distanceForeIsSet ? Integer.parseInt(distanceForeString) : 0;
 
-        distanceAftIsSet = distanceAftString != null;
+        distanceAftIsSet = !StringUtils.isEmpty(distanceAftString);
+        distanceAft = distanceAftIsSet ? Integer.parseInt(distanceAftString) : 0;
 
-        distancePortIsSet = distancePortString != null;
+        distancePortIsSet = !StringUtils.isEmpty(distancePortString);
+        distancePort = distancePortIsSet ? Integer.parseInt(distancePortString) : 0;
 
-        distanceStarboardIsSet = distanceStarboardString != null;
+        distanceStarboardIsSet = !StringUtils.isEmpty(distanceStarboardString);
+        distanceStarboard = distanceStarboardIsSet ? Integer.parseInt(distanceStarboardString) : 0;
 
-        widthIsSet = widthString != null;
+        widthIsSet = !StringUtils.isEmpty(widthString);
+        width = widthIsSet ? Integer.parseInt(widthString) : 0;
 
-        lengthIsSet = lengthString != null;
+        lengthIsSet = !StringUtils.isEmpty(lengthString);
+        length = lengthIsSet ? Integer.parseInt(lengthString) : 0;
     }
 
     @Override

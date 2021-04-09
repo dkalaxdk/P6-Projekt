@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +48,7 @@ public class AISDataTest {
             data.widthString = "1";
             data.lengthString = "1";
 
-            data.SetBooleans();
+            data.SetValuesAndBooleans();
 
             assertTrue(data.rotIsSet &&
                                 data.sogIsSet &&
@@ -77,7 +76,7 @@ public class AISDataTest {
             data.widthString = null;
             data.lengthString = null;
 
-            data.SetBooleans();
+            data.SetValuesAndBooleans();
 
             assertTrue(!data.rotIsSet &&
                     !data.sogIsSet &&
