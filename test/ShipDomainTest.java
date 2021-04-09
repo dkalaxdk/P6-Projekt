@@ -39,7 +39,7 @@ public class ShipDomainTest {
 
     @BeforeEach
     public void setUp() {
-        shipDomain = new ShipDomain(5,10);
+        shipDomain = new ShipDomain(5,10,"Pentagon");
         startingValues = new StartingValues(shipDomain);
         shipDomain.Update(20,5,100,100);
     }
@@ -144,81 +144,53 @@ public class ShipDomainTest {
         @Test
         public void testUpdate_UpdatedRadiusFore_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusFore(), 33.30281972129252);
+            assertEquals(shipDomain.getRadiusFore(), 35.80281972129252);
         }
         @Test
         public void testUpdate_UpdatedRadiusAft_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusAft(), 19.15140986064626);
+            assertEquals(shipDomain.getRadiusAft(), 21.65140986064626);
         }
         @Test
         public void testUpdate_UpdatedRadiusStarBoard_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusStarboard(), 22.25007293461687);
+            assertEquals(shipDomain.getRadiusStarboard(), 27.25007293461687);
         }
         @Test
         public void testUpdate_UpdatedPort_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusPort(), 16.937554700962654);
+            assertEquals(shipDomain.getRadiusPort(), 21.937554700962654);
         }
 
         @Test
         public void testUpdate_StarboardOffset_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getStarboardOffset(), 22.25007293461687);
+            assertEquals(shipDomain.getStarboardOffset(), 27.25007293461687);
         }
 
         @Test
         public void testUpdate_aftOffset_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getAftOffset(), 19.15140986064626);
+            assertEquals(shipDomain.getAftOffset(), 21.65140986064626);
         }
 
         @Test
         public void testUpdate_height_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getHeight(), 52.45422958193878);
+            assertEquals(shipDomain.getHeight(), 57.45422958193878);
         }
 
         @Test
         public void testUpdate_width_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getWidth(), 39.187627635579524);
+            assertEquals(shipDomain.getWidth(), 49.187627635579524);
         }
 
         @Test
-        public void getDomainAsEllipse_Returns_Ellipse() {
-            assertNotNull(shipDomain.getDomainAsEllipse());
+        public void getDomain_Returns_Shape() {
+            assertNotNull(shipDomain.getDomain());
         }
 
-        @Test
-        public void getDomainAsPolygon_Returns_Polygon() {
-            assertNotNull(shipDomain.getDomainAsPolygon());
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_X() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().x, 80.84859013935375);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Y() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().y, 77.74992706538313);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Height() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().height, 52.45422958193878);
-        }
-
-        @Test
-        public void getDomainAsEllipse_Returns_CorrectValues_Width() {
-            // Assert
-            assertEquals(shipDomain.getDomainAsEllipse().width, 39.187627635579524);
-        }
     }
 
 }

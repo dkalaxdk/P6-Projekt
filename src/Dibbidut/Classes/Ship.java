@@ -4,12 +4,14 @@ import Dibbidut.Classes.Handlers.AISToShipHandler;
 import Dibbidut.Classes.Handlers.UpdateShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Interfaces.IShipDataHandler;
+import Dibbidut.Interfaces.IDomain;
 import math.geom2d.Vector2D;
 
+import java.awt.*;
 import java.util.Hashtable;
 
 public class Ship extends Obstacle {
-    public ShipDomain domain;
+    public IDomain domain;
     public int mmsi;
     public int length;
     public int width;
@@ -19,16 +21,23 @@ public class Ship extends Obstacle {
     public double latitude;
     public double cog;
     public double sog;
-    public float manoeuvrability;
+    public double manoeuvrability;
+    public Shape conflictRegion;
+    public Vector2D velocity;
     public Hashtable<String, String> warnings;
 
-    private AISData oldData;
     private AISData currentData;
 
     public Ship(int mmsi) {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         this.mmsi = mmsi;
+    }
+
+    public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
+        super(position, velocity);
+        this.velocity = velocity;
+        this.conflictRegion = conflictRegion;
     }
 
     public Ship(Vector2D position, int length, int width, int heading) {
@@ -38,7 +47,7 @@ public class Ship extends Obstacle {
         this.width = width;
         this.heading = heading;
 
-        domain = new ShipDomain(length, width);
+        domain = new ShipDomain(length, width, "Ellipse");
     }
 
     public Ship(AISData data, double ownShipLongitude) {
@@ -51,7 +60,7 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
-        domain = new ShipDomain(length, width);
+        domain = new ShipDomain(length, width, "Ellipse");
     }
 
     /**
@@ -61,14 +70,14 @@ public class Ship extends Obstacle {
      */
     public void Update(AISData data, double ownShipLongitude) {
 
-        oldData = currentData;
+        AISData oldData = currentData;
         currentData = data;
 
         IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
 
         handler.Run();
 
-        domain.Update(sog, cog, latitude, longitude);
+        domain.Update(sog, heading, centeredPosition.y(), centeredPosition.x());
     }
 
     @Override

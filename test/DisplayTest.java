@@ -3,6 +3,7 @@ import Dibbidut.Classes.Ship;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.logging.Handler;
 
@@ -26,7 +27,7 @@ public class DisplayTest {
         Ship ownShip = createStandardShip();
 
         // Act
-        Display display = new Display(ownShip, ships);
+        Display display = new Display(ownShip, ships, new Area());
 
         // Assert
         assertEquals(ships, display.getShips());
@@ -41,7 +42,7 @@ public class DisplayTest {
         Ship ownShip = createStandardShip();
 
         // Act
-        Display display = new Display(ownShip, ships);
+        Display display = new Display(ownShip, ships, new Area());
 
         // Assert
         assertEquals(ownShip, display.getOwnShip());
@@ -53,7 +54,7 @@ public class DisplayTest {
         ArrayList<Ship> ships = new ArrayList<>();
         ships.add(createStandardShip());
 
-        Display display = new Display(createStandardShip(), ships);
+        Display display = new Display(createStandardShip(), ships, new Area());
 
         Ship otherShip = createStandardShip();
 
@@ -70,7 +71,7 @@ public class DisplayTest {
         ArrayList<Ship> ships = new ArrayList<>();
         ships.add(createStandardShip());
 
-        Display display = new Display(createStandardShip(), ships);
+        Display display = new Display(createStandardShip(), ships, new Area());
 
         // Act
         ships.get(0).length = 3;
@@ -82,7 +83,7 @@ public class DisplayTest {
     @Test
     public void getCoordinatesToDrawShipFrom_shipPointingNorth() {
         // Arrange
-        Display display = new Display(createStandardShip(), new ArrayList<>());
+        Display display = new Display(createStandardShip(), new ArrayList<>(), new Area());
 
         Vector2D shipPosition = new Vector2D(100, 100);
         int shipLength = 10;
@@ -108,7 +109,7 @@ public class DisplayTest {
     @Test
     public void getCoordinatesToDrawShipFrom_shipPointingNorthEast() {
         // Arrange
-        Display display = new Display(createStandardShip(), new ArrayList<>());
+        Display display = new Display(createStandardShip(), new ArrayList<>(), new Area());
 
         Vector2D shipPosition = new Vector2D(100, 100);
         int shipLength = 10;
@@ -136,7 +137,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(0,0);
 
@@ -151,7 +152,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(0,0);
 
@@ -166,7 +167,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(1,1);
 
@@ -181,7 +182,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(2,2);
 
@@ -196,7 +197,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(1,1), 10, 10, 0);
         double zoom = 1.5;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(1.5,1.5);
 
@@ -211,7 +212,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(2,2);
 
@@ -226,7 +227,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(3,3);
 
@@ -241,7 +242,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(2,2), 10, 10, 0);
         double zoom = 1.5;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(2.5,2.5);
 
@@ -256,7 +257,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(1,-1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(2,-2);
 
@@ -271,7 +272,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(-1,1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(-2,2);
 
@@ -286,7 +287,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(-1,-1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(-2,-2);
 
@@ -301,7 +302,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(1,-1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(1,-3);
 
@@ -316,7 +317,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(-1,-1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(-3,-3);
 
@@ -331,7 +332,7 @@ public class DisplayTest {
         Ship targetShip = new Ship(new Vector2D(0,0), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Area());
 
         Vector2D expectedTarget = new Vector2D(-1,-1);
 

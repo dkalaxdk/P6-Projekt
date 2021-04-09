@@ -6,6 +6,7 @@ import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
+import java.awt.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -25,11 +26,13 @@ public class CASystem {
     public int ownShipMMSI;
 
     public Display display;
-    public IVelocityObstacle MVO;
+    public IVelocityObstacle obstacleCalculator;
+    public Area MVO;
 
-    private final Lock queueLock;
+    private final Lock bufferLock;
 
     public double range;
+    public double timeFrame;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
@@ -38,7 +41,7 @@ public class CASystem {
         // Set own ship's MMSI here:
         ownShipMMSI = 211235221;
 
-        queueLock = new ReentrantLock(true);
+        bufferLock = new ReentrantLock(true);
 
         String inputFile = "test/TestFiles/TestInput2.csv";
 
@@ -50,8 +53,11 @@ public class CASystem {
         }
 
         shipsInRange = new ArrayList<>();
+        obstacleCalculator = new VelocityObstacle();
+        MVO = new Area();
 
         range = 100000;
+        timeFrame = 200;
     }
 
     public void Start() {
@@ -69,13 +75,8 @@ public class CASystem {
 
                 start = System.nanoTime();
 
-                queueLock.lock();
-
                 UpdateOwnShip();
                 UpdateShipList();
-
-                queueLock.unlock();
-
                 UpdateVelocityObstacles();
                 UpdateDisplay();
 
@@ -95,6 +96,8 @@ public class CASystem {
     }
 
     public void UpdateOwnShip() {
+        bufferLock.lock();
+
         if (osBuffer.size() > 0) {
 
             ArrayList<AISData> dataList = new ArrayList<>();
@@ -115,44 +118,49 @@ public class CASystem {
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (ownShip != null) {
-            ArrayList<AISData> dataList = new ArrayList<>();
+        if (ownShip == null) {
+            bufferLock.unlock();
+            return;
+        }
 
-            tsBuffer.drainTo(dataList);
+        ArrayList<AISData> dataList = new ArrayList<>();
 
-            for (AISData data : dataList) {
+        tsBuffer.drainTo(dataList);
 
-                // If the potential ship is already out of range,
-                // check if there is a reference to the ship in the ship list, remove it if there is,
-                // and continue to next iteration
-                Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
-                if (!isWithinRange(shipPosition, ownShip.position, range)) {
-                    this.shipsInRange.remove(new Ship(data.mmsi));
-                    continue;
+        bufferLock.unlock();
+
+        for (AISData data : dataList) {
+
+            // If the potential ship is already out of range,
+            // check if there is a reference to the ship in the ship list, remove it if there is,
+            // and continue to next iteration
+            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
+            if (!isWithinRange(shipPosition, ownShip.position, range)) {
+                this.shipsInRange.remove(new Ship(data.mmsi));
+                continue;
+            }
+
+            boolean found = false;
+            int i = 0;
+
+            // See if the potential ship is already in the ship list.
+            while (!found && i < shipsInRange.size()) {
+                Ship ship = shipsInRange.get(i);
+
+                // If the ship is already in the list,
+                // update the ship in the list with the data from the potential ship.
+                if (ship.mmsi == data.mmsi) {
+                    ship.Update(data, ownShip.longitude);
+                    found = true;
                 }
-
-                boolean found = false;
-                int i = 0;
-
-                // See if the potential ship is already in the ship list.
-                while (!found && i < shipsInRange.size()) {
-                    Ship ship = shipsInRange.get(i);
-
-                    // If the ship is already in the list,
-                    // update the ship in the list with the data from the potential ship.
-                    if (ship.mmsi == data.mmsi) {
-                        ship.Update(data, ownShip.longitude);
-                        found = true;
-                    }
-                    else {
-                        i++;
-                    }
+                else {
+                    i++;
                 }
+            }
 
-                // If it is not in the list, create a new ship, and add it to the list.
-                if (!found) {
-                    shipsInRange.add(new Ship(data, ownShip.longitude));
-                }
+            // If it is not in the list, create a new ship, and add it to the list.
+            if (!found) {
+                shipsInRange.add(new Ship(data, ownShip.longitude));
             }
         }
 
@@ -186,12 +194,18 @@ public class CASystem {
 
     public void UpdateVelocityObstacles() {
 
+        MVO.reset();
+
+        for (Ship ship : shipsInRange) {
+            Area area = obstacleCalculator.Calculate(this.ownShip, ship, timeFrame);
+            MVO.add(area);
+        }
     }
 
     public void UpdateDisplay() {
 
         if (display == null) {
-            display = new Display(ownShip, shipsInRange);
+            display = new Display(ownShip, shipsInRange, MVO);
             SwingUtilities.invokeLater(() -> createAndShowGUI(display));
         }
 
