@@ -2,6 +2,7 @@ package InputTest;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
+import Dibbidut.Exceptions.OSNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InputSimulatorTest {
 
@@ -42,13 +42,20 @@ public class InputSimulatorTest {
     class run{
 
         @Test
-        public void run_StopsAtCorrectTime(){
+        public void run_StopsAtCorrectCurrentTime(){
             int osMMSI = 211235220;
             BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOneElement);
 
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
+
             simulator.run();
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -66,7 +73,14 @@ public class InputSimulatorTest {
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOneElement);
 
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
+
             simulator.run();
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -83,7 +97,14 @@ public class InputSimulatorTest {
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
 
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
+
             simulator.run();
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -92,19 +113,48 @@ public class InputSimulatorTest {
 
             assertEquals(11, tsBuffer.size());
         }
+
+        @Test
+        public void run_AddsCorrectNumberOfItemsToOsBuffer() {
+            int osMMSI = 311000223;
+            ;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
+
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            simulator.run();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            assertEquals(2, osBuffer.size());
+        }
     }
 
     @Nested
     @DisplayName("InputSimulator.RunSetUp")
     class RunSetUp{
         @Test
-        public void RunSetUp_AddsOneOSDataPointToBuffer(){
+        public void RunSetUp_AddsOneOSDataPointToOsBuffer(){
             int osMMSI = 219007034;
             BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(1, osBuffer.size());
         }
@@ -116,7 +166,11 @@ public class InputSimulatorTest {
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(10, tsBuffer.size());
         }
@@ -128,10 +182,33 @@ public class InputSimulatorTest {
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(0, simulator.tsList.size());
         }
+
+        @Test
+        public void RunSetUp_ThrowsExceptionWhenNoOSIsFound(){
+            boolean exceptionThrown = false;
+
+            int osMMSI = 1;
+            BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
+            BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
+            InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
+
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+                exceptionThrown = true;
+            }
+            assertTrue(exceptionThrown);
+        }
+
     }
 
     @Nested

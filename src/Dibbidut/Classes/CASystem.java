@@ -2,6 +2,7 @@ package Dibbidut.Classes;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
+import Dibbidut.Exceptions.OSNotFoundException;
 import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
@@ -61,6 +62,12 @@ public class CASystem {
     }
 
     public void Start() {
+        try {
+            inputSimulator.RunSetUp();
+        } catch (OSNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
         inputSimulator.start();
 
         boolean running = true;
