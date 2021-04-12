@@ -1,6 +1,7 @@
 package Dibbidut.Classes.InputSimulation;
 
 import Dibbidut.Classes.InputManagement.AISData;
+import Dibbidut.Exceptions.OSNotFoundException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,10 +50,9 @@ public class InputSimulator extends Thread{
     @Override
     public void run() throws NullPointerException{
 
-        RunSetUp();
-
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
+        // Runs internal run() method once every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
         executorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 if (nextInput != null){
@@ -65,8 +65,7 @@ public class InputSimulator extends Thread{
         }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
     }
 
-    // todo: lav tests af RunSetUp() (hvad hvis os ikke er i input? Er det systemets ansvar?)
-    public void RunSetUp(){
+    public void RunSetUp() throws OSNotFoundException {
         AISData os = null;
         nextInput = GetNextInput();
 
@@ -79,6 +78,10 @@ public class InputSimulator extends Thread{
                 os = nextInput;
             }
             nextInput = GetNextInput();
+        }
+
+        if (currentTime == null) {
+            throw new OSNotFoundException();
         }
 
         bufferLock.lock();
