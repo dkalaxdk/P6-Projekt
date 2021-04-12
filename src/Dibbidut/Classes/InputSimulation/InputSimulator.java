@@ -26,8 +26,11 @@ public class InputSimulator extends Thread{
     public AISData nextInput;
 
     Lock bufferLock;
+    float timeFactor;
 
-    public InputSimulator(Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+    public InputSimulator(float timeFactor, Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+        this.timeFactor = timeFactor > 0 ? timeFactor : 1;
+
         this.bufferLock = bufferLock;
 
         this.osMMSI = osMMSI;
@@ -45,10 +48,9 @@ public class InputSimulator extends Thread{
     // todo: lav evt flere tests til run()
     @Override
     public void run() throws NullPointerException{
-        
+
         RunSetUp();
 
-        // todo: gør det muligt at ændre på hvor hurtigt tiden går
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         executorService.scheduleAtFixedRate(new Runnable() {
@@ -60,10 +62,10 @@ public class InputSimulator extends Thread{
                 else
                     executorService.shutdown();
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
     }
 
-    // todo: lav tests af RunSetUp() (hvad hvis os ikke er i input?) og AddDataToBuffers()
+    // todo: lav tests af RunSetUp() (hvad hvis os ikke er i input? Er det systemets ansvar?)
     public void RunSetUp(){
         AISData os = null;
         nextInput = GetNextInput();

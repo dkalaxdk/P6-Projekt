@@ -47,8 +47,8 @@ public class CASystem {
         String inputFile = "test/TestFiles/TestInput1.csv";
 
         try {
-            // Set AIS data input file here:
-            inputSimulator = new InputSimulator(bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            // Set time factor and AIS data input file here:
+            inputSimulator = new InputSimulator(1, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
