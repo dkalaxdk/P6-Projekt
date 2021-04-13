@@ -34,38 +34,46 @@ public class VelocityObstacle implements IVelocityObstacle {
     }
 
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
-        Vector2D displacement = Displacement(object.centeredPosition, obstacle.centeredPosition);
-
         Area combinedRelativeVO = new Area();
 
         Area domainArea = new Area(obstacle.domain.getDomain());
-
         ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(domainArea);
 
         Point2D OSPos = vectorToPoint(object.centeredPosition);
         conflictAreaBorder.add(OSPos);
 
+        // Get the velocities that will ever lead to a collision
         Area cone = getCone(conflictAreaBorder, OSPos);
+        // The cone cuts across the ship domain, so the domain is added to the collision cone
         cone.add(domainArea);
 
 
-        Vector2D centerCollisionAtTime = divideVectorByScalar(displacement, timeframe);
-
-        // Calculate the translation that will place the conflictRegion at centerCollision
-        Vector2D translationVec = Displacement(obstacle.centeredPosition, centerCollisionAtTime);
-        AffineTransform translation = new AffineTransform();
-        translation.translate(translationVec.x(), translationVec.y());
-
+        // Get the scaled conflict positions at the end of the time frame
+        AffineTransform translation = getTranslation(object.centeredPosition, obstacle.centeredPosition, timeframe);
         Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
         ArrayList<Point2D> scaledDomainBorder = ShapeBorder.getBorder(scaledDomain);
         scaledDomainBorder.add(OSPos);
 
+        // Get the velocities that will lead to a collision after or at the end of the time frame
         Area excludeCone = getCone(scaledDomainBorder, OSPos);
+        // Subtract these velocities from the collision cone
         cone.subtract(excludeCone);
+        // Add the velocities that will lead to a collision at the end of the time frame
         cone.add(scaledDomain);
 
         combinedRelativeVO.add(cone);
         return combinedRelativeVO;
+    }
+
+    private AffineTransform getTranslation(Vector2D objectPos, Vector2D obstaclePos, double timeframe) {
+        Vector2D displacement = Displacement(objectPos, obstaclePos);
+        Vector2D centerCollisionAtTime = divideVectorByScalar(displacement, timeframe);
+
+        // Calculate the translation that will place the conflictRegion at centerCollision
+        Vector2D translationVec = Displacement(obstaclePos, centerCollisionAtTime);
+        AffineTransform translation = new AffineTransform();
+        translation.translate(translationVec.x(), translationVec.y());
+        return translation;
     }
 
     // This finds the velocity needed to place Point A at Point B
