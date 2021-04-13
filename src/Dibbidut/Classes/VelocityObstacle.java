@@ -1,6 +1,8 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IVelocityObstacle;
+import Dibbidut.utilities.GrahamScan;
+import Dibbidut.utilities.ShapeBorder;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
@@ -31,10 +33,33 @@ public class VelocityObstacle implements IVelocityObstacle {
     }
 
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
-        Vector2D displacement = Displacement(object.position, obstacle.position);
+        Vector2D displacement = Displacement(object.centeredPosition, obstacle.centeredPosition);
 
         Area combinedRelativeVO = new Area();
 
+        // Calculate the translation that will place the conflictRegion at centerCollision
+        Vector2D translationVec = Displacement(obstacle.centeredPosition, displacement);
+        AffineTransform translation = new AffineTransform();
+        translation.translate(translationVec.x(), translationVec.y());
+
+        Area domainArea = new Area(obstacle.domain.getDomain());
+        Area conflictArea = domainArea.createTransformedArea(translation);
+
+        ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(conflictArea);
+        conflictAreaBorder.add(vectorToPoint(object.centeredPosition));
+
+        GrahamScan grahamScan = new GrahamScan();
+        ArrayList<Point2D> border = grahamScan.Calculate(conflictAreaBorder);
+
+        Path2D poly = new Path2D.Double();
+        poly.moveTo(border.get(0).getX(), border.get(0).getY());
+
+        for(int i = 1; i < border.size(); i++) {
+            poly.lineTo(border.get(i).getX(), border.get(i).getY());
+        }
+        poly.closePath();
+        combinedRelativeVO.add(new Area(poly));
+        /*
         for(double i = 1; i <= timeframe; i = i + 0.1) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
             //TODO Ensures that neither ship domain is violated
@@ -53,13 +78,17 @@ public class VelocityObstacle implements IVelocityObstacle {
 
             combinedRelativeVO.add(conflictArea);
         }
-
+*/
         return combinedRelativeVO;
     }
 
     // This finds the velocity needed to place Point A at Point B
     public Vector2D Displacement(Vector2D a, Vector2D b) {
         return new Vector2D(b.x() - a.x(), b.y() - a.y());
+    }
+
+    private Point2D vectorToPoint(Vector2D vec) {
+        return new Point2D.Double(vec.x(), vec.y());
     }
 
     private Vector2D divideVectorByScalar(Vector2D vec, double scalar) {
