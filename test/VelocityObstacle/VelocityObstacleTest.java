@@ -246,8 +246,8 @@ public class VelocityObstacleTest {
             Area relVO = VO.RelativeVO(shipA, shipB, time);
 
             assertTrue(relVO.contains(new Point2D.Double(5, 5)));
-            assertFalse(relVO.contains(new Point2D.Double(4.4, 5)));
-            assertFalse(relVO.contains(new Point2D.Double(5, 4.4)));
+            assertFalse(relVO.contains(new Point2D.Double(4.2, 5)));
+            assertFalse(relVO.contains(new Point2D.Double(5, 4.2)));
         }
     }
 
