@@ -6,6 +6,7 @@ import Dibbidut.Exceptions.OSNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,7 +18,6 @@ public class InputSimulator extends Thread{
     BlockingQueue<AISData> tsBuffer;
     BlockingQueue<AISData> osBuffer;
     String inputFile;
-    ArrayList<AISData> dataList;
     int dataListIterator;
     public ArrayList<AISData> tsList;
     int osMMSI;
@@ -40,7 +40,6 @@ public class InputSimulator extends Thread{
         this.inputFile = inputFile;
 
         fileParser = new FileParser(inputFile);
-        dataList = fileParser.GetInputList();
         tsList = new ArrayList<>();
 
         dataListIterator = 0;
@@ -53,15 +52,13 @@ public class InputSimulator extends Thread{
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         // Runs internal run() method once every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
-        executorService.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                if (nextInput != null){
-                    currentTime = currentTime.plusSeconds(1);
-                    AddDataToBuffers();
-                }
-                else
-                    executorService.shutdown();
+        executorService.scheduleAtFixedRate(() -> {
+            if (nextInput != null){
+                currentTime = currentTime.plusSeconds(1);
+                AddDataToBuffers();
             }
+            else
+                executorService.shutdown();
         }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
     }
 
@@ -132,13 +129,11 @@ public class InputSimulator extends Thread{
 
 
     public AISData GetNextInput() {
-        if (dataListIterator < dataList.size()){
-            AISData nextElement = dataList.get(dataListIterator);
-            dataListIterator++;
 
-            return nextElement;
-        }
-        else
+        try {
+            return fileParser.GetNextInput();
+        } catch (NoSuchElementException e) {
             return null;
+        }
     }
 }
