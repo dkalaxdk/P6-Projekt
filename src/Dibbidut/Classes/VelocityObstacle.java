@@ -39,7 +39,7 @@ public class VelocityObstacle implements IVelocityObstacle {
         Area domainArea = new Area(obstacle.domain.getDomain());
         ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(domainArea);
 
-        Point2D OSPos = vectorToPoint(object.centeredPosition);
+        Point2D OSPos = vectorToPoint(object.position);
         conflictAreaBorder.add(OSPos);
 
         // Get the velocities that will ever lead to a collision
@@ -49,7 +49,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
 
         // Get the scaled conflict positions at the end of the time frame
-        AffineTransform translation = getTranslation(object.centeredPosition, obstacle.centeredPosition, timeframe);
+        AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
         Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
         ArrayList<Point2D> scaledDomainBorder = ShapeBorder.getBorder(scaledDomain);
         scaledDomainBorder.add(OSPos);

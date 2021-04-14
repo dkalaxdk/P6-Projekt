@@ -34,14 +34,14 @@ public class Ship extends Obstacle {
 
     public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
         super(position, velocity);
-        this.centeredPosition = position;
+        this.position = position;
         this.velocity = velocity;
         this.conflictRegion = conflictRegion;
     }
 
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position, new Vector2D(0,0));
-        this.centeredPosition = position;
+        this.position = position;
         this.length = length;
         this.width = width;
         this.heading = heading;
