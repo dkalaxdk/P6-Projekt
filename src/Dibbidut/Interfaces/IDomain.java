@@ -10,6 +10,7 @@ public interface IDomain {
     ShipDomain Update(double SOG, double Heading, double y, double x);
     Shape getDomain();
     Shape getScaledShipDomain(double scalar);
+    boolean getDomainType();
     double getHeight();
     double getWidth();
 

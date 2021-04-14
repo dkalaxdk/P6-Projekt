@@ -76,7 +76,6 @@ public class InputSimulatorTest {
             try {
                 simulator.RunSetUp();
             } catch (OSNotFoundException e) {
-                e.printStackTrace();
             }
 
             simulator.run();
@@ -203,7 +202,6 @@ public class InputSimulatorTest {
             try {
                 simulator.RunSetUp();
             } catch (OSNotFoundException e) {
-                e.printStackTrace();
                 exceptionThrown = true;
             }
             assertTrue(exceptionThrown);

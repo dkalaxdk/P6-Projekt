@@ -9,6 +9,9 @@ import math.geom2d.Vector2D;
 import javax.swing.*;
 import java.awt.geom.Area;
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -30,7 +33,7 @@ public class CASystem {
     public IVelocityObstacle obstacleCalculator;
     public Area MVO;
 
-    private final Lock bufferLock;
+    public final Lock bufferLock;
 
     public double range;
     public double timeFrame;
@@ -39,13 +42,23 @@ public class CASystem {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
 
+
+        // 245265000 i TestInput1, peger i en mærkelig retning
+        // 219004612 gør det samme?
+
         // Set own ship's MMSI here:
-        ownShipMMSI = 219000733;
+//        ownShipMMSI = 219004612;
+//        String inputFile = "test/TestFiles/TestInput1.csv";
+
+
+        ownShipMMSI = 211235221;
+        String inputFile = "test/TestFiles/TestInput2.csv";
+
+//        ownShipMMSI = 377739000;
+//        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
 
         bufferLock = new ReentrantLock(true);
 
-        // TODO: Does not handle the big files
-        String inputFile = "test/TestFiles/TestInput1.csv";
 
         try {
             // Set time factor and AIS data input file here:
@@ -59,7 +72,7 @@ public class CASystem {
         MVO = new Area();
 
         range = 100000;
-        timeFrame = 200;
+        timeFrame = 1;
     }
 
     public void Start() {
@@ -78,6 +91,8 @@ public class CASystem {
         long duration = 0;
 
         while(running) {
+            System.out.println("Local time: " + LocalDateTime.now().toLocalTime());
+            System.out.println("Simulation time: " + inputSimulator.currentTime.toLocalTime());
 
             if (tsBuffer.size() > 0) {
 
@@ -85,8 +100,6 @@ public class CASystem {
 
                 UpdateOwnShip();
                 UpdateShipList();
-
-
 
                 UpdateVelocityObstacles();
                 UpdateDisplay();
@@ -96,8 +109,10 @@ public class CASystem {
                 duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
             }
 
+            System.out.println("Duration: " + duration + "\n");
+
             try {
-                TimeUnit.MILLISECONDS.sleep(1000 - (duration));
+                TimeUnit.MILLISECONDS.sleep(1000 - (duration < 0 ? 0 : duration));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -110,13 +110,13 @@ public class UpdateShipHandler extends ShipHandler {
         // TODO: Måske se på om den nye velocity falder helt uden for skibets path / Er helt urealistisk?
     }
 
+//    public Vector2D HandlePosition() {
+//
+//        // TODO: Tjek om det her er helt ved siden af
+//        return Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
+//    }
+
     public Vector2D HandlePosition() {
-
-        // TODO: Tjek om det her er helt ved siden af
-        return Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
-    }
-
-    public Vector2D HandleCentering() {
 
         int fore = data.distanceFore;
         int aft = data.distanceAft;
@@ -265,6 +265,7 @@ public class UpdateShipHandler extends ShipHandler {
                 data.cogIsSet = true;
                 return data.COG;
             }
+            //TODO: Calculate COG based on previous position
             else if (data.headingIsSet) {
                 warnings.put("COG", "COG unknown, using heading instead");
                 cogPlaceholder = data.heading;

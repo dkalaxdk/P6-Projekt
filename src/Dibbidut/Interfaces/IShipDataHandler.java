@@ -11,8 +11,6 @@ public interface IShipDataHandler {
     Vector2D HandleVelocity();
     Vector2D HandlePosition();
 
-    Vector2D HandleCentering();
-
     double HandleSOG();
     double HandleCOG();
     double HandleLongitude();

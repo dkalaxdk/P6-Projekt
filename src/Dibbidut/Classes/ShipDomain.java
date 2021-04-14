@@ -96,6 +96,10 @@ public class ShipDomain implements IDomain {
         return DomainDimensions;
     }
 
+    public boolean getDomainType() {
+        return domainType;
+    }
+
     public Shape getDomain() {
         if (domainType) {
             updatePentagonDomain();
@@ -122,10 +126,11 @@ public class ShipDomain implements IDomain {
     }
 
     private void calculateOffsets() {
-        starboardOffset = radiusStarboard;
-        aftOffset = radiusAft;
         width = radiusPort + radiusStarboard;
         height = radiusAft + radiusFore;
+
+        starboardOffset = Math.abs(radiusStarboard - (getWidth() / 2));
+        aftOffset = Math.abs(radiusAft - (getHeight() / 2));
     }
 
     private void calculateDiameters(double SOG) {
@@ -134,10 +139,10 @@ public class ShipDomain implements IDomain {
     }
 
     private void calculateRadii() {
-        radiusFore = (double) shipLength/2 + (1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
-        radiusAft = (double) shipLength/2 + (1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
-        radiusStarboard = (double) shipWidth/2 + (0.2 + tacticalDiameter) * shipLength;
-        radiusPort = (double) shipWidth/2 + (0.2 + 0.75 * tacticalDiameter) * shipLength;
+        radiusFore = (1 + 1.34 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusAft = (1 + 0.67 * Math.sqrt(Math.pow(advanceDiameter, 2) + Math.pow(tacticalDiameter / 2, 2))) * shipLength;
+        radiusStarboard = (0.2 + tacticalDiameter) * shipLength;
+        radiusPort = (0.2 + 0.75 * tacticalDiameter) * shipLength;
     }
 
     private void calculateDimensions() {
@@ -151,8 +156,8 @@ public class ShipDomain implements IDomain {
     private void updateEllipseDomain() {
 
         // Updating the ellipseDomain
-        this.ellipseDomain.x = (x - aftOffset);
-        this.ellipseDomain.y = (y - starboardOffset);
+        this.ellipseDomain.x = (x + starboardOffset);
+        this.ellipseDomain.y = (y + aftOffset);
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }

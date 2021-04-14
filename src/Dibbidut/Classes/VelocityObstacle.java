@@ -34,7 +34,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Area combinedRelativeVO = new Area();
 
-        for(double i = 1; i <= timeframe; i = i + 0.1) {
+        for (double i = 1; i <= timeframe; i = i + 0.1) {
             Vector2D centerCollision = divideVectorByScalar(displacement, i);
             //TODO Create a Velocity Obstacle that ensures that neither ships domain is violated
 

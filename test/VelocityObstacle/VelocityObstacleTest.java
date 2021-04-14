@@ -41,6 +41,11 @@ public class VelocityObstacleTest {
         }
 
         @Override
+        public boolean getDomainType() {
+            return true;
+        }
+
+        @Override
         public Shape getScaledShipDomain(double scalar) {
             Ellipse2D.Double scaledEllipse = new Ellipse2D.Double();
             //scaledEllipse.x = domain.getBounds2D().getX();

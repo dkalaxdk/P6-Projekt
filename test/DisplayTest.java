@@ -13,7 +13,7 @@ public class DisplayTest {
 
     private Ship createStandardShip() {
         Ship ship = new Ship(new Vector2D(0,0), 100, 50, 0);
-        ship.centeredPosition = new Vector2D(0,0);
+        ship.position = new Vector2D(0,0);
         return ship;
     }
 
@@ -91,7 +91,7 @@ public class DisplayTest {
         int shipHeading = 0;
 
         Ship ship = new Ship(shipPosition, shipLength, shipWidth, shipHeading);
-        ship.centeredPosition = shipPosition;
+        ship.position = shipPosition;
 
         double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
         double expectedY = shipPosition.y() - (((double) shipLength) / 2);
@@ -117,7 +117,7 @@ public class DisplayTest {
         int shipHeading = 45;
 
         Ship ship = new Ship(shipPosition, shipLength, shipWidth, shipHeading);
-        ship.centeredPosition = shipPosition;
+        ship.position = shipPosition;
 
         double expectedX = shipPosition.x() - (((double) shipWidth) / 2);
         double expectedY = shipPosition.y() - (((double) shipLength) / 2);

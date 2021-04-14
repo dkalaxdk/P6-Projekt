@@ -15,7 +15,6 @@ public class Ship extends Obstacle {
     public int mmsi;
     public int length;
     public int width;
-    public Vector2D centeredPosition;
     public int heading;
     public double longitude;
     public double latitude;
@@ -23,7 +22,6 @@ public class Ship extends Obstacle {
     public double sog;
     public double manoeuvrability;
     public Shape conflictRegion;
-    public Vector2D velocity;
     public Hashtable<String, String> warnings;
 
     private AISData currentData;
@@ -48,6 +46,7 @@ public class Ship extends Obstacle {
         this.heading = heading;
 
         domain = new ShipDomain(length, width, "Ellipse");
+        domain.Update(sog, heading, position.y(), position.x());
     }
 
     public Ship(AISData data, double ownShipLongitude) {
@@ -61,7 +60,30 @@ public class Ship extends Obstacle {
         handler.Run();
 
         domain = new ShipDomain(length, width, "Ellipse");
+        domain.Update(sog, heading, position.y(), position.x());
     }
+
+//    @Override
+//    public Vector2D GetPosition() {
+//        return position;
+//    }
+//
+//    @Override
+//    public void SetPosition(Vector2D value) {
+//        position = value;
+//    }
+//
+//    @Override
+//    public Vector2D GetVelocity() {
+//        return velocity;
+//    }
+//
+//    @Override
+//    public void SetVelocity(Vector2D value) {
+//        velocity = value;
+//    }
+
+
 
     /**
      * Updates the given ship with new data
@@ -77,7 +99,7 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
-        domain.Update(sog, heading, centeredPosition.y(), centeredPosition.x());
+        domain.Update(sog, heading, position.y(), position.x());
     }
 
     @Override

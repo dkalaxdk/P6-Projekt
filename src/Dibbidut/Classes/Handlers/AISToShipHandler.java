@@ -23,6 +23,7 @@ public class AISToShipHandler extends ShipHandler {
         }
     }
 
+    // TODO: If heading does not exist, use COG if that exists
     public int HandleHeading() {
         if (!data.headingIsSet) {
             warnings.put("Heading", "Heading unknown, using " + headingPlaceholder + " degrees as a placeholder");
@@ -79,17 +80,21 @@ public class AISToShipHandler extends ShipHandler {
     }
 
     public Vector2D HandlePosition() {
+        Vector2D myShipPosition;
+
         if (data.longitude != 0 && data.latitude != 0) {
-            return Mercator.projection(data.longitude, data.latitude, this.ownShipLongitude);
+            myShipPosition = Mercator.projection(data.longitude, data.latitude, this.ownShipLongitude);
         }
         else {
             warnings.put("Position", "Missing information, can not calculate position, using " +
                     GetPositionPlaceHolder() + " as placeholder");
-            return GetPositionPlaceHolder();
+            myShipPosition = GetPositionPlaceHolder();
         }
+
+        return HandleCentering(myShipPosition);
     }
 
-    public Vector2D HandleCentering() {
+    private Vector2D HandleCentering(Vector2D myShipPosition) {
 
         // Renaming for shortness sake
         int fore = data.distanceFore;
@@ -99,8 +104,6 @@ public class AISToShipHandler extends ShipHandler {
 
         int length = data.length;
         int width = data.width;
-
-        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
 
         if (starboard + port != width || fore + aft != length) {
             warnings.put("TransceiverAccuracy", "Position of ship may be inaccurate due to miscalibrated AIS transceiver");

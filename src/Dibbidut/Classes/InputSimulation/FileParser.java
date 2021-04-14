@@ -34,7 +34,7 @@ public class FileParser implements IDataInput {
         Collections.sort(dataList);
 
         //todo: slet evt print ting
-        PrintData(dataList.get(0));
+//        PrintData(dataList.get(0));
 
         return dataList;
     }

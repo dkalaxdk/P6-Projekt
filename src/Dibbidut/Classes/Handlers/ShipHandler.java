@@ -11,8 +11,8 @@ import java.util.Vector;
 public abstract class ShipHandler implements IShipDataHandler {
     public Hashtable<String, String> warnings;
 
-    public final int lengthPlaceHolder = 10;
-    public final int widthPlaceHolder = 5;
+    public final int lengthPlaceHolder = 20;
+    public final int widthPlaceHolder = 10;
     public final double sogPlaceHolder = 2;
     public double cogPlaceholder = 0;
     public final int headingPlaceholder = 0;
@@ -49,8 +49,6 @@ public abstract class ShipHandler implements IShipDataHandler {
         myShip.velocity = HandleVelocity();
 
         myShip.position = HandlePosition();
-
-        myShip.centeredPosition = HandleCentering();
     }
 
     public Vector2D CalculateVelocity(double sog, double cog) {
