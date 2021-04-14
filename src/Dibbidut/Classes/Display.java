@@ -117,9 +117,9 @@ public class Display extends JPanel implements IDisplay {
     }
 
     private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
-        g.setColor(Color.black);
 
         for (Ship ship : targetShips) {
+            g.setColor(Color.black);
             drawShipVisualisation(g, ship);
         }
     }
@@ -141,6 +141,7 @@ public class Display extends JPanel implements IDisplay {
     }
 
     private void drawHeading(Ship ship, Graphics2D g) {
+        g.setColor(Color.blue);
 
         Vector2D heading = new Vector2D(0, (double) ship.length / 2);
 

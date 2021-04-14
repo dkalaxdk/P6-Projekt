@@ -42,29 +42,29 @@ public class CASystem {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
 
-
-        // 245265000 i TestInput1, peger i en mærkelig retning
-        // 219004612 gør det samme?
+        bufferLock = new ReentrantLock(true);
 
         // Set own ship's MMSI here:
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
+//        ownShipMMSI = 211235221;
+//        String inputFile = "test/TestFiles/TestInput2.csv";
 
-        ownShipMMSI = 211235221;
-        String inputFile = "test/TestFiles/TestInput2.csv";
-
+        // Near miss at 13:00 (+-)
+        // Ship domain too small at 16:00
 //        ownShipMMSI = 377739000;
 //        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
 
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-        bufferLock = new ReentrantLock(true);
+        ownShipMMSI = 218176000;
+        String inputFile = "InputFiles/AarhusEncounter.csv";
 
         try {
             // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(1, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            inputSimulator = new InputSimulator(60, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +103,7 @@ public class CASystem {
                 UpdateOwnShip();
                 UpdateShipList();
 
-                UpdateVelocityObstacles();
+//                UpdateVelocityObstacles();
                 UpdateDisplay();
 
                 end = System.nanoTime();
@@ -114,7 +114,7 @@ public class CASystem {
             System.out.println("Duration: " + duration + "\n");
 
             try {
-                TimeUnit.MILLISECONDS.sleep(1000 - (duration < 0 ? 0 : duration));
+                TimeUnit.MILLISECONDS.sleep(10 - (duration < 0 ? 0 : duration));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

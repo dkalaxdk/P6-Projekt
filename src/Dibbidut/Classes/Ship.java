@@ -60,7 +60,7 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
-        domain = new ShipDomain(length, width, "Ellipse");
+        domain = new ShipDomain(length, width, "Pentagon");
         domain.Update(sog, heading, position.y(), position.x());
     }
 
