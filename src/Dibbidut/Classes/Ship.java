@@ -64,28 +64,6 @@ public class Ship extends Obstacle {
         domain.Update(sog, heading, position.y(), position.x());
     }
 
-//    @Override
-//    public Vector2D GetPosition() {
-//        return position;
-//    }
-//
-//    @Override
-//    public void SetPosition(Vector2D value) {
-//        position = value;
-//    }
-//
-//    @Override
-//    public Vector2D GetVelocity() {
-//        return velocity;
-//    }
-//
-//    @Override
-//    public void SetVelocity(Vector2D value) {
-//        velocity = value;
-//    }
-
-
-
     /**
      * Updates the given ship with new data
      * @param data The new data that the ship will be updated with

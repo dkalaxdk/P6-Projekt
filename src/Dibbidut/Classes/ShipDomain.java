@@ -164,8 +164,8 @@ public class ShipDomain implements IDomain {
     private Ellipse2D.Double scaleEllipseDomain(double scalar) {
         Ellipse2D.Double tempEllipse = new Ellipse2D.Double();
         // Updating the ellipseDomain
-        tempEllipse.x = (x - aftOffset);
-        tempEllipse.y = (y - starboardOffset);
+        tempEllipse.x = (x + starboardOffset);
+        tempEllipse.y = (y + aftOffset);
         tempEllipse.width = width / scalar;
         tempEllipse.height = height / scalar;
         return tempEllipse;

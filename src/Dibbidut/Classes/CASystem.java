@@ -57,8 +57,10 @@ public class CASystem {
 //        ownShipMMSI = 377739000;
 //        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
 
-        bufferLock = new ReentrantLock(true);
+        // Paper with specific Aarhus collisions
+        // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
+        bufferLock = new ReentrantLock(true);
 
         try {
             // Set time factor and AIS data input file here:
@@ -72,7 +74,7 @@ public class CASystem {
         MVO = new Area();
 
         range = 100000;
-        timeFrame = 1;
+        timeFrame = 30;
     }
 
     public void Start() {

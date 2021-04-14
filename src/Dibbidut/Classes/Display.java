@@ -102,36 +102,25 @@ public class Display extends JPanel implements IDisplay {
                 ownShip.position.y() + this.getHeight()));
     }
 
-    private void drawOwnShip(Graphics2D g, Ship ship) {
-        g.setColor(Color.blue);
-
-//        Shape shape = drawShip(ship);
-//        Rectangle2D rect = shape.getBounds2D();
-//        g.draw(rect);
-//
-//        Vector2D p = getCoordinatesToDrawShipFrom(ship);
-//
-//        Shape n = new Ellipse2D.Double(p.x() - 2, p.y() - 2, 4, 4);
-
-//        shape = drawShipDomain(ship);
-//        rect = shape.getBounds2D();
-//        g.draw(rect);
-
+    //TODO: Better name please
+    private void drawShipVisualisation(Graphics2D g, Ship ship) {
         drawShip(ship, g);
         drawShipDomain(ship, g);
         drawHeading(ship, g);
         drawVelocity(ship, g);
     }
 
+    private void drawOwnShip(Graphics2D g, Ship ship) {
+        g.setColor(Color.blue);
+
+        drawShipVisualisation(g, ship);
+    }
+
     private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
         g.setColor(Color.black);
 
         for (Ship ship : targetShips) {
-
-            drawShip(ship, g);
-            drawShipDomain(ship, g);
-            drawHeading(ship, g);
-            drawVelocity(ship, g);
+            drawShipVisualisation(g, ship);
         }
     }
 
@@ -144,13 +133,7 @@ public class Display extends JPanel implements IDisplay {
 
         Shape shape = new Rectangle2D.Double(p.x(), p.y(), ship.width, ship.length);
 
-        g2.draw(new Ellipse2D.Double(p.x() - 2, p.y() - 2, 4, 4));
-
-//        shape = AffineTransform.getRotateInstance(
-//                degreesToRadians(/*360 - */ship.heading),
-//                ship.position.x(),
-//                ship.position.y())
-//                .createTransformedShape(shape);
+//        g2.draw(new Ellipse2D.Double(p.x() - 2, p.y() - 2, 4, 4));
 
         g2.draw(shape);
 
@@ -173,15 +156,9 @@ public class Display extends JPanel implements IDisplay {
     private void drawVelocity(Ship ship, Graphics2D g) {
         g.setColor(Color.red);
 
-//        Vector2D point = ship.position.plus(ship.velocity);
-
-        Vector2D velocity = new Vector2D(0, ship.velocity.y());
-
-        velocity = velocity.rotate(Math.toRadians(360 - ship.cog));
+        Vector2D velocity = new Vector2D(-ship.velocity.x(), ship.velocity.y());
 
         velocity = ship.position.plus(velocity);
-
-//        point = point.rotate(Math.toRadians(360 - ship.cog), ship.position.x(), ship.position.y());
 
         Shape shape = new Line2D.Double(ship.position.x(), ship.position.y(), velocity.x(), velocity.y());
 
