@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Lock;
@@ -19,10 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class InputSimulatorTest {
 
-    private String InputOneElement = "test/TestFiles/TestInputOneElement.csv";
-    private String InputWithWrongOrder = "test/TestFiles/TestInputTwoElementsWrongOrder.csv";
-    private String InputThreeElementsSameTime = "test/TestFiles/TestInputThreeElements.csv";
-    private String InputOSDataNotAtStart = "test/TestFiles/TestInputOSDataNotAtStart.csv";
+    private final String InputOneElement = "test/TestFiles/TestInputOneElement.csv";
+    private final String InputThreeElementsSameTime = "test/TestFiles/TestInputThreeElements.csv";
+    private final String InputOSDataNotAtStart = "test/TestFiles/TestInputOSDataNotAtStart.csv";
 
 
     private InputSimulator createInputSimulator(int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) {
@@ -75,8 +73,7 @@ public class InputSimulatorTest {
 
             try {
                 simulator.RunSetUp();
-            } catch (OSNotFoundException e) {
-                e.printStackTrace();
+            } catch (OSNotFoundException ignored) {
             }
 
             simulator.run();
@@ -87,7 +84,7 @@ public class InputSimulatorTest {
                 e.printStackTrace();
             }
 
-            assertEquals(null, simulator.nextInput);
+            assertNull(simulator.nextInput);
         }
 
         @Test
@@ -117,7 +114,7 @@ public class InputSimulatorTest {
         @Test
         public void run_AddsCorrectNumberOfItemsToOsBuffer() {
             int osMMSI = 311000223;
-            ;
+
             BlockingQueue<AISData> osBuffer = new LinkedBlockingQueue<>();
             BlockingQueue<AISData> tsBuffer = new LinkedBlockingQueue<>();
             InputSimulator simulator = createInputSimulator(osMMSI, osBuffer, tsBuffer, InputOSDataNotAtStart);
@@ -203,7 +200,6 @@ public class InputSimulatorTest {
             try {
                 simulator.RunSetUp();
             } catch (OSNotFoundException e) {
-                e.printStackTrace();
                 exceptionThrown = true;
             }
             assertTrue(exceptionThrown);
@@ -289,15 +285,6 @@ public class InputSimulatorTest {
 
             // Assert
             assertNotNull(simulator.GetNextInput());
-        }
-
-        @Test
-        public void GetNextInput_ReturnsCorrectAISData() {
-            InputSimulator simulator = createInputSimulator(1, new LinkedBlockingQueue<>(),
-                                                            new LinkedBlockingQueue<>(),
-                                                            InputWithWrongOrder);
-
-            assertEquals(265781000, simulator.GetNextInput().mmsi);
         }
 
         @Test
