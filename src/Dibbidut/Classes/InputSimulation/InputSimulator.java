@@ -4,6 +4,7 @@ import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Exceptions.OSNotFoundException;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -27,10 +28,10 @@ public class InputSimulator extends Thread{
     public AISData nextInput;
 
     Lock bufferLock;
-    float timeFactor;
+    Float timeFactor;
 
-    public InputSimulator(float timeFactor, Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
-        this.timeFactor = timeFactor > 0 ? timeFactor : 1;
+    public InputSimulator(Float timeFactor, Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+        this.timeFactor = timeFactor > 0 ? timeFactor : 1f;
 
         this.bufferLock = bufferLock;
 
@@ -51,15 +52,19 @@ public class InputSimulator extends Thread{
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
-        // Runs internal run() method once every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
-        executorService.scheduleAtFixedRate(() -> {
+        // Adds time to the current time, and updates the buffers every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
+
+        Runnable runnable = () -> {
             if (nextInput != null){
                 currentTime = currentTime.plusSeconds(1);
                 AddDataToBuffers();
+                executorService.schedule(this, (1000 / timeFactor.longValue()), TimeUnit.MILLISECONDS);
             }
             else
                 executorService.shutdown();
-        }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
+        };
+
+        executorService.schedule(runnable, 0, TimeUnit.MILLISECONDS);
     }
 
     public void RunSetUp() throws OSNotFoundException {
@@ -127,7 +132,6 @@ public class InputSimulator extends Thread{
         tsList.clear();
     }
 
-
     public AISData GetNextInput() {
 
         try {
@@ -135,5 +139,13 @@ public class InputSimulator extends Thread{
         } catch (NoSuchElementException e) {
             return null;
         }
+    }
+
+    public void SetTimeFactor(float value) {
+        timeFactor = (value == 0f) ? 1f : value;
+    }
+
+    public float GetTimeFactor() {
+        return timeFactor;
     }
 }

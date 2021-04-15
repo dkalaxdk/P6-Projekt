@@ -4,14 +4,7 @@ import Dibbidut.Interfaces.IDisplay;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
@@ -44,6 +37,8 @@ public class Display extends JPanel {
     }
 
     private void clearDisplay() {
+        int a = this.getWidth();
+        int b = this.getHeight();
         repaint(0,0,this.getWidth(), this.getHeight());
     }
 
@@ -55,6 +50,7 @@ public class Display extends JPanel {
         return degrees * (Math.PI / 180);
     }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -86,14 +82,6 @@ public class Display extends JPanel {
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
         drawVelocityObstacles(g2, system.MVO);
-
-        Vector2D a = system.shipsInRange.get(0).position.minus(system.ownShip.position);
-
-        Vector2D b = system.ownShip.position.plus(a);
-
-        if (b == system.shipsInRange.get(0).position) {
-            int c = 3;
-        }
     }
 
     //TODO: Use me

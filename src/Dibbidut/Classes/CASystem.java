@@ -3,16 +3,11 @@ package Dibbidut.Classes;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Exceptions.OSNotFoundException;
-import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.geom.Area;
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -31,6 +26,7 @@ public class CASystem {
     public int ownShipMMSI;
 
     public Display display;
+    public GUI gui;
     public VelocityObstacle obstacleCalculator;
     public Area MVO;
 
@@ -38,6 +34,8 @@ public class CASystem {
 
     public double range;
     public double timeFrame;
+
+    public Float timeFactor;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
@@ -49,8 +47,8 @@ public class CASystem {
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-        ownShipMMSI = 211235221;
-        String inputFile = "test/TestFiles/TestInput2.csv";
+//        ownShipMMSI = 211235221;
+//        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -60,12 +58,14 @@ public class CASystem {
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-//        ownShipMMSI = 218176000;
-//        String inputFile = "InputFiles/AarhusEncounter.csv";
+        ownShipMMSI = 218176000;
+        String inputFile = "InputFiles/AarhusEncounter.csv";
+
+        timeFactor = 60f;
 
         try {
             // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(60, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            inputSimulator = new InputSimulator(timeFactor, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,8 +94,8 @@ public class CASystem {
         long duration = 0;
 
         while(running) {
-            System.out.println("Local time: " + LocalDateTime.now().toLocalTime());
-            System.out.println("Simulation time: " + inputSimulator.currentTime.toLocalTime());
+//            System.out.println("Local time: " + LocalDateTime.now().toLocalTime());
+//            System.out.println("Simulation time: " + inputSimulator.currentTime.toLocalTime());
 
             if (tsBuffer.size() > 0) {
 
@@ -104,7 +104,7 @@ public class CASystem {
                 UpdateOwnShip();
                 UpdateShipList();
 
-                UpdateVelocityObstacles();
+//                UpdateVelocityObstacles();
                 UpdateDisplay();
 
                 end = System.nanoTime();
@@ -112,7 +112,7 @@ public class CASystem {
                 duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
             }
 
-            System.out.println("Duration: " + duration + "\n");
+//            System.out.println("Duration: " + duration + "\n");
 
             try {
                 TimeUnit.MILLISECONDS.sleep(10 - (duration < 0 ? 0 : duration));
@@ -236,6 +236,8 @@ public class CASystem {
 
         if (display == null) {
             display = new Display(this);
+            gui = new GUI(this);
+
             SwingUtilities.invokeLater(() -> createAndShowGUI());
         }
 
@@ -258,10 +260,9 @@ public class CASystem {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 
-        // Add content to the frame, in the form of a display
+        // Add content to the frame
         container.add(display);
-
-        container.add(new GUI(this));
+        container.add(gui);
 
         frame.add(container);
 
