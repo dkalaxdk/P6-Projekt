@@ -7,6 +7,7 @@ import Dibbidut.Interfaces.*;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.io.IOException;
 import java.sql.Time;
@@ -30,7 +31,7 @@ public class CASystem {
     public int ownShipMMSI;
 
     public Display display;
-    public IVelocityObstacle obstacleCalculator;
+    public VelocityObstacle obstacleCalculator;
     public Area MVO;
 
     public final Lock bufferLock;
@@ -48,8 +49,8 @@ public class CASystem {
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-//        ownShipMMSI = 211235221;
-//        String inputFile = "test/TestFiles/TestInput2.csv";
+        ownShipMMSI = 211235221;
+        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -59,8 +60,8 @@ public class CASystem {
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-        ownShipMMSI = 218176000;
-        String inputFile = "InputFiles/AarhusEncounter.csv";
+//        ownShipMMSI = 218176000;
+//        String inputFile = "InputFiles/AarhusEncounter.csv";
 
         try {
             // Set time factor and AIS data input file here:
@@ -103,7 +104,7 @@ public class CASystem {
                 UpdateOwnShip();
                 UpdateShipList();
 
-//                UpdateVelocityObstacles();
+                UpdateVelocityObstacles();
                 UpdateDisplay();
 
                 end = System.nanoTime();
@@ -226,6 +227,7 @@ public class CASystem {
 
         for (Ship ship : shipsInRange) {
             Area area = obstacleCalculator.Calculate(this.ownShip, ship, timeFrame);
+//            Area area = obstacleCalculator.RelativeVO(this.ownShip, ship, timeFrame);
             MVO.add(area);
         }
     }
@@ -233,8 +235,8 @@ public class CASystem {
     public void UpdateDisplay() {
 
         if (display == null) {
-            display = new Display(ownShip, shipsInRange, MVO);
-            SwingUtilities.invokeLater(() -> createAndShowGUI(display));
+            display = new Display(this);
+            SwingUtilities.invokeLater(() -> createAndShowGUI());
         }
 
         display.Update();
@@ -242,20 +244,26 @@ public class CASystem {
 
     /**
      * Creates the window where the simulation is shows
-     * @param display The display that will be shown
      */
-    private void createAndShowGUI(Display display) {
+    private void createAndShowGUI() {
         // Check if we are running on the correct thread (?)
         System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
 
         // Create a new frame for the graphics to be displayed in
-        JFrame frame = new JFrame("Test Display");
+        JFrame frame = new JFrame("Display");
 
         // The application closes when the window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+
         // Add content to the frame, in the form of a display
-        frame.add(display);
+        container.add(display);
+
+        container.add(new GUI(this));
+
+        frame.add(container);
 
         // Make the frame as small as its biggest component
         frame.pack();
