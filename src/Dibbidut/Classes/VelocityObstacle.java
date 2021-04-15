@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class VelocityObstacle implements IVelocityObstacle {
     public VO velocities;
@@ -83,7 +84,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
     private Area getCone(ArrayList<Point2D> border, Point2D OSPos) {
         GrahamScan grahamScan = new GrahamScan();
-        ArrayList<Point2D> convHull = grahamScan.Calculate(border);
+        List<Point2D> convHull = grahamScan.Calculate(border);
 
         int OSPosIndex = convHull.indexOf(OSPos);
         // Get the previous and next point in the list
