@@ -1,7 +1,19 @@
 package Dibbidut.utilities;
 
+import math.geom2d.Vector2D;
+
 import java.awt.geom.Point2D;
 import java.util.*;
+
+class TranslatedPoint {
+    public Point2D originalPoint;
+    public Point2D translatedPoint;
+
+    public TranslatedPoint(Point2D originalPoint, Vector2D translation) {
+        this.originalPoint = originalPoint;
+        translatedPoint = new Point2D.Double(originalPoint.getX() + translation.x(), originalPoint.getY() + translation.y());
+    }
+}
 
 public class GrahamScan implements ConvexHull<Point2D> {
     @Override
@@ -22,22 +34,32 @@ public class GrahamScan implements ConvexHull<Point2D> {
             }
         }
 
-        ArrayList<Point2D> sortedPoints = new ArrayList<>(points);
-        sortedPoints.remove(p0);
-        Collections.sort(sortedPoints, new PointPolarAngleComparator());
+        Vector2D translation = new Vector2D(0 - p0.getX(), 0 - p0.getY());
 
-        ArrayList<Point2D> lookaheadStack = new ArrayList<>();
-        lookaheadStack.add(p0);
+        ArrayList<TranslatedPoint> sortedPoints = new ArrayList<>();
+        for(Point2D point : points) {
+            if(point != p0)
+                sortedPoints.add(new TranslatedPoint(point, translation));
+        }
+        //Collections.sort(sortedPoints, new PointPolarAngleComparator());
+        sortedPoints.sort(Comparator.comparingDouble(p -> Math.atan2(p.translatedPoint.getY(), p.translatedPoint.getX())));
+
+        ArrayList<TranslatedPoint> lookaheadStack = new ArrayList<>();
+        lookaheadStack.add(new TranslatedPoint(p0, translation));
         lookaheadStack.add(sortedPoints.get(0));
         lookaheadStack.add(sortedPoints.get(1));
 
         for(int i=3; i <= sortedPoints.size(); i++) {
-            while(!leftTurn(lookaheadStack.get(lookaheadStack.size() - 2), lookaheadStack.get(lookaheadStack.size() - 1), sortedPoints.get(i - 1))) {
+            while(!leftTurn(lookaheadStack.get(lookaheadStack.size() - 2).translatedPoint, lookaheadStack.get(lookaheadStack.size() - 1).translatedPoint, sortedPoints.get(i - 1).translatedPoint)) {
                 lookaheadStack.remove(lookaheadStack.size() - 1);
             }
             lookaheadStack.add(sortedPoints.get(i - 1));
         }
-        return lookaheadStack;
+        ArrayList<Point2D> originalPoints = new ArrayList<>();
+        for(TranslatedPoint point : lookaheadStack) {
+            originalPoints.add(point.originalPoint);
+        }
+        return originalPoints;
     }
 
     private boolean leftTurn(Point2D a, Point2D b, Point2D c) {
