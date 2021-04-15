@@ -15,8 +15,13 @@ class TranslatedPoint {
         translatedPoint = new Point2D.Double(originalPoint.getX() + translation.x(), originalPoint.getY() + translation.y());
     }
 
+    // Could make getters for X and Y so it is not necessary to access them through the translatedPoint field
+
 }
 
+// Could benefit from ConvexHull being made an abstract class.
+// This would remove the meed to have the calculate method and the hull could be produced when an instance is created
+// and be made available through a getter. Or it could be calculated in the getter.
 public class GrahamScan implements ConvexHull<Point2D> {
     @Override
     public List<Point2D> Calculate(List<Point2D> points) {
