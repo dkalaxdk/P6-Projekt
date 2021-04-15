@@ -61,7 +61,7 @@ public class CASystem {
         ownShipMMSI = 218176000;
         String inputFile = "InputFiles/AarhusEncounter.csv";
 
-        timeFactor = 60f;
+        timeFactor = 1f;
 
         try {
             // Set time factor and AIS data input file here:
@@ -75,7 +75,7 @@ public class CASystem {
         MVO = new Area();
 
         range = 100000;
-        timeFrame = 30;
+        timeFrame = 1;
     }
 
     public void Start() {
@@ -104,7 +104,7 @@ public class CASystem {
                 UpdateOwnShip();
                 UpdateShipList();
 
-//                UpdateVelocityObstacles();
+                UpdateVelocityObstacles();
                 UpdateDisplay();
 
                 end = System.nanoTime();

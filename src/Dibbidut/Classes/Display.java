@@ -79,9 +79,9 @@ public class Display extends JPanel {
         // Rotate so that own ship is pointing at the top of the screen
 //        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.x(), ownShip.position.y());
 
+        drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
-        drawVelocityObstacles(g2, system.MVO);
     }
 
     //TODO: Use me
@@ -196,6 +196,9 @@ public class Display extends JPanel {
     }
 
     private void drawVelocityObstacles(Graphics2D g, Area mvo) {
+        g.setColor(Color.red);
+
+        g.fill(mvo);
         g.draw(mvo);
     }
 

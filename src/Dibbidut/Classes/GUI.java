@@ -78,7 +78,6 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
     @Override
     public void actionPerformed(ActionEvent e) {
         simulationTimeLabel.setText("Simulation time: " + system.inputSimulator.currentTime.toLocalTime());
-
     }
 
     @Override
