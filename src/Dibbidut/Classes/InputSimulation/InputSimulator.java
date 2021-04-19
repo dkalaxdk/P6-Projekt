@@ -54,11 +54,27 @@ public class InputSimulator extends Thread{
 
         // Adds time to the current time, and updates the buffers every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
 
+//        executorService.scheduleAtFixedRate(() -> {
+//            if (nextInput != null){
+//                currentTime = currentTime.plusSeconds(1);
+//                AddDataToBuffers();
+//            }
+//            else
+//                executorService.shutdown();
+//        }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
+
         Runnable runnable = () -> {
             if (nextInput != null){
+                long start = System.nanoTime();
+
                 currentTime = currentTime.plusSeconds(1);
                 AddDataToBuffers();
-                executorService.schedule(this, (1000 / timeFactor.longValue()), TimeUnit.MILLISECONDS);
+
+                long end = System.nanoTime();
+
+                long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+
+                executorService.schedule(this, (1000 / timeFactor.longValue()) - duration, TimeUnit.MILLISECONDS);
             }
             else
                 executorService.shutdown();
