@@ -9,8 +9,8 @@ import java.util.Hashtable;
 
 public class AISToShipHandler extends ShipHandler {
 
-    public AISToShipHandler(Ship myShip, AISData data, double ownShipLongitude, Hashtable<String, String> warnings) {
-        super(myShip, data, null, ownShipLongitude, warnings);
+    public AISToShipHandler(Ship myShip, AISData data, Hashtable<String, String> warnings) {
+        super(myShip, data, null, warnings);
     }
 
     public int HandleMMSI() {
@@ -23,9 +23,13 @@ public class AISToShipHandler extends ShipHandler {
         }
     }
 
-    // TODO: If heading does not exist, use COG if that exists
     public int HandleHeading() {
         if (!data.headingIsSet) {
+            if (data.cogIsSet) {
+                warnings.put("Heading", "Heading unknown, using COG as a placeholder");
+                return (int) Math.round(data.COG);
+            }
+
             warnings.put("Heading", "Heading unknown, using " + headingPlaceholder + " degrees as a placeholder");
             return headingPlaceholder;
         }
@@ -69,8 +73,8 @@ public class AISToShipHandler extends ShipHandler {
             return CalculateVelocity(sogPlaceHolder, data.COG);
         }
         else if (data.sogIsSet && !data.cogIsSet) {
-            warnings.put("Velocity", "Ship's COG is unknown, the ship might be heading in a different direction");
-            return CalculateVelocity(data.SOG, 0);
+            warnings.put("Velocity", "Ship's COG is unknown, the ship might be moving in a different direction");
+            return CalculateVelocity(data.SOG, cogPlaceholder);
         }
         else {
             warnings.put("Velocity", "Missing information, can not calculate velocity, using " +
@@ -83,7 +87,7 @@ public class AISToShipHandler extends ShipHandler {
         Vector2D myShipPosition;
 
         if (data.longitude != 0 && data.latitude != 0) {
-            myShipPosition = Mercator.projection(data.longitude, data.latitude, this.ownShipLongitude);
+            myShipPosition = Mercator.projection(data.longitude, data.latitude);
         }
         else {
             warnings.put("Position", "Missing information, can not calculate position, using " +
@@ -163,12 +167,12 @@ public class AISToShipHandler extends ShipHandler {
         if (!data.cogIsSet) {
             if (data.headingIsSet) {
                 warnings.put("COG", "COG is unknown, using heading as a placeholder");
-                data.COG = data.heading;
-                return data.COG;
+                cogPlaceholder = data.heading;
+                return cogPlaceholder;
             }
 
-            warnings.put("COG", "COG is unknown, using 0 as a placeholder");
-            return 0;
+            warnings.put("COG", "COG is unknown, using " + cogPlaceholder + " as a placeholder");
+            return cogPlaceholder;
         }
 
         return data.COG;

@@ -50,13 +50,13 @@ public class Ship extends Obstacle {
         domain.Update(sog, heading, position.y(), position.x());
     }
 
-    public Ship(AISData data, double ownShipLongitude) {
+    public Ship(AISData data) {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         warnings = new Hashtable<>();
         currentData = data;
 
-        IShipDataHandler handler = new AISToShipHandler(this, currentData, ownShipLongitude, warnings);
+        IShipDataHandler handler = new AISToShipHandler(this, currentData, warnings);
 
         handler.Run();
 
@@ -67,14 +67,13 @@ public class Ship extends Obstacle {
     /**
      * Updates the given ship with new data
      * @param data The new data that the ship will be updated with
-     * @param ownShipLongitude The longitude of own ship
      */
-    public void Update(AISData data, double ownShipLongitude) {
+    public void Update(AISData data) {
 
         AISData oldData = currentData;
         currentData = data;
 
-        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
+        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, warnings);
 
         handler.Run();
 

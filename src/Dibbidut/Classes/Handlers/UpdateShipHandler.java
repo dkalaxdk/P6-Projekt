@@ -9,12 +9,12 @@ import java.util.Hashtable;
 
 public class UpdateShipHandler extends ShipHandler {
 
-    public UpdateShipHandler(Ship myShip, AISData data, AISData oldData, double ownShipLongitude, Hashtable<String, String> warnings) {
-        super(myShip, data, oldData, ownShipLongitude, warnings);
+    public UpdateShipHandler(Ship myShip, AISData data, AISData oldData, Hashtable<String, String> warnings) {
+        super(myShip, data, oldData, warnings);
     }
 
     public UpdateShipHandler() {
-        super(null, null, null, 0, null);
+        super(null, null, null, null);
     }
 
     public int HandleMMSI() {
@@ -24,8 +24,8 @@ public class UpdateShipHandler extends ShipHandler {
     public int HandleHeading() {
 
         if (!data.headingIsSet && !oldData.headingIsSet) {
-            warnings.put("Heading", "Heading unknown, using 0 degrees as placeholder");
-            return 0;
+            warnings.put("Heading", "Heading unknown, using " + headingPlaceholder + " degrees as placeholder");
+            return headingPlaceholder;
         }
         else if (!data.headingIsSet) {
             warnings.put("Heading", "Heading lost, keeping old heading of " + oldData.heading + " degrees");
@@ -130,7 +130,7 @@ public class UpdateShipHandler extends ShipHandler {
             warnings.put("TransceiverAccuracy", "Position of ship may be inaccurate due to miscalibrated AIS transceiver");
         }
 
-        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
+        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude);
 
         warnings.put("TransceiverPosition", "");
 

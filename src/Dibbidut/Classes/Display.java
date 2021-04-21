@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Display extends JPanel {
 
-    private double zoom;
+    public double zoom;
 
     private final CASystem system;
 
@@ -37,9 +37,7 @@ public class Display extends JPanel {
     }
 
     private void clearDisplay() {
-        int a = this.getWidth();
-        int b = this.getHeight();
-        repaint(0,0,this.getWidth(), this.getHeight());
+        repaint();
     }
 
     public Dimension getPreferredSize() {
@@ -136,8 +134,6 @@ public class Display extends JPanel {
 
         Shape shape = new Rectangle2D.Double(p.x(), p.y(), ship.width, ship.length);
 
-//        g2.draw(new Ellipse2D.Double(p.x() - 2, p.y() - 2, 4, 4));
-
         g2.draw(shape);
 
         g2.dispose();
@@ -184,9 +180,9 @@ public class Display extends JPanel {
     }
 
     private void drawVelocity(Ship ship, Graphics2D g) {
-        g.setColor(Color.red);
+        g.setColor(Color.green);
 
-        Vector2D velocity = new Vector2D(-ship.velocity.x(), ship.velocity.y());
+        Vector2D velocity = new Vector2D(-ship.velocity.x(), ship.velocity.y()).times(system.timeFrame);
 
         velocity = ship.position.plus(velocity);
 
@@ -196,7 +192,7 @@ public class Display extends JPanel {
     }
 
     private void drawVelocityObstacles(Graphics2D g, Area mvo) {
-        g.setColor(Color.red);
+        g.setColor(new Color(1f, 0f, 0f, 0.5f));
 
         g.fill(mvo);
         g.draw(mvo);

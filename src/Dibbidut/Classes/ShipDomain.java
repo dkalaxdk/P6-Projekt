@@ -161,6 +161,8 @@ public class ShipDomain implements IDomain {
         this.ellipseDomain.width = width;
         this.ellipseDomain.height = height;
     }
+
+    // TODO: Bør det her ikke være x * scalar?
     private Ellipse2D.Double scaleEllipseDomain(double scalar) {
         Ellipse2D.Double tempEllipse = new Ellipse2D.Double();
         // Updating the ellipseDomain

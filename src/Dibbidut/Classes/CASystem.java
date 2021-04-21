@@ -37,18 +37,23 @@ public class CASystem {
 
     public Float timeFactor;
 
+    private boolean dirty;
+
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
 
         bufferLock = new ReentrantLock(true);
 
+//        System.out.println("Long: " + Mercator.unprojectionX(Mercator.nauticalToMeters(4)));
+//        System.out.println("Lat:  " + Mercator.unprojectionY(Mercator.nauticalToMeters(18)));
+
         // Set own ship's MMSI here:
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-//        ownShipMMSI = 211235221;
-//        String inputFile = "test/TestFiles/TestInput2.csv";
+        ownShipMMSI = 211235221;
+        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -58,8 +63,14 @@ public class CASystem {
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-        ownShipMMSI = 218176000;
-        String inputFile = "InputFiles/AarhusEncounter.csv";
+//        ownShipMMSI = 218176000;
+//        String inputFile = "InputFiles/AarhusEncounter.csv";
+
+
+        // https://doi.org/10.1016/j.oceaneng.2016.11.044
+        // #1
+//        ownShipMMSI = 1;
+//        String inputFile = "InputFiles/Simulation1.csv";
 
         timeFactor = 1f;
 
@@ -88,31 +99,27 @@ public class CASystem {
         inputSimulator.start();
 
         boolean running = true;
+        dirty = false;
 
         long start;
         long end;
         long duration = 0;
 
         while(running) {
-//            System.out.println("Local time: " + LocalDateTime.now().toLocalTime());
-//            System.out.println("Simulation time: " + inputSimulator.currentTime.toLocalTime());
 
-            if (tsBuffer.size() > 0) {
+            start = System.nanoTime();
 
-                start = System.nanoTime();
+            UpdateOwnShip();
+            UpdateShipList();
 
-                UpdateOwnShip();
-                UpdateShipList();
-
+            if (dirty) {
                 UpdateVelocityObstacles();
                 UpdateDisplay();
-
-                end = System.nanoTime();
-
-                duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
             }
 
-//            System.out.println("Duration: " + duration + "\n");
+            end = System.nanoTime();
+
+            duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
 
             try {
                 TimeUnit.MILLISECONDS.sleep(10 - (duration < 0 ? 0 : duration));
@@ -135,19 +142,21 @@ public class CASystem {
 
             if (ownShip == null) {
                 AISData data = dataList.remove(0);
-                ownShip = new Ship(data, data.longitude);
+                ownShip = new Ship(data);
             }
 
             for (AISData data : dataList) {
-                ownShip.Update(data, data.longitude);
+                ownShip.Update(data);
             }
+
+            dirty = true;
         }
     }
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (ownShip == null) {
+        if (ownShip == null || tsBuffer.size() == 0) {
             bufferLock.unlock();
             return;
         }
@@ -163,7 +172,7 @@ public class CASystem {
             // If the potential ship is already out of range,
             // check if there is a reference to the ship in the ship list, remove it if there is,
             // and continue to next iteration
-            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
+            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude);
             if (!isWithinRange(shipPosition, ownShip.position, range)) {
                 this.shipsInRange.remove(new Ship(data.mmsi));
                 continue;
@@ -179,8 +188,9 @@ public class CASystem {
                 // If the ship is already in the list,
                 // update the ship in the list with the data from the potential ship.
                 if (ship.mmsi == data.mmsi) {
-                    ship.Update(data, ownShip.longitude);
+                    ship.Update(data);
                     found = true;
+                    dirty = true;
                 }
                 else {
                     i++;
@@ -189,7 +199,8 @@ public class CASystem {
 
             // If it is not in the list, create a new ship, and add it to the list.
             if (!found) {
-                shipsInRange.add(new Ship(data, ownShip.longitude));
+                shipsInRange.add(new Ship(data));
+                dirty = true;
             }
         }
 
@@ -227,7 +238,6 @@ public class CASystem {
 
         for (Ship ship : shipsInRange) {
             Area area = obstacleCalculator.Calculate(this.ownShip, ship, timeFrame);
-//            Area area = obstacleCalculator.RelativeVO(this.ownShip, ship, timeFrame);
             MVO.add(area);
         }
     }

@@ -18,9 +18,13 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
     int delay;
 
     JSlider timeFactorSlider;
-    JLabel simulationTimeLabel;
     JLabel timeFactorLabel;
 
+    JLabel simulationTimeLabel;
+
+    JSlider zoomSlider;
+
+    JSlider timeFrameSlider;
 
     public GUI(CASystem system) {
         this.system = system;
@@ -42,6 +46,12 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
         timeFactorSlider = createSlider(0, 120, 1);
         add(timeFactorSlider);
+
+        timeFrameSlider = createSlider(1, 100, 1);
+        add(timeFrameSlider);
+
+        zoomSlider = createSlider(1, 10, 1);
+        add(zoomSlider);
 
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
@@ -124,6 +134,12 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 float a = (float) timeFactorSlider.getValue();
                 system.inputSimulator.SetTimeFactor(a);
                 timeFactorLabel.setText("Time factor: " + system.inputSimulator.GetTimeFactor());
+            }
+            else if (slider == this.zoomSlider) {
+                system.display.zoom = zoomSlider.getValue();
+            }
+            else if (slider == this.timeFrameSlider) {
+                system.timeFrame = timeFrameSlider.getValue();
             }
         }
     }

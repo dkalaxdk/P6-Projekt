@@ -1,0 +1,4 @@
+# Timestamp,Type of mobile,MMSI,Latitude,Longitude,Navigational status,ROT,SOG,COG,Heading,IMO,Callsign,Name,Ship type,Cargo type,Width,Length,Type of position fixing device,Draught,Destination,ETA,Data source type,A,B,C,D
+01/01/1000 00:00:00,Class A,1,0.0,0.0,Unknown value,0.0,15.0,3.18,3,Unknown,A,A,,,20,50,GPS,2.0,,01/01/1001 00:00:00,AIS,30,20,17,3
+01/01/1000 00:00:00,Class A,2,0.14973102112957817,0.01663679906189354,Unknown value,0.0,5.0,353.66,354,Unknown,A,A,,,20,50,GPS,2.0,,01/01/1001 00:00:00,AIS,30,20,17,3
+01/01/1000 00:00:00,Class A,3,0.2994610197013482,-0.06654719624757416,Unknown value,0.0,10.0,183.18,183,Unknown,A,A,,,20,50,GPS,2.0,,01/01/1001 00:00:00,AIS,30,20,17,3

@@ -65,16 +65,23 @@ public class InputSimulator extends Thread{
 
         Runnable runnable = () -> {
             if (nextInput != null){
-                long start = System.nanoTime();
 
-                currentTime = currentTime.plusSeconds(1);
-                AddDataToBuffers();
+                if (timeFactor != 0) {
+                    long start = System.nanoTime();
 
-                long end = System.nanoTime();
+                    currentTime = currentTime.plusSeconds(1);
+                    AddDataToBuffers();
 
-                long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+                    long end = System.nanoTime();
 
-                executorService.schedule(this, (1000 / timeFactor.longValue()) - duration, TimeUnit.MILLISECONDS);
+                    long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+
+                    executorService.schedule(this, (1000 / timeFactor.longValue()) - duration, TimeUnit.MILLISECONDS);
+                }
+                else {
+                    executorService.schedule(this, 500, TimeUnit.MILLISECONDS);
+                }
+
             }
             else
                 executorService.shutdown();
@@ -158,7 +165,8 @@ public class InputSimulator extends Thread{
     }
 
     public void SetTimeFactor(float value) {
-        timeFactor = (value == 0f) ? 1f : value;
+//        timeFactor = (value == 0f) ? 1f : value;
+        timeFactor = value;
     }
 
     public float GetTimeFactor() {

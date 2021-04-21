@@ -2,6 +2,7 @@ package Dibbidut.Classes.Handlers;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Ship;
+import Dibbidut.Classes.ShipDomain;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;
 
@@ -19,15 +20,13 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     private final Ship myShip;
 
-    protected double ownShipLongitude;
     protected AISData data;
     protected AISData oldData;
 
-    public ShipHandler(Ship myShip, AISData data, AISData oldData, double ownShipLongitude, Hashtable<String, String> warnings) {
+    public ShipHandler(Ship myShip, AISData data, AISData oldData, Hashtable<String, String> warnings) {
         this.myShip = myShip;
         this.data = data;
         this.oldData = oldData;
-        this.ownShipLongitude = ownShipLongitude;
         this.warnings = warnings;
     }
 
@@ -52,7 +51,7 @@ public abstract class ShipHandler implements IShipDataHandler {
     }
 
     public Vector2D CalculateVelocity(double sog, double cog) {
-        return new Vector2D(0, sog).rotate(Math.toRadians(cog));
+        return new Vector2D(0, KnotsToMetersPerSecond(sog)).rotate(Math.toRadians(cog));
     }
 
     public Vector2D MovePositionToCenterAftPort(Vector2D originalPosition,
@@ -122,5 +121,9 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     public Vector2D GetPositionPlaceHolder() {
         return new Vector2D(0,0);
+    }
+
+    public double KnotsToMetersPerSecond(double kn) {
+        return kn / 1.944;
     }
 }

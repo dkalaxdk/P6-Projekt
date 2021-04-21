@@ -28,10 +28,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,0);
 
@@ -54,10 +54,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,0);
 
@@ -80,10 +80,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,0);
 
@@ -106,10 +106,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,-1);
 
@@ -132,10 +132,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,1);
 
@@ -158,10 +158,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,-1);
 
@@ -184,10 +184,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,-1);
 
@@ -210,10 +210,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,1);
 
@@ -236,10 +236,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,1);
 
@@ -265,10 +265,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,0);
 
@@ -291,10 +291,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,0);
 
@@ -317,10 +317,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,0);
 
@@ -343,10 +343,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,-1);
 
@@ -369,10 +369,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,1);
 
@@ -395,10 +395,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,-1);
 
@@ -421,10 +421,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,-1);
 
@@ -447,10 +447,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,1);
 
@@ -473,10 +473,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,1);
 
@@ -502,10 +502,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,0);
 
@@ -528,10 +528,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,0);
 
@@ -554,10 +554,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,0);
 
@@ -580,10 +580,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,-1);
 
@@ -606,10 +606,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,1);
 
@@ -632,10 +632,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,-1);
 
@@ -658,10 +658,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,-1);
 
@@ -684,10 +684,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,1);
 
@@ -710,10 +710,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,1);
 
@@ -739,10 +739,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,0);
 
@@ -765,10 +765,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,0);
 
@@ -791,10 +791,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,0);
 
@@ -817,10 +817,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,-1);
 
@@ -843,10 +843,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(0,1);
 
@@ -869,10 +869,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,-1);
 
@@ -895,10 +895,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,-1);
 
@@ -921,10 +921,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(-1,1);
 
@@ -947,10 +947,10 @@ public class AISToShipHandlerTest {
                 data.length = 10;
                 data.width = 10;
 
-                Ship ship = new Ship(data, 0);
+                Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, 0, new Hashtable<>());
+                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
 
                 Vector2D expected = new Vector2D(1,1);
 
