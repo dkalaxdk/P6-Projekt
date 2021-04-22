@@ -13,7 +13,7 @@ public class VectorTest {
 
     @BeforeEach
     public void setUp() {
-        vector = new Vector(5,5);
+        vector = new Vector(5,5,1);
     }
 
     @Nested
@@ -33,14 +33,14 @@ public class VectorTest {
 
         @Test
         public void dotProduct_returns_Number() {
-            Vector testVector = new Vector(3,3);
+            Vector testVector = new Vector(3,3,1);
             assertNotEquals(vector.dotProduct(testVector),0);
         }
 
         @Test
         public void dotProduct_returns_Number_correct_value() {
-            Vector testVector = new Vector(3,3);
-            assertEquals(vector.dotProduct(testVector),30);
+            Vector testVector = new Vector(3,3,1);
+            assertEquals(vector.dotProduct(testVector),31.0);
         }
     }
 
@@ -76,7 +76,7 @@ public class VectorTest {
     public class Operators {
         @Test
         public void addVector_returns_correct_vector_x_correct() {
-            Vector testVector = new Vector(2,2);
+            Vector testVector = new Vector(2,2,1);
 
             //Act
             Vector resultVector = vector.addVector(testVector);
@@ -87,7 +87,7 @@ public class VectorTest {
 
         @Test
         public void addVector_returns_correct_vector_y_correct() {
-            Vector testVector = new Vector(2,2);
+            Vector testVector = new Vector(2,2,1);
 
             //Act
             Vector resultVector = vector.addVector(testVector);
@@ -98,7 +98,7 @@ public class VectorTest {
 
         @Test
         public void subtractVector_returns_correct_vector_y_correct() {
-            Vector testVector = new Vector(8,8);
+            Vector testVector = new Vector(8,8,1);
 
             // Act
             Vector resultVector = vector.subtractVector(testVector);
@@ -108,7 +108,7 @@ public class VectorTest {
 
         @Test
         public void subtractVector_returns_correct_vector_x_correct() {
-            Vector testVector = new Vector(8,8);
+            Vector testVector = new Vector(8,8,1);
 
             // Act
             Vector resultVector = vector.subtractVector(testVector);
@@ -145,13 +145,13 @@ public class VectorTest {
 
         @Test
         public void getMagnitude_returns_number_is_correct(){
-            assertEquals(vector.length(),7.0710678118654755);
+            assertEquals(vector.length(),7.14142842854285);
         }
 
         @Test
         public void angle_returns_correct_number(){
-            Vector testVector = new Vector(3,3);
-            assertEquals(vector.angle(testVector),0);
+            Vector testVector = new Vector(3,3,1);
+            assertEquals(vector.angle(testVector),0.09098766221666083);
         }
     }
 }
