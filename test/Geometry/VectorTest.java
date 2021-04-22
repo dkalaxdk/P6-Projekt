@@ -18,18 +18,25 @@ public class VectorTest {
 
     @Nested
     public class Products {
-        //TODO Evt slet det udkommenterede.
-        /*        @Test
+
+        @Test
         public void crossProduct_returns_Number() {
-            Vector testVector = new Vector(2,2);
+            Vector testVector = new Vector(2,2,1);
             assertNotEquals(vector.crossProduct(testVector),0);
         }
 
         @Test
         public void crossProduct_returns_correct_Number() {
-            Vector testVector = new Vector(2,2);
-            assertEquals(vector.crossProduct(testVector),18.258905014552557);
-        }*/
+            Vector testVector = new Vector(2,2,1);
+            Vector expectedVector = new Vector(3,-3,0);
+            // Act
+            Vector resultVector = vector.crossProduct(testVector);
+
+            // Assert
+            assertEquals(resultVector.getX(),expectedVector.getX());
+            assertEquals(resultVector.getY(),expectedVector.getY());
+            assertEquals(resultVector.getZ(),expectedVector.getZ());
+        }
 
         @Test
         public void dotProduct_returns_Number() {
@@ -97,13 +104,14 @@ public class VectorTest {
         }
 
         @Test
-        public void subtractVector_returns_correct_vector_y_correct() {
-            Vector testVector = new Vector(8,8,1);
+        public void addVector_returns_correct_vector_z_correct() {
+            Vector testVector = new Vector(2,2,1);
 
-            // Act
-            Vector resultVector = vector.subtractVector(testVector);
+            //Act
+            Vector resultVector = vector.addVector(testVector);
 
-            assertEquals(resultVector.getX(),5-8);
+            // Assert
+            assertEquals(resultVector.getZ(),2);
         }
 
         @Test
@@ -115,6 +123,28 @@ public class VectorTest {
 
             assertEquals(resultVector.getX(),5-8);
         }
+
+        @Test
+        public void subtractVector_returns_correct_vector_y_correct() {
+            Vector testVector = new Vector(8,8,1);
+
+            // Act
+            Vector resultVector = vector.subtractVector(testVector);
+
+            assertEquals(resultVector.getX(),5-8);
+        }
+
+        @Test
+        public void subtractVector_returns_correct_vector_z_correct() {
+            Vector testVector = new Vector(8,8,1);
+
+            // Act
+            Vector resultVector = vector.subtractVector(testVector);
+
+            assertEquals(resultVector.getZ(),0);
+        }
+
+
 
 
         @Test
@@ -128,6 +158,15 @@ public class VectorTest {
 
         @Test
         public void divideScalar_y_correct() {
+            double scalar = 5;
+            // Act
+            vector.divideProduct(scalar);
+
+            assertEquals(vector.getY(),1);
+        }
+
+        @Test
+        public void divideScalar_z_correct() {
             double scalar = 5;
             // Act
             vector.divideProduct(scalar);

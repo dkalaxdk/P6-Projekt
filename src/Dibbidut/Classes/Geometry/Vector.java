@@ -2,9 +2,9 @@ package Dibbidut.Classes.Geometry;
 
 public class Vector {
 
-    double x;
-    double y;
-    double z;
+    private double x;
+    private double y;
+    private double z;
 
     public Vector(double x, double y, double z) {
         this.x = x;
@@ -25,12 +25,15 @@ public class Vector {
     }
 
     public double dotProduct(Vector vector) {
-        return vector.x * this.x + vector.y * this.y + this.z * vector.z;
+        return vector.getX() * this.x + vector.getY() * this.y + this.z * vector.getZ();
     }
 
+    public Vector crossProduct(Vector vector) {
+        return new Vector(this.y * vector.getZ() - this.z * vector.getY(), this.z * vector.getX() - this.x * vector.z, this.x * vector.getY() - this.y * vector.getX());
+    }
 
     public double length() {
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)+ Math.pow(z,2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
     public double angle(Vector vector) {
@@ -50,11 +53,11 @@ public class Vector {
     }
 
     public Vector addVector(Vector vector) {
-        return new Vector(vector.x + this.x, vector.y + this.y, vector.z + this.z);
+        return new Vector(vector.getX() + this.x, vector.getY() + this.y, vector.getZ() + this.z);
     }
 
     public Vector subtractVector(Vector vector) {
-        return new Vector(this.x - vector.x, this.y - vector.y, this.z - vector.z);
+        return new Vector(this.x - vector.getX(), this.y - vector.getY(), this.z - vector.getZ());
     }
 
 
