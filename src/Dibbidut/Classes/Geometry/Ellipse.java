@@ -61,6 +61,11 @@ public class Ellipse extends Geometry {
         return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
     }
 
+    public double x;
+    public double y;
+    public double width;
+    public double height;
+
     @Override
     public boolean contains(Vector point) {
         // Long bit of math, read more at: https://stackoverflow.com/questions/7946187/point-and-ellipse-rotated-position-test-algorithm

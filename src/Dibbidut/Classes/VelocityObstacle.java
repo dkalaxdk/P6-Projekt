@@ -37,7 +37,8 @@ public class VelocityObstacle implements IVelocityObstacle {
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
         Area combinedRelativeVO = new Area();
 
-        Area domainArea = new Area(obstacle.domain.getDomain());
+        // TODO implementer til at bruge geometry.
+        Area domainArea = new Area();//new Area(obstacle.domain.getDomain());
         ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(domainArea);
 
         Point2D OSPos = vectorToPoint(object.position);
@@ -51,7 +52,9 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         // Get the scaled conflict positions at the end of the time frame
         AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
-        Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
+        // Todo implementer til at bruge geometry
+        Area scaledDomain = new Area();//new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
+
         ArrayList<Point2D> scaledDomainBorder = ShapeBorder.getBorder(scaledDomain);
         scaledDomainBorder.add(OSPos);
 

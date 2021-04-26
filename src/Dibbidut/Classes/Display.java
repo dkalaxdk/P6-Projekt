@@ -1,5 +1,8 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Geometry.Geometry;
+import Dibbidut.Classes.Geometry.Polygon;
+import Dibbidut.Classes.Geometry.Vector;
 import Dibbidut.Interfaces.IDisplay;
 import math.geom2d.Vector2D;
 
@@ -147,20 +150,24 @@ public class Display extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.rotate(degreesToRadians(360 - ship.heading), ship.position.x(), ship.position.y());
-
+        Shape shape;
         if (ship.domain.getDomainType()) {
             // Pentagon
             //TODO: Mirror pentagon domain?
             ship.domain.Update(ship.sog, 0, ship.position.y(), ship.position.x());
+
+
+            shape = drawPentagonDomain(ship);
         }
         else {
             // Ellipse
             Vector2D p = getCoordinatesToDrawDomainFrom(ship);
 
             ship.domain.Update(ship.sog,0, p.y(), p.x());
+            // TODO Update to ellipseDomain
+            shape = drawPentagonDomain(ship);
         }
 
-        Shape shape = ship.domain.getDomain();
 
         ship.domain.Update(ship.sog, ship.heading, ship.position.y(), ship.position.x());
 
@@ -220,6 +227,24 @@ public class Display extends JPanel {
         return new Vector2D(x,y);
     }
 
+    private Path2D drawPentagonDomain(Ship ship) {
+        Path2D outputShape = new Path2D.Double();
+        Polygon domain = (Polygon) ship.domain.getDomain();
+        ArrayList<Vector> coordinates = domain.coordinates;
+        // P5
+        outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
+        // P4
+        outputShape.lineTo(coordinates.get(1).getX(), coordinates.get(1).getY());
+        // P3
+        outputShape.lineTo(coordinates.get(2).getX(), coordinates.get(2).getY());
+        // P2
+        outputShape.lineTo(coordinates.get(3).getX(), coordinates.get(3).getY());
+        // P1
+        outputShape.lineTo(coordinates.get(4).getX(), coordinates.get(4).getY());
+        outputShape.closePath();
+
+        return outputShape;
+    }
     public void Update() {
         clearDisplay();
     }
