@@ -1,7 +1,6 @@
 package Geometry;
 
 import Dibbidut.Classes.Geometry.Geometry;
-import Dibbidut.Classes.Geometry.Point;
 import Dibbidut.Classes.Geometry.Transformation;
 import Dibbidut.Classes.Geometry.Vector;
 import org.junit.jupiter.api.DisplayName;
