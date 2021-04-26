@@ -1,7 +1,9 @@
 package Geometry;
 
+import Dibbidut.Classes.Geometry.Transformation;
 import Dibbidut.Classes.Geometry.Vector;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +52,6 @@ public class VectorTest {
             assertEquals(vector.dotProduct(testVector),31.0);
         }
     }
-
 
     @Nested
     public class Transformations {
@@ -191,6 +192,46 @@ public class VectorTest {
         public void angle_returns_correct_number(){
             Vector testVector = new Vector(3,3,1);
             assertEquals(vector.angle(testVector),0.09098766221666083);
+        }
+    }
+
+    @Nested
+    @DisplayName("Vector.transform")
+    public class Transform {
+        @Test
+        public void transform_ScalesVector() {
+            Vector expected = new Vector(2, 3, 1);
+            Vector testVector = new Vector(1, 1, 1);
+            Transformation t = new Transformation();
+
+            t.scale(2, 3);
+            testVector.transform(t);
+
+            assertEquals(expected, testVector);
+        }
+
+        @Test
+        public void transform_RotatesVector() {
+            Vector expected = new Vector(4, -4, 1);
+            Vector testVector = new Vector(4, 4, 1);
+            Transformation t = new Transformation();
+
+            t.rotate(90);
+            testVector.transform(t);
+
+            assertEquals(expected, testVector);
+        }
+
+        @Test
+        public void transform_TranslatesVector() {
+            Vector expected = new Vector(3, 4, 1);
+            Vector testVector = new Vector(1, 1, 1);
+            Transformation t = new Transformation();
+
+            t.translate(2, 3);
+            testVector.transform(t);
+
+            assertEquals(expected, testVector);
         }
     }
 }

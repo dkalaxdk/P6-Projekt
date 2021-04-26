@@ -8,6 +8,7 @@ public class Transformation {
     // Each column is a vector
     private double[][] matrix;
     private boolean firstTransform = true;
+    private double rotation = 0;
 
     public Transformation() {
         matrix = new double[3][3];
@@ -15,6 +16,7 @@ public class Transformation {
 
     public void rotate(double degrees) {
         double radians = degreesToRadians(degrees);
+        rotation += radians;
         setMatrix(new double[][] {
                 {Math.cos(radians), -Math.sin(radians), 0},
                 {Math.sin(radians), Math.cos(radians), 0},
@@ -71,5 +73,9 @@ public class Transformation {
 
     private double roundToFourDecimals(double number) {
         return (double)Math.round(number * 10000d) / 10000d;
+    }
+
+    public double getRotation() {
+        return rotation;
     }
 }
