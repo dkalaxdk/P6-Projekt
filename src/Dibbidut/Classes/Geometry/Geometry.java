@@ -3,7 +3,7 @@ package Dibbidut.Classes.Geometry;
 public abstract class Geometry {
     public abstract void transform(Transformation transformation);
 
-    public abstract boolean contains(Vector point);
+    public abstract boolean contains(Point point);
 
     public void rotate(double degrees) {
         Transformation t = new Transformation();

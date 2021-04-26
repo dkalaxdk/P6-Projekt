@@ -8,7 +8,7 @@ public class Polygon extends Geometry{
     }
 
     @Override
-    public boolean contains(Vector point) {
+    public boolean contains(Point point) {
         return false;
     }
 }
