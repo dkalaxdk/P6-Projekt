@@ -1,6 +1,10 @@
 package Dibbidut.Classes.Geometry;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class Polygon extends Geometry{
 
@@ -16,21 +20,35 @@ public class Polygon extends Geometry{
 
     @Override
     public void transform(Transformation transformation) {
-        ArrayList<Vector> tempCoordinates1;
-        ArrayList<Vector> tempCoordinates2 = new ArrayList<>();
+        ArrayList<Vector> newCoordinates = new ArrayList<>();
 
         // Translates the polygon so its center is in 0,0
-        tempCoordinates1 = translatePolygon(coordinates, new double[][] {{1, 0, 0}, {0, 1, 0}, {-center.getX(), -center.getY(), 1}});
+        Transformation toCenter = new Transformation();
+        toCenter.translate(-center.getX(), -center.getY());     // Translation points to center around origin
+        Transformation fromCenter = new Transformation();
+        fromCenter.translate(center.getX(), center.getY());     // Translation points back
+
+        ArrayList<Vector> copiedCoordinates = new ArrayList<>(copyVectorList(coordinates));
 
         // Performs the transformation
-        for(Vector vector : tempCoordinates1) {
-            tempCoordinates2.add(matrixVectorProduct(transformation.get(), vector));
+        for(Vector vector : copiedCoordinates) {
+            vector.transform(toCenter);     // Transform into own space
+            vector.transform(transformation);   // perform transform
+            vector.transform(fromCenter);   // Transform back to world space
+            newCoordinates.add(vector);
         }
 
-        // Reverses the previous translation to 0,0
-        coordinates = translatePolygon(tempCoordinates2, new double[][] {{1, 0, 0}, {0, 1, 0}, {center.getX(), center.getY(), 1}});
+        coordinates = newCoordinates;
 
         calculateCenter();
+    }
+
+    private List<Vector> copyVectorList(List<Vector> list) {
+        return list.stream().map(p -> copyVector(p)).collect(toList());
+    }
+
+    private Vector copyVector(Vector vec) {
+        return new Vector(vec.getX(), vec.getY(), vec.getZ());
     }
 
     public ArrayList<Vector> translatePolygon(ArrayList<Vector> coordinates, double[][] translationMatrix){
