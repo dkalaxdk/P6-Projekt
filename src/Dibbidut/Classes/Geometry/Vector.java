@@ -3,14 +3,16 @@ package Dibbidut.Classes.Geometry;
 
 import java.util.Objects;
 
-public class Vector extends Geometry implements Point {
+public class Vector extends Geometry {
 
-    double x;
-    double y;
+    private double x;
+    private double y;
+    private double z;
 
-    public Vector(double x, double y) {
+    public Vector(double x, double y, double z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     public double getX() {
@@ -21,13 +23,20 @@ public class Vector extends Geometry implements Point {
         return y;
     }
 
-    public double dotProduct(Vector vector) {
-        return vector.x * this.x + vector.y * this.y;
+    public double getZ() {
+        return z;
     }
 
+    public double dotProduct(Vector vector) {
+        return vector.getX() * this.x + vector.getY() * this.y + this.z * vector.getZ();
+    }
+
+    public Vector crossProduct(Vector vector) {
+        return new Vector(this.y * vector.getZ() - this.z * vector.getY(), this.z * vector.getX() - this.x * vector.z, this.x * vector.getY() - this.y * vector.getX());
+    }
 
     public double length() {
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
     public double angle(Vector vector) {
@@ -37,6 +46,7 @@ public class Vector extends Geometry implements Point {
     public void scaleProduct(double scalar) {
         this.x = this.x * scalar;
         this.y = this.y * scalar;
+        this.z = this.z * scalar;
     }
 
     public void divideProduct(double scalar) {
@@ -45,11 +55,11 @@ public class Vector extends Geometry implements Point {
     }
 
     public Vector addVector(Vector vector) {
-        return new Vector(vector.x + this.x, vector.y + this.y);
+        return new Vector(vector.getX() + this.x, vector.getY() + this.y, vector.getZ() + this.z);
     }
 
     public Vector subtractVector(Vector vector) {
-        return new Vector(this.x - vector.x, this.y - vector.y);
+        return new Vector(this.x - vector.getX(), this.y - vector.getY(), this.z - vector.getZ());
     }
 
     @Override
@@ -69,11 +79,12 @@ public class Vector extends Geometry implements Point {
         }
         x = transformedPoint[0];
         y = transformedPoint[1];
+        z = 1;
     }
 
     @Override
-    public boolean contains(Point point) {
-        Vector pointAsVector = new Vector(point.getX(), point.getY());
+    public boolean contains(Vector point) {
+        Vector pointAsVector = new Vector(point.getX(), point.getY(), point.getZ());
         return equals(pointAsVector);
     }
 
@@ -83,11 +94,12 @@ public class Vector extends Geometry implements Point {
         if (o == null || getClass() != o.getClass()) return false;
         Vector vector = (Vector) o;
         return Double.compare(vector.x, x) == 0 &&
-                Double.compare(vector.y, y) == 0;
+                Double.compare(vector.y, y) == 0 &&
+                Double.compare(vector.z, z) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(x, y, z);
     }
 }

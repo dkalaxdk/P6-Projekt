@@ -15,22 +15,41 @@ public class VectorTest {
 
     @BeforeEach
     public void setUp() {
-        vector = new Vector(5,5);
+        vector = new Vector(5,5,1);
     }
 
     @Nested
     public class Products {
 
         @Test
+        public void crossProduct_returns_Number() {
+            Vector testVector = new Vector(2,2,1);
+            assertNotEquals(vector.crossProduct(testVector),0);
+        }
+
+        @Test
+        public void crossProduct_returns_correct_Number() {
+            Vector testVector = new Vector(2,2,1);
+            Vector expectedVector = new Vector(3,-3,0);
+            // Act
+            Vector resultVector = vector.crossProduct(testVector);
+
+            // Assert
+            assertEquals(resultVector.getX(),expectedVector.getX());
+            assertEquals(resultVector.getY(),expectedVector.getY());
+            assertEquals(resultVector.getZ(),expectedVector.getZ());
+        }
+
+        @Test
         public void dotProduct_returns_Number() {
-            Vector testVector = new Vector(3,3);
+            Vector testVector = new Vector(3,3,1);
             assertNotEquals(vector.dotProduct(testVector),0);
         }
 
         @Test
         public void dotProduct_returns_Number_correct_value() {
-            Vector testVector = new Vector(3,3);
-            assertEquals(vector.dotProduct(testVector),30);
+            Vector testVector = new Vector(3,3,1);
+            assertEquals(vector.dotProduct(testVector),31.0);
         }
     }
 
@@ -65,7 +84,7 @@ public class VectorTest {
     public class Operators {
         @Test
         public void addVector_returns_correct_vector_x_correct() {
-            Vector testVector = new Vector(2,2);
+            Vector testVector = new Vector(2,2,1);
 
             //Act
             Vector resultVector = vector.addVector(testVector);
@@ -76,7 +95,7 @@ public class VectorTest {
 
         @Test
         public void addVector_returns_correct_vector_y_correct() {
-            Vector testVector = new Vector(2,2);
+            Vector testVector = new Vector(2,2,1);
 
             //Act
             Vector resultVector = vector.addVector(testVector);
@@ -86,8 +105,19 @@ public class VectorTest {
         }
 
         @Test
-        public void subtractVector_returns_correct_vector_y_correct() {
-            Vector testVector = new Vector(8,8);
+        public void addVector_returns_correct_vector_z_correct() {
+            Vector testVector = new Vector(2,2,1);
+
+            //Act
+            Vector resultVector = vector.addVector(testVector);
+
+            // Assert
+            assertEquals(resultVector.getZ(),2);
+        }
+
+        @Test
+        public void subtractVector_returns_correct_vector_x_correct() {
+            Vector testVector = new Vector(8,8,1);
 
             // Act
             Vector resultVector = vector.subtractVector(testVector);
@@ -96,14 +126,26 @@ public class VectorTest {
         }
 
         @Test
-        public void subtractVector_returns_correct_vector_x_correct() {
-            Vector testVector = new Vector(8,8);
+        public void subtractVector_returns_correct_vector_y_correct() {
+            Vector testVector = new Vector(8,8,1);
 
             // Act
             Vector resultVector = vector.subtractVector(testVector);
 
             assertEquals(resultVector.getX(),5-8);
         }
+
+        @Test
+        public void subtractVector_returns_correct_vector_z_correct() {
+            Vector testVector = new Vector(8,8,1);
+
+            // Act
+            Vector resultVector = vector.subtractVector(testVector);
+
+            assertEquals(resultVector.getZ(),0);
+        }
+
+
 
 
         @Test
@@ -123,6 +165,15 @@ public class VectorTest {
 
             assertEquals(vector.getY(),1);
         }
+
+        @Test
+        public void divideScalar_z_correct() {
+            double scalar = 5;
+            // Act
+            vector.divideProduct(scalar);
+
+            assertEquals(vector.getY(),1);
+        }
     }
 
     @Nested
@@ -134,13 +185,13 @@ public class VectorTest {
 
         @Test
         public void getMagnitude_returns_number_is_correct(){
-            assertEquals(vector.length(),7.0710678118654755);
+            assertEquals(vector.length(),7.14142842854285);
         }
 
         @Test
         public void angle_returns_correct_number(){
-            Vector testVector = new Vector(3,3);
-            assertEquals(vector.angle(testVector),0);
+            Vector testVector = new Vector(3,3,1);
+            assertEquals(vector.angle(testVector),0.09098766221666083);
         }
     }
 
@@ -149,8 +200,8 @@ public class VectorTest {
     public class Transform {
         @Test
         public void transform_ScalesVector() {
-            Vector expected = new Vector(2, 3);
-            Vector testVector = new Vector(1, 1);
+            Vector expected = new Vector(2, 3, 1);
+            Vector testVector = new Vector(1, 1, 1);
             Transformation t = new Transformation();
 
             t.scale(2, 3);
@@ -161,8 +212,8 @@ public class VectorTest {
 
         @Test
         public void transform_RotatesVector() {
-            Vector expected = new Vector(4, -4);
-            Vector testVector = new Vector(4, 4);
+            Vector expected = new Vector(4, -4, 1);
+            Vector testVector = new Vector(4, 4, 1);
             Transformation t = new Transformation();
 
             t.rotate(90);
@@ -173,8 +224,8 @@ public class VectorTest {
 
         @Test
         public void transform_TranslatesVector() {
-            Vector expected = new Vector(3, 4);
-            Vector testVector = new Vector(1, 1);
+            Vector expected = new Vector(3, 4, 1);
+            Vector testVector = new Vector(1, 1, 1);
             Transformation t = new Transformation();
 
             t.translate(2, 3);
