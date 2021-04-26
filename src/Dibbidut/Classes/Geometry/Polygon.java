@@ -50,10 +50,51 @@ public class Polygon extends Geometry{
 
         return new Vector(x, y, z);
     }
-
+    // Adapted from: https://vlecomte.github.io/cp-geo.pdf (page 61-
+    // Checks if the point is contained within the polygon
     @Override
     public boolean contains(Vector point) {
-        return false;
+        int numberOfCrossings = 0;
+        Vector p;
+        Vector q;
+        for (int i = 0; i < coordinates.size(); i++){
+            p = coordinates.get(i);
+            q = coordinates.get((i+1)%coordinates.size());
+            if(onSegment(point, p, q))
+                return false;
+
+            if (crossesRay(point, p, q))
+                numberOfCrossings++;
+        }
+        return numberOfCrossings % 2 == 1;
+    }
+
+    // Source: https://vlecomte.github.io/cp-geo.pdf (page 54)
+    // Checks if point a is in line with the two end points of the segment
+    public boolean onSegment(Vector a, Vector p, Vector q){
+        return orientation(a, p, q) == 0 && inDisk(a, p, q);
+    }
+
+    // Source: https://vlecomte.github.io/cp-geo.pdf (page 54)
+    // Checks if point a is withing the disk with diameter |pq| and which is placed between p and q
+    public boolean inDisk(Vector a, Vector p, Vector q){
+        return p.subtractVector(a).dotProduct(q.subtractVector(a)) <= 0;
+    }
+
+    // Source: https://vlecomte.github.io/cp-geo.pdf (page 61)
+    // Checks if the segment between p and q crosses a line (ray) going out from point a
+    public boolean crossesRay(Vector a, Vector p, Vector q){
+        int n = q.getY() >= a.getY() ? 1 : 0;
+        int m = p.getY() >= a.getY() ? 1 : 0;
+        return (n - m) * orientation(a,p,q) > 0;
+    }
+
+    // Source: https://vlecomte.github.io/cp-geo.pdf (page 40)
+    // Returns a value indicating the orientation of the three vectors compared to each other.
+    public double orientation(Vector a, Vector b, Vector c){
+        Vector temp1 = b.subtractVector(a);
+        Vector temp2 = c.subtractVector(a);
+        return temp1.getX() * temp2.getY() - temp1.getY() * temp2.getX();
     }
 
     public void calculateCenter(){

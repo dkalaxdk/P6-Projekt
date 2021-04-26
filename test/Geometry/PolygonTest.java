@@ -2,6 +2,7 @@ package Geometry;
 
 import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Classes.Geometry.Vector;
+import com.seisw.util.geom.Poly;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -249,7 +250,165 @@ public class PolygonTest {
 
             Vector point = new Vector(4, 4, 1);
 
-            assertTrue(!polygon.contains(point));
+            assertFalse(polygon.contains(point));
+        }
+
+        @Test
+        public void contains_ReturnsFalseWhenPointIsOnSegmentOfPolygon(){
+            ArrayList<Vector> points = new ArrayList<Vector>();
+            points.add(new Vector(1, 1, 1));
+            points.add(new Vector(1, 3, 1));
+            points.add(new Vector(3, 3, 1));
+            points.add(new Vector(3, 1, 1));
+            Polygon polygon = new Polygon(points);
+
+            Vector point = new Vector(3, 2, 1);
+
+            assertFalse(polygon.contains(point));
+        }
+
+        @Test
+        public void contains_ReturnsFalseWhenPointIsInVectorListForPolygon(){
+            ArrayList<Vector> points = new ArrayList<Vector>();
+            points.add(new Vector(1, 1, 1));
+            points.add(new Vector(1, 3, 1));
+            points.add(new Vector(3, 3, 1));
+            points.add(new Vector(3, 1, 1));
+            Polygon polygon = new Polygon(points);
+
+            Vector point = new Vector(1, 1, 1);
+
+            assertFalse(polygon.contains(point));
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.onSegment")
+    class onSegment{
+        @Test
+        public void onSegment_ReturnsTrueWhenPointIsOnSegment(){
+            Polygon polygon = new Polygon(new ArrayList<>());
+            Vector segmentVector1 = new Vector(1, 1, 1);
+            Vector segmentVector2 = new Vector(3, 1, 1);
+
+            Vector point = new Vector(2, 1, 1);
+
+            assertTrue(polygon.onSegment(point, segmentVector1, segmentVector2));
+        }
+
+        @Test
+        public void onSegment_ReturnsFalseWhenPointIsNotOnSegment(){
+            Polygon polygon = new Polygon(new ArrayList<>());
+            Vector segmentVector1 = new Vector(1, 1, 1);
+            Vector segmentVector2 = new Vector(3, 1, 1);
+
+            Vector point = new Vector(2, 2, 1);
+
+            assertFalse(polygon.onSegment(point, segmentVector1, segmentVector2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.inDisk")
+    class inDisk{
+        @Test
+        public void onSegment_ReturnsTrueWhenPointIsInDisk(){
+            Polygon polygon = new Polygon(new ArrayList<>());
+            Vector segmentVector1 = new Vector(1, 1, 1);
+            Vector segmentVector2 = new Vector(3, 1, 1);
+
+            Vector point = new Vector(2, 1, 1);
+
+            assertTrue(polygon.inDisk(point, segmentVector1, segmentVector2));
+        }
+
+        @Test
+        public void onSegment_ReturnsFalseWhenPointIsNotInDisk(){
+            Polygon polygon = new Polygon(new ArrayList<>());
+            Vector segmentVector1 = new Vector(1, 1, 1);
+            Vector segmentVector2 = new Vector(3, 1, 1);
+
+            Vector point = new Vector(3, 3, 1);
+
+            assertFalse(polygon.inDisk(point, segmentVector1, segmentVector2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.crossesRay")
+    class crossesRay{
+        @Test
+        public void crossesRay_ReturnsTrueWhenRayCrossesSegment(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 2, 1);
+            Vector p2 = new Vector(2, 0, 1);
+
+            assertTrue(polygon.crossesRay(a, p1, p2));
+        }
+
+        @Test
+        public void crossesRay_ReturnsTrueWhenRayCrossesSegment_UpperPointInSegmentOnRay(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 1, 1);
+            Vector p2 = new Vector(2, 0, 1);
+
+            assertTrue(polygon.crossesRay(a, p1, p2));
+        }
+
+        @Test
+        public void crossesRay_ReturnsFalseWhenRayDoesNotCrossSegment(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(0, 2, 1);
+            Vector p2 = new Vector(0, 0, 1);
+
+            assertTrue(!polygon.crossesRay(a, p1, p2));
+        }
+
+        @Test
+        public void crossesRay_ReturnsFalseWhenRayCrossesSegment_LowerPointInSegmentOnRay(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 2, 1);
+            Vector p2 = new Vector(2, 1, 1);
+
+            assertTrue(!polygon.crossesRay(a, p1, p2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.orientation")
+    class orientation{
+        @Test
+        public void orientation_ReturnsZeroWhenPointsAreOnALine(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 2, 1);
+            Vector p2 = new Vector(3, 3, 1);
+
+            assertEquals(0, polygon.orientation(a, p1, p2));
+        }
+
+        @Test
+        public void orientation_ReturnsPositiveValueWhenLeftTurnOrientation(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 0, 1);
+            Vector p2 = new Vector(2, 2, 1);
+
+            assertTrue(polygon.orientation(a, p1, p2) > 0);
+        }
+
+        @Test
+        public void orientation_ReturnsNegativeValueWhenRightTurnOrientation(){
+            Polygon polygon = new Polygon(new ArrayList<Vector>());
+            Vector a = new Vector(1, 1, 1);
+            Vector p1 = new Vector(2, 2, 1);
+            Vector p2 = new Vector(2, 0, 1);
+
+            assertTrue(polygon.orientation(a, p1, p2) < 0);
         }
     }
 }
