@@ -17,34 +17,34 @@ public class EllipseTest {
     public class contains{
         @Test
         public void contains_returnsTrueIfPointIsWithinEllipse() {
-            Ellipse ellipse = new Ellipse(new Vector(0, 0), 2, 1);
+            Ellipse ellipse = new Ellipse(new Vector(0, 0, 1), 2, 1);
 
-            assertTrue(ellipse.contains(new Vector(1, 0.5)));
-            assertTrue(ellipse.contains(new Vector(-1, -0.5)));
-            assertTrue(ellipse.contains(new Vector(1.5, 0.6)));
-            assertTrue(ellipse.contains(new Vector(0, -0.9)));
-            assertTrue(ellipse.contains(new Vector(1.9, 0)));
+            assertTrue(ellipse.contains(new Vector(1, 0.5, 1)));
+            assertTrue(ellipse.contains(new Vector(-1, -0.5, 1)));
+            assertTrue(ellipse.contains(new Vector(1.5, 0.6, 1)));
+            assertTrue(ellipse.contains(new Vector(0, -0.9, 1)));
+            assertTrue(ellipse.contains(new Vector(1.9, 0, 1)));
         }
 
         @Test
         public void contains_returnsFalseIfPointIsOutsideEllipse() {
-            Ellipse ellipse = new Ellipse(new Vector(0, 0), 2, 1);
+            Ellipse ellipse = new Ellipse(new Vector(0, 0, 1), 2, 1);
 
-            assertFalse(ellipse.contains(new Vector(2.1, 0)));
-            assertFalse(ellipse.contains(new Vector(0, -1.1)));
-            assertFalse(ellipse.contains(new Vector(2, 2)));
-            assertFalse(ellipse.contains(new Vector(1.5, 1.5)));
-            assertFalse(ellipse.contains(new Vector(1, 1.2)));
+            assertFalse(ellipse.contains(new Vector(2.1, 0, 1)));
+            assertFalse(ellipse.contains(new Vector(0, -1.1, 1)));
+            assertFalse(ellipse.contains(new Vector(2, 2, 1)));
+            assertFalse(ellipse.contains(new Vector(1.5, 1.5, 1)));
+            assertFalse(ellipse.contains(new Vector(1, 1.2, 1)));
         }
 
         @Test
         public void contains_returnsTrueIfPointIsOnBorderOfEllipse() {
-            Ellipse ellipse = new Ellipse(new Vector(0, 0), 2, 1);
+            Ellipse ellipse = new Ellipse(new Vector(0, 0, 1), 2, 1);
 
-            assertTrue(ellipse.contains(new Vector(2, 0)));
-            assertTrue(ellipse.contains(new Vector(-2, 0)));
-            assertTrue(ellipse.contains(new Vector(0, 0.5)));
-            assertTrue(ellipse.contains(new Vector(0, -0.5)));
+            assertTrue(ellipse.contains(new Vector(2, 0, 1)));
+            assertTrue(ellipse.contains(new Vector(-2, 0, 1)));
+            assertTrue(ellipse.contains(new Vector(0, 0.5, 1)));
+            assertTrue(ellipse.contains(new Vector(0, -0.5, 1)));
         }
     }
 
@@ -70,7 +70,7 @@ public class EllipseTest {
     public class transform {
         @Test
         public void transform_transformsEllipseCenter() {
-            Ellipse ellipse = new Ellipse(new Vector(0,0), 10, 8);
+            Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
             t.translate(2, 2.5);
             t.scale(0.5, 0.5);
@@ -78,12 +78,12 @@ public class EllipseTest {
 
             ellipse.transform(t);
 
-            assertEquals(new Vector(2, 2.5), ellipse.getCenter());
+            assertEquals(new Vector(2, 2.5, 1), ellipse.getCenter());
         }
 
         @Test
         public void transform_transformedEllipseContainsPointsOnAxis() {
-            Ellipse ellipse = new Ellipse(new Vector(0,0), 10, 8);
+            Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
             t.translate(2, 2.5);
             t.scale(0.5, 0.5);
@@ -91,13 +91,13 @@ public class EllipseTest {
 
             ellipse.transform(t);
 
-            assertTrue(ellipse.contains(new Vector(2, -2.5)));
-            assertTrue(ellipse.contains(new Vector(6, 2.5)));
+            assertTrue(ellipse.contains(new Vector(2, -2.5, 1)));
+            assertTrue(ellipse.contains(new Vector(6, 2.5, 1)));
         }
 
         @Test
         public void transform_transformedEllipseDoesNotContainPointsOutsideBorder() {
-            Ellipse ellipse = new Ellipse(new Vector(0,0), 10, 8);
+            Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
             t.translate(2, 2.5);
             t.scale(0.5, 0.5);
@@ -105,8 +105,8 @@ public class EllipseTest {
 
             ellipse.transform(t);
 
-            assertFalse(ellipse.contains(new Vector(2, -2.6)));
-            assertFalse(ellipse.contains(new Vector(6.2, 2.5)));
+            assertFalse(ellipse.contains(new Vector(2, -2.6, 1)));
+            assertFalse(ellipse.contains(new Vector(6.2, 2.5, 1)));
         }
 
         /*
@@ -135,21 +135,10 @@ public class EllipseTest {
     public class getCenter {
         @Test
         public void getCenter_returnsCenterOfEllipse() {
-            Ellipse ellipse = new Ellipse(new Vector(5, 7), 1, 1);
-            Vector expected = new Vector(5, 7);
+            Ellipse ellipse = new Ellipse(new Vector(5, 7, 1), 1, 1);
+            Vector expected = new Vector(5, 7, 1);
 
             assertEquals(expected, ellipse.getCenter());
         }
     }
-
-    @Test
-    public void getWidth() {
-
-    }
-
-    @Test
-    public void getHeight() {
-
-    }
-
 }

@@ -52,7 +52,7 @@ public class Polygon extends Geometry{
     }
 
     @Override
-    public boolean contains(Point point) {
+    public boolean contains(Vector point) {
         return false;
     }
 

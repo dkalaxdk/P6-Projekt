@@ -33,7 +33,7 @@ public class GeometryTest {
         }
 
         @Override
-        public boolean contains(Point point) {
+        public boolean contains(Vector point) {
             return false;
         }
     }
