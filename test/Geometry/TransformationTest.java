@@ -16,6 +16,32 @@ public class TransformationTest {
     }
 
     @Nested
+    @DisplayName("Transformation Constructor")
+    public class Constructor {
+        @Test
+        public void Constructor_defaultCreatesIdentityMatrix() {
+            double [][] expected = {
+                    {1, 0, 0}, {0, 1, 0}, {0, 0, 1}
+            };
+
+            Transformation t = new Transformation();
+
+            assertMatrixEquals(expected, t.get());
+        }
+
+        @Test
+        public void Constructor_givenTransformationCopiesMatrix() {
+            Transformation expected = new Transformation();
+            expected.translate(2, 3);
+            expected.rotate(90);
+
+            Transformation t = new Transformation(expected);
+
+            assertMatrixEquals(expected.get(), t.get());
+        }
+    }
+
+    @Nested
     @DisplayName("Transformation.rotate")
     public class Rotate {
         @Test
@@ -97,7 +123,7 @@ public class TransformationTest {
         @Test
         public void Transformation_correctlyChainsRotateThenTranslate() {
             double [][] expected = {
-                    {0, -1, 0}, {1, 0, 0}, {3, -2, 1}
+                    {0, -1, 0}, {1, 0, 0}, {2, 3, 1}
             };
 
             Transformation t = new Transformation();
@@ -110,12 +136,44 @@ public class TransformationTest {
         @Test
         public void Transformation_correctlyChainsTranslateThenRotate() {
             double [][] expected = {
-                    {0, -1, 0}, {1, 0, 0}, {2, 3, 1}
+                    {0, -1, 0}, {1, 0, 0}, {3, -2, 1}
             };
 
             Transformation t = new Transformation();
             t.translate(2, 3);
             t.rotate(90);
+
+            assertMatrixEquals(expected, t.get());
+        }
+    }
+
+    @Nested
+    @DisplayName("Transformation.Add")
+    public class add {
+        @Test
+        public void Add_correctlyAddAnotherTransformation() {
+            double [][] expected = {
+                    {0, -1, 0}, {1, 0, 0}, {2, 3, 1}
+            };
+
+            Transformation t = new Transformation();
+            t.rotate(90);
+            Transformation other = new Transformation();
+            other.translate(2, 3);
+
+            t.add(other);
+
+            assertMatrixEquals(expected, t.get());
+        }
+
+        @Test
+        public void Add_emptyTransformDoesNotChangeMatrix() {
+            double [][] expected = {
+                    {1, 0, 0}, {0, 1, 0}, {0, 0, 1}
+            };
+
+            Transformation t = new Transformation();
+            t.add(new Transformation());
 
             assertMatrixEquals(expected, t.get());
         }

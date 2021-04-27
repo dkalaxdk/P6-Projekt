@@ -7,46 +7,44 @@ public class Transformation {
     // 3x3 matrix for homogeneous coordinates
     // Each column is a vector
     private double[][] matrix;
-    private boolean firstTransform = true;
     private double rotation = 0;
 
     public Transformation() {
-        matrix = new double[3][3];
+        matrix = new double[][] {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
     }
 
-    public void rotate(double degrees) {
-        double radians = degreesToRadians(degrees);
+    public Transformation(Transformation t) {
+        matrix = t.get();
+    }
+
+    public Transformation rotate(double degrees) {
+        double radians = Math.toRadians(-degrees);
         rotation += radians;
         setMatrix(new double[][] {
-                {Math.cos(radians), -Math.sin(radians), 0},
-                {Math.sin(radians), Math.cos(radians), 0},
+                {Math.cos(radians), Math.sin(radians), 0},
+                {-Math.sin(radians), Math.cos(radians), 0},
                 {0, 0, 1}
         });
+        return this;
     }
 
-    private double degreesToRadians(double degrees) {
-        return degrees * Math.PI/180;
-    }
-
-    public void scale(double width, double height) {
+    public Transformation scale(double width, double height) {
         setMatrix(new double[][] {
                 {width, 0, 0}, {0, height, 0}, {0, 0, 1}
         });
+        return this;
     }
 
-    public void translate(double x, double y) {
+    public Transformation translate(double x, double y) {
         setMatrix(new double[][]{
                 {1, 0, 0}, {0, 1, 0}, {x, y, 1}
         });
+        return this;
     }
 
     private void setMatrix(double[][] value) {
-        if(firstTransform) {
-            matrix = value;
-            firstTransform = false;
-        }
-        else
-            matrix = multiplyMatrix(matrix, value);
+        // Possible that the order of the matrices are wrong
+        matrix = multiplyMatrix(value, matrix);
     }
 
     private double[][] multiplyMatrix(double[][] matrixOne, double[][] matrixTwo) {
@@ -77,5 +75,10 @@ public class Transformation {
 
     public double getRotation() {
         return rotation;
+    }
+
+    public Transformation add(Transformation t) {
+        setMatrix(t.get());
+        return this;
     }
 }

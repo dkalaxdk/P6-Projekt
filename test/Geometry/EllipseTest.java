@@ -71,9 +71,9 @@ public class EllipseTest {
         public void transform_transformsEllipseCenter() {
             Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
-            t.translate(2, 2.5);
-            t.scale(0.5, 0.5);
             t.rotate(90);
+            t.scale(0.5, 0.5);
+            t.translate(2, 2.5);
 
             ellipse.transform(t);
 
@@ -84,9 +84,9 @@ public class EllipseTest {
         public void transform_transformedEllipseContainsPointsOnAxis() {
             Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
-            t.translate(2, 2.5);
-            t.scale(0.5, 0.5);
             t.rotate(90);
+            t.scale(0.5, 0.5);
+            t.translate(2, 2.5);
 
             ellipse.transform(t);
 
@@ -98,9 +98,10 @@ public class EllipseTest {
         public void transform_transformedEllipseDoesNotContainPointsOutsideBorder() {
             Ellipse ellipse = new Ellipse(new Vector(0,0, 1), 10, 8);
             Transformation t = new Transformation();
-            t.translate(2, 2.5);
-            t.scale(0.5, 0.5);
             t.rotate(90);
+            t.scale(0.5, 0.5);
+            t.translate(2, 2.5);
+
 
             ellipse.transform(t);
 
