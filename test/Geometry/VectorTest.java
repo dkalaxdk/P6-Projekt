@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -232,6 +234,33 @@ public class VectorTest {
             testVector.transform(t);
 
             assertEquals(expected, testVector);
+        }
+    }
+
+    @Nested
+    @DisplayName("Vector.compareTo")
+    class compareTo{
+        @Test
+        public void compareTo_ReturnsZeroWhenVectorComparedToItSelf(){
+            Vector vector1 = new Vector(-1, 0, 1);
+
+            assertEquals(0, vector1.compareTo(vector1));
+        }
+
+        @Test
+        public void compareTo_ReturnsPositiveWhenComparingToVectorCloserToStartingPoint(){
+            Vector vector1 = new Vector(0, 1, 1);
+            Vector vector2 = new Vector(-1, 1, 1);
+
+            assertTrue(vector1.compareTo(vector2) > 0);
+        }
+
+        @Test
+        public void compareTo_ReturnsNegativeWhenComparingToVectorFartherFromStartingPoint(){
+            Vector vector1 = new Vector(0, 1, 1);
+            Vector vector2 = new Vector(-1, 1, 1);
+
+            assertTrue(vector2.compareTo(vector1) < 0);
         }
     }
 }

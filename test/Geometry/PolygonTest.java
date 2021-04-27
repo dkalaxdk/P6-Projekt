@@ -411,4 +411,124 @@ public class PolygonTest {
             assertTrue(polygon.orientation(a, p1, p2) < 0);
         }
     }
+
+    @Nested
+    @DisplayName("Polygon.addPolygon")
+    class addPolygon{
+        @Test
+        public void addPolygon_ReturnsCorrectPolygonWhenAddingAPolygonToItself(){
+            ArrayList<Vector> points = new ArrayList<Vector>();
+            points.add(new Vector(1, 1, 1));
+            points.add(new Vector(1, 3, 1));
+            points.add(new Vector(3, 3, 1));
+            points.add(new Vector(3, 1, 1));
+            Polygon polygon = new Polygon(points);
+
+            Polygon result = polygon.addPolygon(polygon);
+
+            assertEquals(4, result.coordinates.size());
+
+            assertEquals(0, result.coordinates.get(0).getX());
+            assertEquals(0, result.coordinates.get(0).getY());
+
+            assertEquals(0, result.coordinates.get(1).getX());
+            assertEquals(4, result.coordinates.get(1).getY());
+
+            assertEquals(4, result.coordinates.get(2).getX());
+            assertEquals(4, result.coordinates.get(2).getY());
+
+            assertEquals(4, result.coordinates.get(3).getX());
+            assertEquals(0, result.coordinates.get(3).getY());
+        }
+
+        @Test
+        public void addPolygon_ReturnsCorrectPolygonWhenAddingTwoPolygonsOnTopOfEachOtherWithDifferentOrientations(){
+            ArrayList<Vector> points1 = new ArrayList<Vector>();
+            points1.add(new Vector(1, 1, 1));
+            points1.add(new Vector(1, 3, 1));
+            points1.add(new Vector(3, 3, 1));
+            points1.add(new Vector(3, 1, 1));
+            Polygon polygon1 = new Polygon(points1);
+
+            ArrayList<Vector> points2 = new ArrayList<Vector>();
+            points2.add(new Vector(0, 2, 1));
+            points2.add(new Vector(2, 4, 1));
+            points2.add(new Vector(4, 2, 1));
+            points2.add(new Vector(2, 0, 1));
+            Polygon polygon2 = new Polygon(points2);
+
+            Polygon result = polygon1.addPolygon(polygon2);
+
+            assertEquals(8, result.coordinates.size());
+
+            assertEquals(0, result.coordinates.get(0).getX());
+            assertEquals(0, result.coordinates.get(0).getY());
+
+            assertEquals(-1, result.coordinates.get(1).getX());
+            assertEquals(2, result.coordinates.get(1).getY());
+
+            assertEquals(0, result.coordinates.get(2).getX());
+            assertEquals(4, result.coordinates.get(2).getY());
+
+            assertEquals(2, result.coordinates.get(3).getX());
+            assertEquals(5, result.coordinates.get(3).getY());
+
+            assertEquals(4, result.coordinates.get(4).getX());
+            assertEquals(4, result.coordinates.get(4).getY());
+
+            assertEquals(5, result.coordinates.get(5).getX());
+            assertEquals(2, result.coordinates.get(5).getY());
+
+            assertEquals(0, result.coordinates.get(6).getX());
+            assertEquals(4, result.coordinates.get(6).getY());
+
+            assertEquals(2, result.coordinates.get(7).getX());
+            assertEquals(-1, result.coordinates.get(7).getY());
+        }
+
+        @Test
+        public void addPolygon_ReturnsCorrectPolygonWhenAddingTwoPolygonsNotTouchingEachOtherWithDifferentOrientations(){
+            ArrayList<Vector> points1 = new ArrayList<Vector>();
+            points1.add(new Vector(1, 1, 1));
+            points1.add(new Vector(1, 3, 1));
+            points1.add(new Vector(3, 3, 1));
+            points1.add(new Vector(3, 1, 1));
+            Polygon polygon1 = new Polygon(points1);
+
+            ArrayList<Vector> points2 = new ArrayList<Vector>();
+            points2.add(new Vector(4, 4, 1));
+            points2.add(new Vector(5, 5, 1));
+            points2.add(new Vector(6, 4, 1));
+            points2.add(new Vector(5, 3, 1));
+            Polygon polygon2 = new Polygon(points2);
+
+            Polygon result = polygon1.addPolygon(polygon2);
+
+            assertEquals(8, result.coordinates.size());
+
+            assertEquals(0.5, result.coordinates.get(0).getX());
+            assertEquals(0.5, result.coordinates.get(0).getY());
+
+            assertEquals(0, result.coordinates.get(1).getX());
+            assertEquals(2, result.coordinates.get(1).getY());
+
+            assertEquals(0.5, result.coordinates.get(2).getX());
+            assertEquals(3.5, result.coordinates.get(2).getY());
+
+            assertEquals(2, result.coordinates.get(3).getX());
+            assertEquals(4, result.coordinates.get(3).getY());
+
+            assertEquals(3.5, result.coordinates.get(4).getX());
+            assertEquals(3.5, result.coordinates.get(4).getY());
+
+            assertEquals(4, result.coordinates.get(5).getX());
+            assertEquals(2, result.coordinates.get(5).getY());
+
+            assertEquals(0.5, result.coordinates.get(6).getX());
+            assertEquals(3.5, result.coordinates.get(6).getY());
+
+            assertEquals(2, result.coordinates.get(7).getX());
+            assertEquals(0, result.coordinates.get(7).getY());
+        }
+    }
 }

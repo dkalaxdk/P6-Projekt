@@ -1,6 +1,7 @@
 package Dibbidut.Classes.Geometry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Polygon extends Geometry{
 
@@ -117,5 +118,27 @@ public class Polygon extends Geometry{
 
             center = new Vector(x/count, y/count, z/count);
         }
+    }
+
+    public Polygon addPolygon(Polygon polygon){
+        ArrayList<Vector> newCoordinates = new ArrayList<>();
+
+        for (Vector vector : this.coordinates){
+            Vector relativeVector = vector.subtractVector(this.center);
+            newCoordinates.add(calculateNewPoint(relativeVector, polygon));
+        }
+
+        for (Vector vector : polygon.coordinates){
+            Vector relativeVector = vector.subtractVector(polygon.center);
+            newCoordinates.add(calculateNewPoint(relativeVector, this));
+        }
+
+        Collections.sort(newCoordinates);
+
+        return new Polygon (newCoordinates);
+    }
+
+    public Vector calculateNewPoint(Vector vector, Polygon polygon){
+        return new Vector(1, 1, 1);
     }
 }

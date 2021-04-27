@@ -3,7 +3,7 @@ package Dibbidut.Classes.Geometry;
 
 import java.util.Objects;
 
-public class Vector extends Geometry {
+public class Vector extends Geometry implements Comparable {
 
     private double x;
     private double y;
@@ -101,5 +101,11 @@ public class Vector extends Geometry {
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
+    }
+
+    @Override
+    public int compareTo(Object vector) {
+        Vector startingPoint = new Vector(-1, 0, 1);
+        return (int)(startingPoint.angle(this) - startingPoint.angle((Vector)vector));
     }
 }
