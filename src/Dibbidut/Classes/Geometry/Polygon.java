@@ -33,12 +33,12 @@ public class Polygon extends Geometry{
                 .add(transformation)
                 .add(fromCenter);
 
-        ArrayList<Vector> copiedCoordinates = new ArrayList<>(copyVectorList(coordinates));
+        ArrayList<HPoint> copiedCoordinates = new ArrayList<>(copyHPointList(coordinates));
 
         // Performs the transformation
-        for(Vector vector : copiedCoordinates) {
-            vector.transform(t);
-            newCoordinates.add(vector);
+        for(HPoint point : copiedCoordinates) {
+            point.transform(t);
+            newCoordinates.add(point);
         }
 
         coordinates = newCoordinates;
