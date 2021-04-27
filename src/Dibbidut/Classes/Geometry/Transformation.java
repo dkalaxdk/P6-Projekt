@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 
 public class Transformation {
     // 3x3 matrix for homogeneous coordinates
-    // Each column is a vector
+    // Each column is a point
     private double[][] matrix;
     private boolean firstTransform = true;
     private double rotation = 0;

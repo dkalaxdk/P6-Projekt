@@ -3,16 +3,22 @@ package Dibbidut.Classes.Geometry;
 
 import java.util.Objects;
 
-public class Vector extends Geometry implements Comparable {
+public class HPoint extends Geometry implements Comparable {
 
     private double x;
     private double y;
     private double z;
 
-    public Vector(double x, double y, double z) {
+    public HPoint(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public HPoint(double x, double y) {
+        this.x = x;
+        this.y = y;
+        this.z = 1;
     }
 
     public double getX() {
@@ -27,20 +33,20 @@ public class Vector extends Geometry implements Comparable {
         return z;
     }
 
-    public double dotProduct(Vector vector) {
-        return vector.getX() * this.x + vector.getY() * this.y + this.z * vector.getZ();
+    public double dotProduct(HPoint point) {
+        return point.getX() * this.x + point.getY() * this.y;
     }
 
-    public Vector crossProduct(Vector vector) {
-        return new Vector(this.y * vector.getZ() - this.z * vector.getY(), this.z * vector.getX() - this.x * vector.z, this.x * vector.getY() - this.y * vector.getX());
+    public double crossProduct(HPoint point) {
+        return this.x * point.getY() - this.y * point.getX();
     }
 
     public double length() {
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
-    public double angle(Vector vector) {
-        return Math.acos(dotProduct(vector) / (this.length() * vector.length()));
+    public double angle(HPoint point) {
+        return Math.acos(dotProduct(point) / (this.length() * point.length()));
     }
 
     public void scaleProduct(double scalar) {
@@ -54,12 +60,12 @@ public class Vector extends Geometry implements Comparable {
         this.y = this.y / scalar;
     }
 
-    public Vector addVector(Vector vector) {
-        return new Vector(vector.getX() + this.x, vector.getY() + this.y, vector.getZ() + this.z);
+    public HPoint add(HPoint point) {
+        return new HPoint(point.getX() + this.x, point.getY() + this.y, point.getZ() + this.z);
     }
 
-    public Vector subtractVector(Vector vector) {
-        return new Vector(this.x - vector.getX(), this.y - vector.getY(), this.z - vector.getZ());
+    public HPoint subtract(HPoint point) {
+        return new HPoint(this.x - point.getX(), this.y - point.getY(), this.z - point.getZ());
     }
 
     @Override
@@ -73,7 +79,7 @@ public class Vector extends Geometry implements Comparable {
             // However should anyone ask, it is optimised using loop unrolling
             res += matrix[0][col] * x;
             res += matrix[1][col] * y;
-            res += matrix[2][col] * 1; // Faked 3rd dimension of the vector
+            res += matrix[2][col] * 1; // Faked 3rd dimension of the point
 
             transformedPoint[col] = res;
         }
@@ -83,19 +89,19 @@ public class Vector extends Geometry implements Comparable {
     }
 
     @Override
-    public boolean contains(Vector point) {
-        Vector pointAsVector = new Vector(point.getX(), point.getY(), point.getZ());
-        return equals(pointAsVector);
+    public boolean contains(HPoint point) {
+        HPoint pointAsHPoint = new HPoint(point.getX(), point.getY(), point.getZ());
+        return equals(pointAsHPoint);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vector vector = (Vector) o;
-        return Double.compare(vector.x, x) == 0 &&
-                Double.compare(vector.y, y) == 0 &&
-                Double.compare(vector.z, z) == 0;
+        HPoint point = (HPoint) o;
+        return Double.compare(point.x, x) == 0 &&
+                Double.compare(point.y, y) == 0 &&
+                Double.compare(point.z, z) == 0;
     }
 
     @Override
@@ -104,8 +110,8 @@ public class Vector extends Geometry implements Comparable {
     }
 
     @Override
-    public int compareTo(Object vector) {
-        Vector startingPoint = new Vector(-1, 0, 1);
-        return (int)(startingPoint.angle(this) - startingPoint.angle((Vector)vector));
+    public int compareTo(Object point) {
+        HPoint startingPoint = new HPoint(-1, 0, 1);
+        return (int)(startingPoint.angle(this) - startingPoint.angle((HPoint)point));
     }
 }

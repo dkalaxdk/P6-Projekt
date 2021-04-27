@@ -1,9 +1,7 @@
 package Dibbidut.Classes;
 
-import Dibbidut.Classes.Geometry.Geometry;
 import Dibbidut.Classes.Geometry.Polygon;
-import Dibbidut.Classes.Geometry.Vector;
-import Dibbidut.Interfaces.IDisplay;
+import Dibbidut.Classes.Geometry.HPoint;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
@@ -230,7 +228,7 @@ public class Display extends JPanel {
     private Path2D drawPentagonDomain(Ship ship) {
         Path2D outputShape = new Path2D.Double();
         Polygon domain = (Polygon) ship.domain.getDomain();
-        ArrayList<Vector> coordinates = domain.coordinates;
+        ArrayList<HPoint> coordinates = domain.coordinates;
         // P5
         outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
         // P4
