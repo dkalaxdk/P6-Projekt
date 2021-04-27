@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import Dibbidut.Classes.Geometry.Ellipse;
 import Dibbidut.Classes.Geometry.Geometry;
-import Dibbidut.Classes.Geometry.Vector;
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Ship;
 import Dibbidut.Classes.ShipDomain;
 import Dibbidut.Classes.VelocityObstacle;
@@ -33,7 +33,7 @@ public class VelocityObstacleTest {
                     radius, radius
             );
              */
-            domain = new Ellipse(new Vector(position.x(), position.y(), 1), radius, radius);
+            domain = new Ellipse(new HPoint(position.x(), position.y(), 1), radius, radius);
         }
         // Not needed for these tests
         @Override
