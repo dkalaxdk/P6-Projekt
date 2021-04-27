@@ -49,23 +49,22 @@ public class HPoint extends Geometry implements Comparable {
         return Math.acos(dotProduct(point) / (this.length() * point.length()));
     }
 
-    public void scaleProduct(double scalar) {
+    public void scale(double scalar) {
         this.x = this.x * scalar;
         this.y = this.y * scalar;
-        this.z = this.z * scalar;
     }
 
-    public void divideProduct(double scalar) {
+    public void divide(double scalar) {
         this.x = this.x / scalar;
         this.y = this.y / scalar;
     }
 
     public HPoint add(HPoint point) {
-        return new HPoint(point.getX() + this.x, point.getY() + this.y, point.getZ() + this.z);
+        return new HPoint(point.getX() + this.x, point.getY() + this.y);
     }
 
     public HPoint subtract(HPoint point) {
-        return new HPoint(this.x - point.getX(), this.y - point.getY(), this.z - point.getZ());
+        return new HPoint(this.x - point.getX(), this.y - point.getY());
     }
 
     @Override
@@ -90,8 +89,7 @@ public class HPoint extends Geometry implements Comparable {
 
     @Override
     public boolean contains(HPoint point) {
-        HPoint pointAsHPoint = new HPoint(point.getX(), point.getY(), point.getZ());
-        return equals(pointAsHPoint);
+        return equals(point);
     }
 
     @Override

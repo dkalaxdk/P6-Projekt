@@ -50,7 +50,7 @@ public class HPointTest {
     @DisplayName("HPoint.length")
     class length {
         @Test
-        public void length_ReturnsCorrestValue(){
+        public void length_ReturnsCorrectValue(){
             HPoint HPoint = new HPoint(1, 0);
             assertEquals(1, HPoint.length());
         }
@@ -66,38 +66,86 @@ public class HPointTest {
 
             assertEquals(Math.toRadians(90), HPoint1.angle(HPoint2));
         }
+
+        @Test
+        public void angle_returns_correct_number(){
+            HPoint testHPoint = new HPoint(3,3,1);
+            assertEquals(0, HPoint.angle(testHPoint));
+        }
     }
 
 
     @Nested
-    public class Transformations {
+    @DisplayName("HPoint.scale")
+    public class scale {
         @Test
-        public void scaleProduct_length_is_scaled() {
+        public void scale_length_is_scaled() {
             double startingValue = HPoint.length();
             // Act
-            HPoint.scaleProduct(2);
+            HPoint.scale(2);
             assertEquals(startingValue*2, HPoint.length());
         }
 
         @Test
-        public void scaleProduct_x_is_scaled() {
+        public void scale_x_is_scaled() {
             double startingValue = HPoint.getX();
             // Act
-            HPoint.scaleProduct(2);
+            HPoint.scale(2);
             assertEquals(startingValue*2, HPoint.getX());
         }
 
         @Test
-        public void scaleProduct_y_is_scaled() {
+        public void scale_y_is_scaled() {
             double startingValue = HPoint.getY();
             // Act
-            HPoint.scaleProduct(2);
+            HPoint.scale(2);
             assertEquals(startingValue*2, HPoint.getY());
+        }
+
+        @Test
+        public void scale_z_is_scaled() {
+            HPoint.scale(2);
+            assertEquals(1, HPoint.getZ());
         }
     }
 
     @Nested
-    public class Operators {
+    @DisplayName("HPoint.divide")
+    public class divide {
+        @Test
+        public void divide_length_is_divided() {
+            double startingValue = HPoint.length();
+            // Act
+            HPoint.divide(2);
+            assertEquals(startingValue/2, HPoint.length());
+        }
+
+        @Test
+        public void divide_x_is_divided() {
+            double startingValue = HPoint.getX();
+            // Act
+            HPoint.divide(2);
+            assertEquals(startingValue/2, HPoint.getX());
+        }
+
+        @Test
+        public void divide_y_is_divided() {
+            double startingValue = HPoint.getY();
+            // Act
+            HPoint.divide(2);
+            assertEquals(startingValue/2, HPoint.getY());
+        }
+
+        @Test
+        public void divide_z_is_divided() {
+            HPoint.divide(2);
+            assertEquals(1, HPoint.getZ());
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.add")
+    class add{
         @Test
         public void add_returns_correct_HPoint_x_correct() {
             HPoint testHPoint = new HPoint(2,2,1);
@@ -128,86 +176,41 @@ public class HPointTest {
             HPoint resultHPoint = HPoint.add(testHPoint);
 
             // Assert
-            assertEquals(resultHPoint.getZ(),2);
-        }
-
-        @Test
-        public void subtractHPoint_returns_correct_HPoint_x_correct() {
-            HPoint testHPoint = new HPoint(8,8,1);
-
-            // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
-
-            assertEquals(resultHPoint.getX(),5-8);
-        }
-
-        @Test
-        public void subtractHPoint_returns_correct_HPoint_y_correct() {
-            HPoint testHPoint = new HPoint(8,8,1);
-
-            // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
-
-            assertEquals(resultHPoint.getX(),5-8);
-        }
-
-        @Test
-        public void subtractHPoint_returns_correct_HPoint_z_correct() {
-            HPoint testHPoint = new HPoint(8,8,1);
-
-            // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
-
-            assertEquals(resultHPoint.getZ(),0);
-        }
-
-
-
-
-        @Test
-        public void divideScalar_x_correct() {
-            double scalar = 5;
-            // Act
-            HPoint.divideProduct(scalar);
-
-            assertEquals(HPoint.getX(),1);
-        }
-
-        @Test
-        public void divideScalar_y_correct() {
-            double scalar = 5;
-            // Act
-            HPoint.divideProduct(scalar);
-
-            assertEquals(HPoint.getY(),1);
-        }
-
-        @Test
-        public void divideScalar_z_correct() {
-            double scalar = 5;
-            // Act
-            HPoint.divideProduct(scalar);
-
-            assertEquals(HPoint.getY(),1);
+            assertEquals(1, resultHPoint.getZ());
         }
     }
 
     @Nested
-    public class HPointInformation {
+    @DisplayName("HPoint.subtract")
+    public class subtract {
         @Test
-        public void getMagnitude_returns_number(){
-            assertNotEquals(HPoint.length(),0);
+        public void subtractHPoint_returns_correct_HPoint_x_correct() {
+            HPoint testHPoint = new HPoint(8, 8, 1);
+
+            // Act
+            HPoint resultHPoint = HPoint.subtract(testHPoint);
+
+            assertEquals(5 - 8, resultHPoint.getX());
         }
 
         @Test
-        public void getMagnitude_returns_number_is_correct(){
-            assertEquals(HPoint.length(),7.14142842854285);
+        public void subtractHPoint_returns_correct_HPoint_y_correct() {
+            HPoint testHPoint = new HPoint(8, 8, 1);
+
+            // Act
+            HPoint resultHPoint = HPoint.subtract(testHPoint);
+
+            assertEquals(5 - 8, resultHPoint.getX());
         }
 
         @Test
-        public void angle_returns_correct_number(){
-            HPoint testHPoint = new HPoint(3,3,1);
-            assertEquals(HPoint.angle(testHPoint),0.09098766221666083);
+        public void subtractHPoint_returns_correct_HPoint_z_correct() {
+            HPoint testHPoint = new HPoint(8, 8, 1);
+
+            // Act
+            HPoint resultHPoint = HPoint.subtract(testHPoint);
+
+            assertEquals(1, resultHPoint.getZ());
         }
     }
 
