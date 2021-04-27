@@ -9,12 +9,12 @@ import java.util.Hashtable;
 
 public class UpdateShipHandler extends ShipHandler {
 
-    public UpdateShipHandler(Ship myShip, AISData data, AISData oldData, double ownShipLongitude, Hashtable<String, String> warnings) {
-        super(myShip, data, oldData, ownShipLongitude, warnings);
+    public UpdateShipHandler(Ship myShip, AISData data, AISData oldData, Hashtable<String, String> warnings) {
+        super(myShip, data, oldData, warnings);
     }
 
     public UpdateShipHandler() {
-        super(null, null, null, 0, null);
+        super(null, null, null, null);
     }
 
     public int HandleMMSI() {
@@ -24,8 +24,18 @@ public class UpdateShipHandler extends ShipHandler {
     public int HandleHeading() {
 
         if (!data.headingIsSet && !oldData.headingIsSet) {
-            warnings.put("Heading", "Heading unknown, using 0 degrees as placeholder");
-            return 0;
+            if (data.cogIsSet) {
+                warnings.put("Heading", "Heading unknown, using COG as a placeholder");
+                return (int) Math.round(data.COG);
+            }
+            else if (oldData.cogIsSet) {
+                warnings.put("Heading", "Heading unknown, using COG as a placeholder");
+                return (int) Math.round(oldData.COG);
+            }
+            else {
+                warnings.put("Heading", "Heading unknown, using " + headingPlaceholder + " degrees as placeholder");
+                return headingPlaceholder;
+            }
         }
         else if (!data.headingIsSet) {
             warnings.put("Heading", "Heading lost, keeping old heading of " + oldData.heading + " degrees");
@@ -112,12 +122,6 @@ public class UpdateShipHandler extends ShipHandler {
 
     public Vector2D HandlePosition() {
 
-        // TODO: Tjek om det her er helt ved siden af
-        return Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
-    }
-
-    public Vector2D HandleCentering() {
-
         int fore = data.distanceFore;
         int aft = data.distanceAft;
         int port = data.distancePort;
@@ -130,106 +134,106 @@ public class UpdateShipHandler extends ShipHandler {
             warnings.put("TransceiverAccuracy", "Position of ship may be inaccurate due to miscalibrated AIS transceiver");
         }
 
-        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude, ownShipLongitude);
+        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude);
 
         warnings.put("TransceiverPosition", "");
 
         // Cases where we have both a fore/aft and a starboard/port
         if (data.distanceForeIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, fore, starboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, fore, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, fore, port, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, fore, port, length, width);
             }
             else if (oldData.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, fore, oldData.distanceStarboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, fore, oldData.distanceStarboard, length, width);
             }
             else if (oldData.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, fore, oldData.distancePort, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, fore, oldData.distancePort, length, width);
             }
         }
         else if (data.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterAftStarboard(myShipPosition, aft, starboard, length, width);
+                return MovePositionToCenter.AftStarboard(myShipPosition, aft, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterAftPort(myShipPosition, aft, port, length, width);
+                return MovePositionToCenter.AftPort(myShipPosition, aft, port, length, width);
             }
             else if (oldData.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, aft, oldData.distanceStarboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, aft, oldData.distanceStarboard, length, width);
             }
             else if (oldData.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, aft, oldData.distancePort, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, aft, oldData.distancePort, length, width);
             }
         }
         else if (oldData.distanceForeIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, oldData.distanceFore, starboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceFore, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, oldData.distanceFore, port, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceFore, port, length, width);
             }
             else if (oldData.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, oldData.distanceFore, oldData.distanceStarboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceFore, oldData.distanceStarboard, length, width);
             }
             else if (oldData.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, oldData.distanceFore, oldData.distancePort, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceFore, oldData.distancePort, length, width);
             }
         }
         else if (oldData.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterAftStarboard(myShipPosition, oldData.distanceAft, starboard, length, width);
+                return MovePositionToCenter.AftStarboard(myShipPosition, oldData.distanceAft, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterAftPort(myShipPosition, oldData.distanceAft, port, length, width);
+                return MovePositionToCenter.AftPort(myShipPosition, oldData.distanceAft, port, length, width);
             }
             else if (oldData.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, oldData.distanceAft, oldData.distanceStarboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceAft, oldData.distanceStarboard, length, width);
             }
             else if (oldData.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, oldData.distanceAft, oldData.distancePort, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceAft, oldData.distancePort, length, width);
             }
         }
 
         // Cases where we have only fore/aft or only starboard/port
         if (data.distanceForeIsSet && data.distanceAftIsSet) {
-            return MovePositionToCenterFore(myShipPosition, fore, length);
+            return MovePositionToCenter.Fore(myShipPosition, fore, length);
         }
         else if (data.distanceStarboardIsSet && data.distancePortIsSet) {
-            return MovePositionToCenterStarboard(myShipPosition, starboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
         }
         else if (oldData.distanceForeIsSet && oldData.distanceAftIsSet) {
-            return MovePositionToCenterFore(myShipPosition, oldData.distanceFore, length);
+            return MovePositionToCenter.Fore(myShipPosition, oldData.distanceFore, length);
         }
         else if (oldData.distanceStarboardIsSet && oldData.distancePortIsSet) {
-            return MovePositionToCenterStarboard(myShipPosition, oldData.distanceStarboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, oldData.distanceStarboard, width);
         }
 
         // Cases where we only have one
         if (data.distanceForeIsSet) {
-            return MovePositionToCenterFore(myShipPosition, fore, length);
+            return MovePositionToCenter.Fore(myShipPosition, fore, length);
         }
         else if (data.distanceAftIsSet) {
-            return MovePositionToCenterAft(myShipPosition, aft, length);
+            return MovePositionToCenter.Aft(myShipPosition, aft, length);
         }
         else if (data.distanceStarboardIsSet) {
-            return MovePositionToCenterStarboard(myShipPosition, starboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
         }
         else if (data.distancePortIsSet) {
-            return MovePositionToCenterPort(myShipPosition, port, width);
+            return MovePositionToCenter.Port(myShipPosition, port, width);
         }
         else if (oldData.distanceForeIsSet) {
-            return MovePositionToCenterFore(myShipPosition, oldData.distanceFore, length);
+            return MovePositionToCenter.Fore(myShipPosition, oldData.distanceFore, length);
         }
         else if (oldData.distanceAftIsSet) {
-            return MovePositionToCenterAft(myShipPosition, oldData.distanceAft, length);
+            return MovePositionToCenter.Aft(myShipPosition, oldData.distanceAft, length);
         }
         else if (oldData.distanceStarboardIsSet) {
-            return MovePositionToCenterStarboard(myShipPosition, oldData.distanceStarboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, oldData.distanceStarboard, width);
         }
         else if (oldData.distancePortIsSet) {
-            return MovePositionToCenterPort(myShipPosition, oldData.distancePort, width);
+            return MovePositionToCenter.Port(myShipPosition, oldData.distancePort, width);
         }
         else {
             warnings.put("TransceiverPosition", "Position of AIS transceiver not known");
@@ -265,6 +269,7 @@ public class UpdateShipHandler extends ShipHandler {
                 data.cogIsSet = true;
                 return data.COG;
             }
+            //TODO: Calculate COG based on previous position
             else if (data.headingIsSet) {
                 warnings.put("COG", "COG unknown, using heading instead");
                 cogPlaceholder = data.heading;
@@ -288,11 +293,21 @@ public class UpdateShipHandler extends ShipHandler {
     }
 
     public double HandleLongitude() {
+
+        if (data.longitude == 181) {
+            warnings.put("Longitude", "Longitude is unrealistic");
+        }
+
         // TODO: Tjek om det her er helt skørt
         return data.longitude;
     }
 
     public double HandleLatitude() {
+
+        if (data.latitude == 91) {
+            warnings.put("Latitude", "Latitude is unrealistic");
+        }
+
         // TODO: Tjek om det her er helt skørt
         return data.latitude;
     }

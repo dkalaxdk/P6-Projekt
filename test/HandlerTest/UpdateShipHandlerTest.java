@@ -27,9 +27,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = true;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleHeading();
 
@@ -47,9 +47,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = true;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleHeading();
 
@@ -67,9 +67,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = false;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleHeading();
 
@@ -87,9 +87,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = false;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             handler.HandleHeading();
 
@@ -107,9 +107,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = false;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             handler.HandleHeading();
 
@@ -127,9 +127,9 @@ public class UpdateShipHandlerTest {
             newData.headingIsSet = false;
             newData.heading = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleHeading();
 
@@ -150,9 +150,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = true;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleLength();
 
@@ -170,9 +170,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = true;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleLength();
 
@@ -190,9 +190,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = false;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            ShipHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            ShipHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleLength();
 
@@ -210,9 +210,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = false;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             int actual = handler.HandleLength();
 
@@ -230,9 +230,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = false;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             handler.HandleLength();
 
@@ -250,9 +250,9 @@ public class UpdateShipHandlerTest {
             newData.lengthIsSet = false;
             newData.length = 50;
 
-            Ship myShip = new Ship(startData, 0);
+            Ship myShip = new Ship(startData);
 
-            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, 0, new Hashtable<>());
+            IShipDataHandler handler = new UpdateShipHandler(myShip, newData, startData, new Hashtable<>());
 
             handler.HandleLength();
 
@@ -284,8 +284,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == current);
             }
@@ -309,8 +309,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == current);
             }
@@ -334,8 +334,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == current);
             }
@@ -359,8 +359,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == current);
             }
@@ -388,8 +388,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == old && ship.cog == current);
             }
@@ -413,8 +413,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -440,8 +440,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == old && ship.cog == current);
             }
@@ -465,8 +465,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -496,8 +496,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == old);
             }
@@ -521,8 +521,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == current && ship.cog == old);
             }
@@ -546,8 +546,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -573,8 +573,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -603,8 +603,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertTrue(ship.sog == old && ship.cog == old);
             }
@@ -628,8 +628,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -655,8 +655,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -682,8 +682,8 @@ public class UpdateShipHandlerTest {
                 newData.COG = current;
                 newData.cogIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 
@@ -716,8 +716,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -744,8 +744,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -772,8 +772,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -800,8 +800,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -831,8 +831,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(oldCOG, ship.cog);
             }
@@ -859,8 +859,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentHeading, ship.cog);
             }
@@ -887,8 +887,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(oldCOG, ship.cog);
             }
@@ -915,8 +915,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = true;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentHeading, ship.cog);
             }
@@ -946,8 +946,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -974,8 +974,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -1002,8 +1002,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -1030,8 +1030,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(currentCOG, ship.cog);
             }
@@ -1061,8 +1061,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(oldCOG, ship.cog);
             }
@@ -1089,8 +1089,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(oldHeading, ship.cog);
             }
@@ -1117,8 +1117,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 assertEquals(oldCOG, ship.cog);
             }
@@ -1145,8 +1145,8 @@ public class UpdateShipHandlerTest {
                 newData.heading = currentHeading;
                 newData.headingIsSet = false;
 
-                Ship ship = new Ship(oldData, 0);
-                ship.Update(newData, 0);
+                Ship ship = new Ship(oldData);
+                ship.Update(newData);
 
                 ShipHandler handler = new UpdateShipHandler();
 

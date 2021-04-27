@@ -9,7 +9,7 @@ public class MercatorTest {
 
 
     @Test
-    public void projection_() {
+    public void projection() {
         double longitude = 8;
         double latitude = 55;
         double referenceLongitude = 0;
@@ -23,8 +23,32 @@ public class MercatorTest {
 
         Vector2D expected = new Vector2D(longExpected, latExpected);
 
-        Vector2D actual = Mercator.projection(longitude, latitude, radReference);
+        Vector2D actual = Mercator.projection(longitude, latitude);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void unprojectionX() {
+        double longitude = 8;
+        double latitude = 55;
+
+        Vector2D n = Mercator.projection(longitude, latitude);
+
+        double actual = Mercator.unprojectionX(n.x());
+
+        assertEquals(longitude, actual);
+    }
+
+    @Test
+    public void unprojectionY() {
+        double longitude = 8;
+        double latitude = 55;
+
+        Vector2D n = Mercator.projection(longitude, latitude);
+
+        double actual = Mercator.unprojectionY(n.y());
+
+        assertEquals(latitude, Math.round(actual));
     }
 }

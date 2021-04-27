@@ -41,6 +41,11 @@ public class VelocityObstacleTest {
         }
 
         @Override
+        public boolean getDomainType() {
+            return true;
+        }
+
+        @Override
         public Shape getScaledShipDomain(double scalar) {
             Ellipse2D.Double scaledEllipse = new Ellipse2D.Double();
             //scaledEllipse.x = domain.getBounds2D().getX();
@@ -156,6 +161,16 @@ public class VelocityObstacleTest {
             assertFalse(absVO.contains(new Point2D.Double(0.75, 0.5)));   // Fails because VO is not cone
             assertFalse(absVO.contains(new Point2D.Double(0.5, 4)));   // Fails if VO is not cone
         }
+
+        @Test
+        public void Calculate_WorksWithTimeFrameOne() {
+            double time = 1;
+
+            Area absVO = VO.Calculate(shipA, shipB, time);
+
+            assertTrue(absVO.contains(new Point2D.Double(shipB.position.x() + shipB.velocity.x(), shipB.position.y() + shipB.velocity.y())));
+
+        }
     }
 
     @Nested
@@ -246,8 +261,8 @@ public class VelocityObstacleTest {
             Area relVO = VO.RelativeVO(shipA, shipB, time);
 
             assertTrue(relVO.contains(new Point2D.Double(5, 5)));
-            assertFalse(relVO.contains(new Point2D.Double(4.4, 5)));
-            assertFalse(relVO.contains(new Point2D.Double(5, 4.4)));
+            assertFalse(relVO.contains(new Point2D.Double(4.2, 5)));
+            assertFalse(relVO.contains(new Point2D.Double(5, 4.2)));
         }
     }
 

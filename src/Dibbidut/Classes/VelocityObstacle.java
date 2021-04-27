@@ -1,11 +1,15 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Interfaces.IVelocityObstacle;
+import Dibbidut.utilities.GrahamScan;
+import Dibbidut.utilities.ShapeBorder;
 import math.geom2d.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class VelocityObstacle implements IVelocityObstacle {
     public VO velocities;
@@ -31,35 +35,89 @@ public class VelocityObstacle implements IVelocityObstacle {
     }
 
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
-        Vector2D displacement = Displacement(object.position, obstacle.position);
-
         Area combinedRelativeVO = new Area();
 
-        for(double i = 1; i <= timeframe; i = i + 0.1) {
-            Vector2D centerCollision = divideVectorByScalar(displacement, i);
-            //TODO Ensures that neither ship domain is violated
+        Area domainArea = new Area(obstacle.domain.getDomain());
+        ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(domainArea);
 
-            //FIXME This approach will likely only work with domains that do not change
-            // As it assumes that the point the domain is drawn from keeps the same displacement
-            // at all times
+        Point2D OSPos = vectorToPoint(object.position);
+        conflictAreaBorder.add(OSPos);
 
-            // Calculate the translation that will place the conflictRegion at centerCollision
-            Vector2D translationVec = Displacement(obstacle.position, centerCollision);
-            AffineTransform translation = new AffineTransform();
-            translation.translate(translationVec.x(), translationVec.y());
+        // Get the velocities that will ever lead to a collision
+        Area cone = getCone(conflictAreaBorder, OSPos);
+        // The cone cuts across the ship domain, so the domain is added to the collision cone
+        cone.add(domainArea);
 
-            Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)i));
-            Area conflictArea = scaledDomain.createTransformedArea(translation);
 
-            combinedRelativeVO.add(conflictArea);
-        }
+        // Get the scaled conflict positions at the end of the time frame
+        AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
+        Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
+        ArrayList<Point2D> scaledDomainBorder = ShapeBorder.getBorder(scaledDomain);
+        scaledDomainBorder.add(OSPos);
 
+        // Get the velocities that will lead to a collision after or at the end of the time frame
+        Area excludeCone = getCone(scaledDomainBorder, OSPos);
+        // Subtract these velocities from the collision cone
+        cone.subtract(excludeCone);
+        // Add the velocities that will lead to a collision at the end of the time frame
+        cone.add(scaledDomain);
+
+        combinedRelativeVO.add(cone);
         return combinedRelativeVO;
+    }
+
+    private AffineTransform getTranslation(Vector2D objectPos, Vector2D obstaclePos, double timeframe) {
+        Vector2D displacement = Displacement(objectPos, obstaclePos);
+        Vector2D centerCollisionAtTime = divideVectorByScalar(displacement, timeframe);
+
+        // Calculate the translation that will place the conflictRegion at centerCollision
+        Vector2D translationVec = Displacement(obstaclePos, centerCollisionAtTime);
+        AffineTransform translation = new AffineTransform();
+        translation.translate(translationVec.x(), translationVec.y());
+        return translation;
     }
 
     // This finds the velocity needed to place Point A at Point B
     public Vector2D Displacement(Vector2D a, Vector2D b) {
         return new Vector2D(b.x() - a.x(), b.y() - a.y());
+    }
+
+    private Area getCone(ArrayList<Point2D> border, Point2D OSPos) {
+        GrahamScan grahamScan = new GrahamScan();
+        List<Point2D> convHull = grahamScan.Calculate(border);
+
+        int OSPosIndex = convHull.indexOf(OSPos);
+        // Get the previous and next point in the list
+        int prevPos = OSPosIndex == 0 ? convHull.size() - 1 : OSPosIndex - 1;
+        int nextPos = OSPosIndex == convHull.size() - 1 ? 0 : OSPosIndex + 1;
+
+        Path2D poly = getPathBetweenPoints(new ArrayList<Point2D>(
+                Arrays.asList(
+                        convHull.get(OSPosIndex),
+                        convHull.get(prevPos),
+                        convHull.get(nextPos)
+                )
+        ));
+
+        return new Area(poly);
+    }
+
+    private Path2D getPathBetweenPoints(ArrayList<Point2D> points) {
+        Path2D path = new Path2D.Double();
+        // Move to start point
+        path.moveTo(points.get(0).getX(), points.get(0).getY());
+
+        for(int i = 1; i < points.size(); i++) {
+            path.lineTo(points.get(i).getX(),  points.get(i).getY());
+        }
+        // Draw line back to start point
+        path.lineTo(points.get(0).getX(), points.get(0).getY());
+
+        return path;
+    }
+
+    private Point2D vectorToPoint(Vector2D vec) {
+        return new Point2D.Double(vec.x(), vec.y());
     }
 
     private Vector2D divideVectorByScalar(Vector2D vec, double scalar) {

@@ -2,12 +2,13 @@ package Dibbidut.Classes;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
-import Dibbidut.Interfaces.*;
+import Dibbidut.Exceptions.OSNotFoundException;
 import math.geom2d.Vector2D;
 
 import javax.swing.*;
 import java.awt.geom.Area;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,28 +27,86 @@ public class CASystem {
     public int ownShipMMSI;
 
     public Display display;
-    public IVelocityObstacle obstacleCalculator;
+    public GUI gui;
+    public VelocityObstacle obstacleCalculator;
     public Area MVO;
 
-    private final Lock bufferLock;
+    public final Lock bufferLock;
+    public final Lock listLock;
 
     public double range;
     public double timeFrame;
+
+    public Float timeFactor;
+
+    private boolean dirty;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
 
-        // Set own ship's MMSI here:
-        ownShipMMSI = 211235221;
-
         bufferLock = new ReentrantLock(true);
+        listLock = new ReentrantLock(true);
 
-        String inputFile = "test/TestFiles/TestInput2.csv";
+//        System.out.println("Long: " + Mercator.unprojectionX(Mercator.nauticalToMeters(4)));
+//        System.out.println("Lat:  " + Mercator.unprojectionY(Mercator.nauticalToMeters(18)));
+
+        // Set own ship's MMSI here:
+//        ownShipMMSI = 219004612;
+//        String inputFile = "test/TestFiles/TestInput1.csv";
+
+//        ownShipMMSI = 211235221;
+//        String inputFile = "test/TestFiles/TestInput2.csv";
+
+        // Near miss at 13:00 (+-)
+        // Ship domain too small at 16:00
+//        ownShipMMSI = 377739000;
+//        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
+
+        // Paper with specific Aarhus collisions
+        // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
+
+//        ownShipMMSI = 218176000;
+//        String inputFile = "InputFiles/AarhusEncounter.csv";
+
+
+//        ownShipMMSI = 219017081;
+//        String inputFile = "InputFiles/aisdk_20190510.csv";
+//        String inputFile = "InputFiles/EXPRESS_1_&_BALTIC_CONDOR.csv";
+
+
+
+//        ownShipMMSI = 219678000;
+//        String inputFile = "InputFiles/SKULD_&_ENSCO_72.csv";
+
+
+
+//        ownShipMMSI = 212172000;
+//        String inputFile = "InputFiles/NECKAR_HIGHWAY_&_ORION.csv";
+
+
+        ownShipMMSI = 305369000;
+        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
+
+
+
+        // HELLE
+//        ownShipMMSI = 219001359;
+
+        // TØNNE
+//        ownShipMMSI = 219798000;
+//        String inputFile = "InputFiles/TOENNE_&_HELLE.csv";
+
+        // https://doi.org/10.1016/j.oceaneng.2016.11.044
+        // #1
+//        ownShipMMSI = 1;
+//        String inputFile = "InputFiles/Simulation1.csv";
+
+        timeFactor = 1f;
 
         try {
-            // Set AIS data input file here:
-            inputSimulator = new InputSimulator(ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            // Set time factor and AIS data input file here:
+            inputSimulator = new InputSimulator(timeFactor, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,39 +116,54 @@ public class CASystem {
         MVO = new Area();
 
         range = 100000;
-        timeFrame = 200;
+        timeFrame = 1;
     }
 
     public void Start() {
+        try {
+            inputSimulator.RunSetUp();
+        } catch (OSNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
         inputSimulator.start();
+        inputSimulator.setPriority(Thread.MAX_PRIORITY);
 
         boolean running = true;
+        dirty = false;
 
         long start;
         long end;
         long duration = 0;
 
         while(running) {
+            dirty = false;
 
-            if (tsBuffer.size() > 0) {
+            start = System.nanoTime();
 
-                start = System.nanoTime();
+            listLock.lock();
 
-                UpdateOwnShip();
-                UpdateShipList();
-                UpdateVelocityObstacles();
+            UpdateOwnShip();
+            UpdateShipList();
+
+            listLock.unlock();
+
+            if (dirty) {
+//                UpdateVelocityObstacles();
                 UpdateDisplay();
-
-                end = System.nanoTime();
-
-                duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
             }
 
+            end = System.nanoTime();
+
+            duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+
             try {
-                TimeUnit.MILLISECONDS.sleep(1000 - (duration));
+                TimeUnit.MILLISECONDS.sleep(10 - (duration < 0 ? 0 : duration));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+
 
             duration = 0;
         }
@@ -106,19 +180,21 @@ public class CASystem {
 
             if (ownShip == null) {
                 AISData data = dataList.remove(0);
-                ownShip = new Ship(data, data.longitude);
+                ownShip = new Ship(data);
             }
 
             for (AISData data : dataList) {
-                ownShip.Update(data, data.longitude);
+                ownShip.Update(data);
             }
+
+            dirty = true;
         }
     }
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (ownShip == null) {
+        if (ownShip == null || tsBuffer.size() == 0) {
             bufferLock.unlock();
             return;
         }
@@ -134,7 +210,7 @@ public class CASystem {
             // If the potential ship is already out of range,
             // check if there is a reference to the ship in the ship list, remove it if there is,
             // and continue to next iteration
-            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude, ownShip.longitude);
+            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude);
             if (!isWithinRange(shipPosition, ownShip.position, range)) {
                 this.shipsInRange.remove(new Ship(data.mmsi));
                 continue;
@@ -150,8 +226,9 @@ public class CASystem {
                 // If the ship is already in the list,
                 // update the ship in the list with the data from the potential ship.
                 if (ship.mmsi == data.mmsi) {
-                    ship.Update(data, ownShip.longitude);
+                    ship.Update(data);
                     found = true;
+                    dirty = true;
                 }
                 else {
                     i++;
@@ -160,7 +237,8 @@ public class CASystem {
 
             // If it is not in the list, create a new ship, and add it to the list.
             if (!found) {
-                shipsInRange.add(new Ship(data, ownShip.longitude));
+                shipsInRange.add(new Ship(data));
+                dirty = true;
             }
         }
 
@@ -205,8 +283,10 @@ public class CASystem {
     public void UpdateDisplay() {
 
         if (display == null) {
-            display = new Display(ownShip, shipsInRange, MVO);
-            SwingUtilities.invokeLater(() -> createAndShowGUI(display));
+            display = new Display(this);
+            gui = new GUI(this);
+
+            SwingUtilities.invokeLater(() -> createAndShowGUI());
         }
 
         display.Update();
@@ -214,20 +294,25 @@ public class CASystem {
 
     /**
      * Creates the window where the simulation is shows
-     * @param display The display that will be shown
      */
-    private void createAndShowGUI(Display display) {
+    private void createAndShowGUI() {
         // Check if we are running on the correct thread (?)
         System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
 
         // Create a new frame for the graphics to be displayed in
-        JFrame frame = new JFrame("Test Display");
+        JFrame frame = new JFrame("Display");
 
         // The application closes when the window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Add content to the frame, in the form of a display
-        frame.add(display);
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+
+        // Add content to the frame
+        container.add(display);
+        container.add(gui);
+
+        frame.add(container);
 
         // Make the frame as small as its biggest component
         frame.pack();

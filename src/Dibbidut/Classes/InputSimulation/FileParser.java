@@ -7,36 +7,27 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import java.lang.System;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 
 public class FileParser implements IDataInput {
 
     public Reader reader;
-    private ArrayList<AISData> dataList;
+    private final Iterator<AISData> dataList;
 
 
     public FileParser(String fileSource) throws IOException {
         reader = new BufferedReader(new FileReader(fileSource));
-        dataList = new ArrayList<>();
-
         SkipHashtagIfPresent();
+        dataList = new CsvToBeanBuilder(reader).withType(AISData.class).withEscapeChar('\r').build().iterator();
     }
 
-    public ArrayList<AISData> GetInputList(){
-        dataList = (ArrayList<AISData>) new CsvToBeanBuilder(reader).withType(AISData.class).build().parse();
+    public AISData GetNextInput(){
+        AISData data = dataList.next();
 
-        for (AISData datapoint: dataList) {
-            datapoint.AddDateTime();
-            datapoint.SetValuesAndBooleans();
-        }
+        data.AddDateTime();
+        data.SetValuesAndBooleans();
 
-        Collections.sort(dataList);
-
-        //todo: slet evt print ting
-        PrintData(dataList.get(0));
-
-        return dataList;
+        return data;
     }
 
     public void SkipHashtagIfPresent() throws IOException {

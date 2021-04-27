@@ -46,6 +46,14 @@ public class GrahamScanTest {
             assertArrayEquals(pointsInHull(), convHull.Calculate(points).toArray());
         }
 
+        @Test
+        public void Test_doubleCompare() {
+            ArrayList<Point2D> points = pointList();
+            GrahamScan convHull = new GrahamScan();
+
+            assertArrayEquals(pointsInHull(), convHull.Calculate(points).toArray());
+        }
+
         private ArrayList<Point2D> pointList() {
             return new ArrayList<>(Arrays.asList(
                     new Point2D.Double(1, 1),

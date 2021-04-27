@@ -15,7 +15,6 @@ public class Ship extends Obstacle {
     public int mmsi;
     public int length;
     public int width;
-    public Vector2D centeredPosition;
     public int heading;
     public double longitude;
     public double latitude;
@@ -23,7 +22,6 @@ public class Ship extends Obstacle {
     public double sog;
     public double manoeuvrability;
     public Shape conflictRegion;
-    public Vector2D velocity;
     public Hashtable<String, String> warnings;
 
     private AISData currentData;
@@ -36,48 +34,50 @@ public class Ship extends Obstacle {
 
     public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
         super(position, velocity);
+        this.position = position;
         this.velocity = velocity;
         this.conflictRegion = conflictRegion;
     }
 
     public Ship(Vector2D position, int length, int width, int heading) {
         super(position, new Vector2D(0,0));
-
+        this.position = position;
         this.length = length;
         this.width = width;
         this.heading = heading;
 
         domain = new ShipDomain(length, width, "Ellipse");
+        domain.Update(sog, heading, position.y(), position.x());
     }
 
-    public Ship(AISData data, double ownShipLongitude) {
+    public Ship(AISData data) {
         super(new Vector2D(0,0), new Vector2D(0,0));
 
         warnings = new Hashtable<>();
         currentData = data;
 
-        IShipDataHandler handler = new AISToShipHandler(this, currentData, ownShipLongitude, warnings);
+        IShipDataHandler handler = new AISToShipHandler(this, currentData, warnings);
 
         handler.Run();
 
         domain = new ShipDomain(length, width, "Ellipse");
+        domain.Update(sog, heading, position.y(), position.x());
     }
 
     /**
      * Updates the given ship with new data
      * @param data The new data that the ship will be updated with
-     * @param ownShipLongitude The longitude of own ship
      */
-    public void Update(AISData data, double ownShipLongitude) {
+    public void Update(AISData data) {
 
         AISData oldData = currentData;
         currentData = data;
 
-        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, ownShipLongitude, warnings);
+        IShipDataHandler handler = new UpdateShipHandler(this, currentData, oldData, warnings);
 
         handler.Run();
 
-        domain.Update(sog, heading, centeredPosition.y(), centeredPosition.x());
+        domain.Update(sog, heading, position.y(), position.x());
     }
 
     @Override

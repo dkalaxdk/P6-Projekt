@@ -18,4 +18,10 @@ public abstract class Obstacle {
         this.position = position;
         this.velocity = velocity;
     }
+
+//    public abstract Vector2D GetPosition();
+//    public abstract void SetPosition(Vector2D value);
+//
+//    public abstract Vector2D GetVelocity();
+//    public abstract void SetVelocity(Vector2D value);
 }
