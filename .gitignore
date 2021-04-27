@@ -25,4 +25,4 @@ hs_err_pid*
 
 target/
 
-test/BigTestFiles/aisdk_20210208.csv
+test/BigTestFiles/
