@@ -28,14 +28,17 @@ public class Polygon extends Geometry{
         Transformation fromCenter = new Transformation();
         fromCenter.translate(center.getX(), center.getY());     // Translation points back
 
-        ArrayList<HPoint> copiedCoordinates = new ArrayList<>(copyHPointList(coordinates));
+        Transformation t = new Transformation()
+                .add(toCenter)
+                .add(transformation)
+                .add(fromCenter);
+
+        ArrayList<Vector> copiedCoordinates = new ArrayList<>(copyVectorList(coordinates));
 
         // Performs the transformation
-        for(HPoint point : copiedCoordinates) {
-            point.transform(toCenter);     // Transform into own space
-            point.transform(transformation);   // perform transform
-            point.transform(fromCenter);   // Transform back to world space
-            newCoordinates.add(point);
+        for(Vector vector : copiedCoordinates) {
+            vector.transform(t);
+            newCoordinates.add(vector);
         }
 
         coordinates = newCoordinates;
