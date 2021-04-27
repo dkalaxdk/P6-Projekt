@@ -77,9 +77,13 @@ public class Display extends JPanel {
         // Rotate so that own ship is pointing at the top of the screen
 //        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.x(), ownShip.position.y());
 
+        system.listLock.lock();
+
         drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
+
+        system.listLock.unlock();
     }
 
     //TODO: Use me

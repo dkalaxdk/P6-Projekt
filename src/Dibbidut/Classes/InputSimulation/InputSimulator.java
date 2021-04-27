@@ -5,7 +5,9 @@ import Dibbidut.Exceptions.OSNotFoundException;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
@@ -30,6 +32,8 @@ public class InputSimulator extends Thread{
     Lock bufferLock;
     Float timeFactor;
 
+    public ScheduledExecutorService executorService;
+
     public InputSimulator(Float timeFactor, Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
         this.timeFactor = timeFactor > 0 ? timeFactor : 1f;
 
@@ -50,7 +54,7 @@ public class InputSimulator extends Thread{
     @Override
     public void run() throws NullPointerException{
 
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        executorService = Executors.newScheduledThreadPool(1);
 
         // Adds time to the current time, and updates the buffers every 1000/timeFactor milliseconds, i.e. once a second if timeFactor = 1
 
@@ -136,11 +140,13 @@ public class InputSimulator extends Thread{
 
     public void AddDataToBuffers(){
         AISData os = null;
+
         while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
             if (nextInput.mmsi != osMMSI)
                 tsList.add(nextInput);
             else
                 os = nextInput;
+
             nextInput = GetNextInput();
         }
 
@@ -165,7 +171,6 @@ public class InputSimulator extends Thread{
     }
 
     public void SetTimeFactor(float value) {
-//        timeFactor = (value == 0f) ? 1f : value;
         timeFactor = value;
     }
 

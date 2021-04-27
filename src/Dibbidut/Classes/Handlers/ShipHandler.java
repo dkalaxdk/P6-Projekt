@@ -2,12 +2,10 @@ package Dibbidut.Classes.Handlers;
 
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Ship;
-import Dibbidut.Classes.ShipDomain;
 import Dibbidut.Interfaces.IShipDataHandler;
 import math.geom2d.Vector2D;
 
 import java.util.Hashtable;
-import java.util.Vector;
 
 public abstract class ShipHandler implements IShipDataHandler {
     public Hashtable<String, String> warnings;
@@ -54,67 +52,6 @@ public abstract class ShipHandler implements IShipDataHandler {
         return new Vector2D(0, KnotsToMetersPerSecond(sog)).rotate(Math.toRadians(cog));
     }
 
-    public Vector2D MovePositionToCenterAftPort(Vector2D originalPosition,
-                                                int aft, int port,
-                                                int length, int width) {
-
-        return new Vector2D(MovePositionToCenterPort(originalPosition, port, width).x(),
-                MovePositionToCenterAft(originalPosition, aft, length).y());
-    }
-
-    public Vector2D MovePositionToCenterAftStarboard(Vector2D originalPosition,
-                                                     int aft, int starboard,
-                                                     int length, int width) {
-
-        return new Vector2D(MovePositionToCenterStarboard(originalPosition, starboard, width).x(),
-                MovePositionToCenterAft(originalPosition, aft, length).y());
-    }
-
-    public Vector2D MovePositionToCenterForePort(Vector2D originalPosition,
-                                                 int fore, int port,
-                                                 int length, int width) {
-
-        return new Vector2D(MovePositionToCenterPort(originalPosition, port, width).x(),
-                MovePositionToCenterFore(originalPosition, fore, length).y());
-    }
-
-    public Vector2D MovePositionToCenterForeStarboard(Vector2D originalPosition,
-                                                      int fore, int starboard,
-                                                      int length, int width) {
-
-        return new Vector2D(MovePositionToCenterStarboard(originalPosition, starboard, width).x(),
-                MovePositionToCenterFore(originalPosition, fore, length).y());
-    }
-
-
-    public Vector2D MovePositionToCenterFore(Vector2D originalPosition,
-                                             int fore, int length) {
-
-        return new Vector2D(originalPosition.x(),
-                originalPosition.y() + fore - (((double) length) / 2));
-    }
-
-    public Vector2D MovePositionToCenterAft(Vector2D originalPosition,
-                                            int aft, int length) {
-
-        return new Vector2D(originalPosition.x(),
-                originalPosition.y() - aft + (((double) length / 2)));
-    }
-
-    public Vector2D MovePositionToCenterStarboard(Vector2D originalPosition,
-                                                  int starboard, int width) {
-
-        return new Vector2D(originalPosition.x() + starboard - (((double) width) / 2),
-                originalPosition.y());
-    }
-
-    public Vector2D MovePositionToCenterPort(Vector2D originalPosition,
-                                             int port, int width) {
-
-        return new Vector2D(originalPosition.x() - port + (((double) width) / 2),
-                originalPosition.y());
-    }
-
     public Vector2D GetVelocityPlaceHolder() {
         return CalculateVelocity(sogPlaceHolder, cogPlaceholder);
     }
@@ -125,5 +62,68 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     public double KnotsToMetersPerSecond(double kn) {
         return kn / 1.944;
+    }
+
+    public static class MovePositionToCenter {
+        public static Vector2D AftPort(Vector2D originalPosition,
+                                       int aft, int port,
+                                       int length, int width) {
+
+            return new Vector2D(Port(originalPosition, port, width).x(),
+                    Aft(originalPosition, aft, length).y());
+        }
+
+        public static Vector2D AftStarboard(Vector2D originalPosition,
+                                            int aft, int starboard,
+                                            int length, int width) {
+
+            return new Vector2D(Starboard(originalPosition, starboard, width).x(),
+                    Aft(originalPosition, aft, length).y());
+        }
+
+        public static Vector2D ForePort(Vector2D originalPosition,
+                                        int fore, int port,
+                                        int length, int width) {
+
+            return new Vector2D(Port(originalPosition, port, width).x(),
+                    Fore(originalPosition, fore, length).y());
+        }
+
+        public static Vector2D ForeStarboard(Vector2D originalPosition,
+                                             int fore, int starboard,
+                                             int length, int width) {
+
+            return new Vector2D(Starboard(originalPosition, starboard, width).x(),
+                    Fore(originalPosition, fore, length).y());
+        }
+
+
+        public static Vector2D Fore(Vector2D originalPosition,
+                                    int fore, int length) {
+
+            return new Vector2D(originalPosition.x(),
+                    originalPosition.y() + fore - (((double) length) / 2));
+        }
+
+        public static Vector2D Aft(Vector2D originalPosition,
+                                   int aft, int length) {
+
+            return new Vector2D(originalPosition.x(),
+                    originalPosition.y() - aft + (((double) length / 2)));
+        }
+
+        public static Vector2D Starboard(Vector2D originalPosition,
+                                         int starboard, int width) {
+
+            return new Vector2D(originalPosition.x() + starboard - (((double) width) / 2),
+                    originalPosition.y());
+        }
+
+        public static Vector2D Port(Vector2D originalPosition,
+                                    int port, int width) {
+
+            return new Vector2D(originalPosition.x() - port + (((double) width) / 2),
+                    originalPosition.y());
+        }
     }
 }

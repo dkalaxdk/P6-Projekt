@@ -1,19 +1,17 @@
 package HandlerTest;
 
-import Dibbidut.Classes.Handlers.AISToShipHandler;
+import Dibbidut.Classes.Handlers.ShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Ship;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Hashtable;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AISToShipHandlerTest {
     @Nested
-    class MovePositionToCenter {
+    class MovePositionToCenterToCenter {
 
         @Nested
         class AftPort {
@@ -31,11 +29,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -57,11 +53,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -83,11 +77,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -109,11 +101,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -135,11 +125,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -161,11 +149,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -187,11 +173,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -213,11 +197,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -239,11 +221,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftPort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftPort(ship.position,
                         data.distanceAft,
                         data.distancePort,
                         data.length, data.width);
@@ -268,11 +248,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -294,11 +272,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -320,11 +296,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,0);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -346,11 +320,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -372,11 +344,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -398,11 +368,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -424,11 +392,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -450,11 +416,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -476,11 +440,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,1);
 
-                Vector2D actual = handler.MovePositionToCenterAftStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.AftStarboard(ship.position,
                         data.distanceAft,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -505,11 +467,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,0);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -531,11 +491,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,0);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -557,11 +515,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,0);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -583,11 +539,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -609,11 +563,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -635,11 +587,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -661,11 +611,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -687,11 +635,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -713,11 +659,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,1);
 
-                Vector2D actual = handler.MovePositionToCenterForePort(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForePort(ship.position,
                         data.distanceFore,
                         data.distancePort,
                         data.length, data.width);
@@ -742,11 +686,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,0);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -768,11 +710,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,0);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -794,11 +734,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,0);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -820,11 +758,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -846,11 +782,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(0,1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -872,11 +806,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -898,11 +830,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,-1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -924,11 +854,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(-1,1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);
@@ -950,11 +878,9 @@ public class AISToShipHandlerTest {
                 Ship ship = new Ship(data);
                 ship.position = new Vector2D(0,0);
 
-                AISToShipHandler handler = new AISToShipHandler(ship, data, new Hashtable<>());
-
                 Vector2D expected = new Vector2D(1,1);
 
-                Vector2D actual = handler.MovePositionToCenterForeStarboard(ship.position,
+                Vector2D actual = ShipHandler.MovePositionToCenter.ForeStarboard(ship.position,
                         data.distanceFore,
                         data.distanceStarboard,
                         data.length, data.width);

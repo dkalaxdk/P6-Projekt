@@ -8,6 +8,7 @@ import math.geom2d.Vector2D;
 import javax.swing.*;
 import java.awt.geom.Area;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -31,6 +32,7 @@ public class CASystem {
     public Area MVO;
 
     public final Lock bufferLock;
+    public final Lock listLock;
 
     public double range;
     public double timeFrame;
@@ -44,6 +46,7 @@ public class CASystem {
         tsBuffer = new LinkedBlockingQueue<>();
 
         bufferLock = new ReentrantLock(true);
+        listLock = new ReentrantLock(true);
 
 //        System.out.println("Long: " + Mercator.unprojectionX(Mercator.nauticalToMeters(4)));
 //        System.out.println("Lat:  " + Mercator.unprojectionY(Mercator.nauticalToMeters(18)));
@@ -52,8 +55,8 @@ public class CASystem {
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-        ownShipMMSI = 211235221;
-        String inputFile = "test/TestFiles/TestInput2.csv";
+//        ownShipMMSI = 211235221;
+//        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -66,6 +69,33 @@ public class CASystem {
 //        ownShipMMSI = 218176000;
 //        String inputFile = "InputFiles/AarhusEncounter.csv";
 
+
+//        ownShipMMSI = 219017081;
+//        String inputFile = "InputFiles/aisdk_20190510.csv";
+//        String inputFile = "InputFiles/EXPRESS_1_&_BALTIC_CONDOR.csv";
+
+
+
+//        ownShipMMSI = 219678000;
+//        String inputFile = "InputFiles/SKULD_&_ENSCO_72.csv";
+
+
+
+//        ownShipMMSI = 212172000;
+//        String inputFile = "InputFiles/NECKAR_HIGHWAY_&_ORION.csv";
+
+
+        ownShipMMSI = 305369000;
+        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
+
+
+
+        // HELLE
+//        ownShipMMSI = 219001359;
+
+        // TØNNE
+//        ownShipMMSI = 219798000;
+//        String inputFile = "InputFiles/TOENNE_&_HELLE.csv";
 
         // https://doi.org/10.1016/j.oceaneng.2016.11.044
         // #1
@@ -97,6 +127,7 @@ public class CASystem {
             return;
         }
         inputSimulator.start();
+        inputSimulator.setPriority(Thread.MAX_PRIORITY);
 
         boolean running = true;
         dirty = false;
@@ -106,14 +137,19 @@ public class CASystem {
         long duration = 0;
 
         while(running) {
+            dirty = false;
 
             start = System.nanoTime();
+
+            listLock.lock();
 
             UpdateOwnShip();
             UpdateShipList();
 
+            listLock.unlock();
+
             if (dirty) {
-                UpdateVelocityObstacles();
+//                UpdateVelocityObstacles();
                 UpdateDisplay();
             }
 
@@ -126,6 +162,8 @@ public class CASystem {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+
 
             duration = 0;
         }

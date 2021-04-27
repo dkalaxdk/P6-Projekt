@@ -69,7 +69,7 @@ public class AISToShipHandler extends ShipHandler {
         else if (!data.sogIsSet && data.cogIsSet) {
             // TODO: Ved ikke om det her er dumt
             warnings.put("Velocity", "Ship's SOG is unknown, using " +
-                    sogPlaceHolder + " as placeholder calculating velocity");
+                    sogPlaceHolder + " as placeholder");
             return CalculateVelocity(sogPlaceHolder, data.COG);
         }
         else if (data.sogIsSet && !data.cogIsSet) {
@@ -115,38 +115,38 @@ public class AISToShipHandler extends ShipHandler {
 
         if (data.distanceForeIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterForeStarboard(myShipPosition, fore, starboard, length, width);
+                return MovePositionToCenter.ForeStarboard(myShipPosition, fore, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterForePort(myShipPosition, fore, port, length, width);
+                return MovePositionToCenter.ForePort(myShipPosition, fore, port, length, width);
             }
         }
         else if (data.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
-                return MovePositionToCenterAftStarboard(myShipPosition, aft, starboard, length, width);
+                return MovePositionToCenter.AftStarboard(myShipPosition, aft, starboard, length, width);
             }
             else if (data.distancePortIsSet) {
-                return MovePositionToCenterAftPort(myShipPosition, aft, port, length, width);
+                return MovePositionToCenter.AftPort(myShipPosition, aft, port, length, width);
             }
         }
 
         if ((data.distanceForeIsSet && data.distanceAftIsSet) && (fore + aft == length)) {
-            return MovePositionToCenterFore(myShipPosition, fore, length);
+            return MovePositionToCenter.Fore(myShipPosition, fore, length);
         }
         else if ((data.distanceStarboardIsSet && data.distancePortIsSet) && (starboard + aft == width)) {
-            return MovePositionToCenterStarboard(myShipPosition, starboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
         }
         else if (data.distanceForeIsSet) {
-            return MovePositionToCenterFore(myShipPosition, fore, length);
+            return MovePositionToCenter.Fore(myShipPosition, fore, length);
         }
         else if (data.distanceAftIsSet) {
-            return MovePositionToCenterAft(myShipPosition, aft, length);
+            return MovePositionToCenter.Aft(myShipPosition, aft, length);
         }
         else if (data.distanceStarboardIsSet) {
-            return MovePositionToCenterStarboard(myShipPosition, starboard, width);
+            return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
         }
         else if (data.distancePortIsSet) {
-            return MovePositionToCenterPort(myShipPosition, port, width);
+            return MovePositionToCenter.Port(myShipPosition, port, width);
         }
         else {
             warnings.put("TransceiverPosition", "Position of AIS transceiver not known");
@@ -178,9 +178,11 @@ public class AISToShipHandler extends ShipHandler {
         return data.COG;
     }
 
-    //TODO: Handle 91 and 181
     public double HandleLongitude() {
         if (data.longitude != 0) {
+            if (data.longitude == 181) {
+                warnings.put("Longitude", "Longitude is unrealistic");
+            }
             return data.longitude;
         }
         else {
@@ -191,6 +193,9 @@ public class AISToShipHandler extends ShipHandler {
 
     public double HandleLatitude() {
         if (data.latitude != 0) {
+            if (data.latitude == 91) {
+                warnings.put("Latitude", "Latitude is unrealistic");
+            }
             return data.latitude;
         }
         else {

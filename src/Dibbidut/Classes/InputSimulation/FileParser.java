@@ -18,7 +18,7 @@ public class FileParser implements IDataInput {
     public FileParser(String fileSource) throws IOException {
         reader = new BufferedReader(new FileReader(fileSource));
         SkipHashtagIfPresent();
-        dataList = new CsvToBeanBuilder(reader).withType(AISData.class).build().iterator();
+        dataList = new CsvToBeanBuilder(reader).withType(AISData.class).withEscapeChar('\r').build().iterator();
     }
 
     public AISData GetNextInput(){
