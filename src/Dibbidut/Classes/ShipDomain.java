@@ -3,6 +3,7 @@ package Dibbidut.Classes;
 import Dibbidut.Classes.Geometry.Ellipse;
 import Dibbidut.Classes.Geometry.Geometry;
 import Dibbidut.Classes.Geometry.HPoint;
+import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Interfaces.IDomain;
 
 import java.util.ArrayList;
@@ -157,17 +158,18 @@ public class ShipDomain implements IDomain {
 
     private void updatePentagonDomain() {
 
-        pentagonDomain.coordinates = new ArrayList<>();
-        // P5
-        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three,1));
-        // P4
-        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four,1));
-        // P3
-        pentagonDomain.coordinates.add(new HPoint(x, y + DomainDimensions.Five,1));
-        // P2
-        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four,1));
-        // P1
-        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three,1));
 
+        ArrayList<HPoint> coordinates = new ArrayList<>();
+        // P5
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three,1));
+        // P4
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four,1));
+        // P3
+        coordinates.add(new HPoint(x, y + DomainDimensions.Five,1));
+        // P2
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four,1));
+        // P1
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three,1));
+        pentagonDomain = new Polygon(coordinates);
     }
 }
