@@ -1,5 +1,6 @@
 package Dibbidut.Interfaces;
 
+import Dibbidut.Classes.Geometry.Geometry;
 import Dibbidut.Classes.ShipDomain;
 
 import java.awt.*;
@@ -8,8 +9,7 @@ import java.awt.*;
 public interface IDomain {
 
     ShipDomain Update(double SOG, double Heading, double y, double x);
-    Shape getDomain();
-    Shape getScaledShipDomain(double scalar);
+    Geometry getDomain();
     boolean getDomainType();
     double getHeight();
     double getWidth();

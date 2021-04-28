@@ -2,6 +2,9 @@ package VelocityObstacle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Dibbidut.Classes.Geometry.Ellipse;
+import Dibbidut.Classes.Geometry.Geometry;
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Ship;
 import Dibbidut.Classes.ShipDomain;
 import Dibbidut.Classes.VelocityObstacle;
@@ -17,17 +20,20 @@ import java.awt.geom.Rectangle2D;
 
 public class VelocityObstacleTest {
     class mockDomain implements IDomain {
-        private Shape domain;
+        private Geometry domain;
         private double radius;
         private Vector2D position;
         mockDomain(Vector2D position, double radius) {
             this.radius = radius;
             this.position = position;
+            /*
             domain = new Ellipse2D.Double(
                     position.x() - radius/2, // Get top left position from center
                     position.y() - radius/2,
                     radius, radius
             );
+             */
+            domain = new Ellipse(new HPoint(position.x(), position.y(), 1), radius, radius);
         }
         // Not needed for these tests
         @Override
@@ -36,7 +42,7 @@ public class VelocityObstacleTest {
         }
 
         @Override
-        public Shape getDomain() {
+        public Geometry getDomain() {
             return domain;
         }
 
@@ -45,7 +51,6 @@ public class VelocityObstacleTest {
             return true;
         }
 
-        @Override
         public Shape getScaledShipDomain(double scalar) {
             Ellipse2D.Double scaledEllipse = new Ellipse2D.Double();
             //scaledEllipse.x = domain.getBounds2D().getX();

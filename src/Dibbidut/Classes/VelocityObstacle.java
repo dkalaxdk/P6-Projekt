@@ -37,10 +37,11 @@ public class VelocityObstacle implements IVelocityObstacle {
     public Area RelativeVO(Ship object, Ship obstacle, double timeframe) {
         Area combinedRelativeVO = new Area();
 
-        Area domainArea = new Area(obstacle.domain.getDomain());
+        // TODO implementer til at bruge geometry.
+        Area domainArea = new Area();//new Area(obstacle.domain.getDomain());
         ArrayList<Point2D> conflictAreaBorder = ShapeBorder.getBorder(domainArea);
 
-        Point2D OSPos = vectorToPoint(object.position);
+        Point2D OSPos = HPointToPoint(object.position);
         conflictAreaBorder.add(OSPos);
 
         // Get the velocities that will ever lead to a collision
@@ -51,7 +52,9 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         // Get the scaled conflict positions at the end of the time frame
         AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
-        Area scaledDomain = new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
+        // Todo implementer til at bruge geometry
+        Area scaledDomain = new Area();//new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
+
         ArrayList<Point2D> scaledDomainBorder = ShapeBorder.getBorder(scaledDomain);
         scaledDomainBorder.add(OSPos);
 
@@ -68,7 +71,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
     private AffineTransform getTranslation(Vector2D objectPos, Vector2D obstaclePos, double timeframe) {
         Vector2D displacement = Displacement(objectPos, obstaclePos);
-        Vector2D centerCollisionAtTime = divideVectorByScalar(displacement, timeframe);
+        Vector2D centerCollisionAtTime = divideHPointByScalar(displacement, timeframe);
 
         // Calculate the translation that will place the conflictRegion at centerCollision
         Vector2D translationVec = Displacement(obstaclePos, centerCollisionAtTime);
@@ -116,11 +119,11 @@ public class VelocityObstacle implements IVelocityObstacle {
         return path;
     }
 
-    private Point2D vectorToPoint(Vector2D vec) {
+    private Point2D HPointToPoint(Vector2D vec) {
         return new Point2D.Double(vec.x(), vec.y());
     }
 
-    private Vector2D divideVectorByScalar(Vector2D vec, double scalar) {
+    private Vector2D divideHPointByScalar(Vector2D vec, double scalar) {
         return new Vector2D(vec.x() / scalar, vec.y() / scalar);
     }
 

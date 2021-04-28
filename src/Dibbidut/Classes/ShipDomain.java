@@ -1,11 +1,11 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Geometry.Ellipse;
+import Dibbidut.Classes.Geometry.Geometry;
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Interfaces.IDomain;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
+import java.util.ArrayList;
 
 
 public class ShipDomain implements IDomain {
@@ -23,8 +23,8 @@ public class ShipDomain implements IDomain {
     private double aftOffset;
     private double y;
     private double x;
-    private final Ellipse2D.Double ellipseDomain;
-    private Path2D.Double pentagonDomain;
+    private Dibbidut.Classes.Geometry.Ellipse ellipseDomain;
+    private Dibbidut.Classes.Geometry.Polygon pentagonDomain;
     private final DomainDimensions DomainDimensions;
     private boolean domainType;
     private double Heading;
@@ -38,8 +38,6 @@ public class ShipDomain implements IDomain {
         } else throw new IllegalArgumentException();
         this.shipLength = shipLength;
         this.shipWidth = shipWidth;
-        this.ellipseDomain = new Ellipse2D.Double();
-        this.pentagonDomain = new Path2D.Double();
         this.DomainDimensions = new DomainDimensions();
 
     }
@@ -100,13 +98,13 @@ public class ShipDomain implements IDomain {
         return domainType;
     }
 
-    public Shape getDomain() {
+    public Geometry getDomain() {
         if (domainType) {
             updatePentagonDomain();
-            return rotateDomain(this.Heading,pentagonDomain);
+            return pentagonDomain;
         }
         updateEllipseDomain();
-        return rotateDomain(this.Heading,ellipseDomain);
+        return ellipseDomain;
     }
     @Override
     public ShipDomain Update(double SOG, double Heading, double y, double x) {
@@ -154,77 +152,22 @@ public class ShipDomain implements IDomain {
     }
 
     private void updateEllipseDomain() {
-
-        // Updating the ellipseDomain
-        this.ellipseDomain.x = (x + starboardOffset);
-        this.ellipseDomain.y = (y + aftOffset);
-        this.ellipseDomain.width = width;
-        this.ellipseDomain.height = height;
-    }
-
-    // TODO: Bør det her ikke være x * scalar?
-    private Ellipse2D.Double scaleEllipseDomain(double scalar) {
-        Ellipse2D.Double tempEllipse = new Ellipse2D.Double();
-        // Updating the ellipseDomain
-        tempEllipse.x = (x + starboardOffset);
-        tempEllipse.y = (y + aftOffset);
-        tempEllipse.width = width / scalar;
-        tempEllipse.height = height / scalar;
-        return tempEllipse;
+        this.ellipseDomain = new Ellipse(new HPoint(x + starboardOffset,y + aftOffset,1),width,height);
     }
 
     private void updatePentagonDomain() {
-        this.pentagonDomain = new Path2D.Double();
 
+        pentagonDomain.coordinates = new ArrayList<>();
         // P5
-        pentagonDomain.moveTo(x - DomainDimensions.One, y + DomainDimensions.Three);
+        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three,1));
         // P4
-        pentagonDomain.lineTo(x - DomainDimensions.One, y + DomainDimensions.Four);
+        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four,1));
         // P3
-        pentagonDomain.lineTo(x, y + DomainDimensions.Five);
+        pentagonDomain.coordinates.add(new HPoint(x, y + DomainDimensions.Five,1));
         // P2
-        pentagonDomain.lineTo(x - DomainDimensions.Two, y + DomainDimensions.Four);
+        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four,1));
         // P1
-        pentagonDomain.lineTo(x - DomainDimensions.Two, y + DomainDimensions.Three);
+        pentagonDomain.coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three,1));
 
-        // Enclose path to create pentagon
-        pentagonDomain.closePath();
     }
-
-    private Shape scalePentagonDomain(double scalar) {
-        Path2D.Double tempPath = new Path2D.Double();
-
-        // P5
-        tempPath.moveTo(x - DomainDimensions.One/scalar, y + DomainDimensions.Three/scalar);
-        // P4
-        tempPath.lineTo(x - DomainDimensions.One/scalar, y + DomainDimensions.Four/scalar);
-        // P3
-        tempPath.lineTo(x, y + DomainDimensions.Five/scalar);
-        // P2
-        tempPath.lineTo(x - DomainDimensions.Two/scalar, y + DomainDimensions.Four/scalar);
-        // P1
-        tempPath.lineTo(x - DomainDimensions.Two/scalar, y + DomainDimensions.Three/scalar);
-
-        // Enclose path to create pentagon
-        tempPath.closePath();
-
-        return tempPath;
-    }
-
-
-    private Shape rotateDomain(double heading, Shape inputShape) {
-        return AffineTransform.getRotateInstance(
-                Math.toRadians(heading),
-                x, y)
-                    .createTransformedShape(inputShape);
-    }
-
-    public Shape getScaledShipDomain(double scalar) {
-        if (scalar == 0) scalar = 1;
-        if (domainType) {
-            return rotateDomain(Heading,scalePentagonDomain(scalar));
-        }
-        return rotateDomain(Heading,scaleEllipseDomain(scalar));
-    }
-
 }
