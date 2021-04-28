@@ -1,9 +1,9 @@
 package Dibbidut.Classes.Handlers;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Mercator;
 import Dibbidut.Classes.Ship;
-import math.geom2d.Vector2D;
 
 import java.util.Hashtable;
 
@@ -95,7 +95,7 @@ public class UpdateShipHandler extends ShipHandler {
         }
     }
 
-    public Vector2D HandleVelocity() {
+    public HPoint HandleVelocity() {
 
         // SOG and COG have already been handled at this point, so we don't need to retain values.
         // We can assume that the new data was overridden by the old data, if the new data was lacking
@@ -120,7 +120,7 @@ public class UpdateShipHandler extends ShipHandler {
         // TODO: Måske se på om den nye velocity falder helt uden for skibets path / Er helt urealistisk?
     }
 
-    public Vector2D HandlePosition() {
+    public HPoint HandlePosition() {
 
         int fore = data.distanceFore;
         int aft = data.distanceAft;
@@ -134,7 +134,7 @@ public class UpdateShipHandler extends ShipHandler {
             warnings.put("TransceiverAccuracy", "Position of ship may be inaccurate due to miscalibrated AIS transceiver");
         }
 
-        Vector2D myShipPosition = Mercator.projection(data.longitude, data.latitude);
+        HPoint myShipPosition = Mercator.projection(data.longitude, data.latitude);
 
         warnings.put("TransceiverPosition", "");
 

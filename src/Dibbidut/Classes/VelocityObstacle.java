@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Interfaces.IVelocityObstacle;
 import Dibbidut.utilities.GrahamScan;
 import Dibbidut.utilities.ShapeBorder;
@@ -17,7 +18,7 @@ public class VelocityObstacle implements IVelocityObstacle {
     @Override
     public Area Calculate(Ship ownShip, Ship other, double timeFrame) {
         AffineTransform translation = new AffineTransform();
-        translation.translate(other.velocity.x(), other.velocity.y());
+        translation.translate(other.velocity.getX(), other.velocity.getY());
         Area relativeVO = RelativeVO(ownShip, other, timeFrame);
 
         return relativeVO.createTransformedArea(translation);
@@ -51,7 +52,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
 
         // Get the scaled conflict positions at the end of the time frame
-        AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
+//        AffineTransform translation = getTranslation(object.position, obstacle.position, timeframe);
         // Todo implementer til at bruge geometry
         Area scaledDomain = new Area();//new Area(obstacle.domain.getScaledShipDomain((float)timeframe)).createTransformedArea(translation);
 
@@ -119,8 +120,8 @@ public class VelocityObstacle implements IVelocityObstacle {
         return path;
     }
 
-    private Point2D HPointToPoint(Vector2D vec) {
-        return new Point2D.Double(vec.x(), vec.y());
+    private Point2D HPointToPoint(HPoint vec) {
+        return new Point2D.Double(vec.getX(), vec.getY());
     }
 
     private Vector2D divideHPointByScalar(Vector2D vec, double scalar) {

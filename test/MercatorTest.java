@@ -1,3 +1,4 @@
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Mercator;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,9 @@ public class MercatorTest {
         double longExpected = Mercator.earthRadius * (radLong - radReference);
         double latExpected = Mercator.earthRadius * Math.log(Math.tan((Math.PI / 4) + (radLat / 2)));
 
-        Vector2D expected = new Vector2D(longExpected, latExpected);
+        HPoint expected = new HPoint(longExpected, latExpected);
 
-        Vector2D actual = Mercator.projection(longitude, latitude);
+        HPoint actual = Mercator.projection(longitude, latitude);
 
         assertEquals(expected, actual);
     }
@@ -33,9 +34,9 @@ public class MercatorTest {
         double longitude = 8;
         double latitude = 55;
 
-        Vector2D n = Mercator.projection(longitude, latitude);
+        HPoint n = Mercator.projection(longitude, latitude);
 
-        double actual = Mercator.unprojectionX(n.x());
+        double actual = Mercator.unprojectionX(n.getX());
 
         assertEquals(longitude, actual);
     }
@@ -45,9 +46,9 @@ public class MercatorTest {
         double longitude = 8;
         double latitude = 55;
 
-        Vector2D n = Mercator.projection(longitude, latitude);
+        HPoint n = Mercator.projection(longitude, latitude);
 
-        double actual = Mercator.unprojectionY(n.y());
+        double actual = Mercator.unprojectionY(n.getY());
 
         assertEquals(latitude, Math.round(actual));
     }

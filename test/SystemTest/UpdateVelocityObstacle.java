@@ -2,6 +2,7 @@ package SystemTest;
 
 import Dibbidut.Classes.*;
 import Dibbidut.Classes.CASystem;
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Handlers.ShipHandler;
 import Dibbidut.Classes.Handlers.UpdateShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
@@ -20,19 +21,19 @@ public class UpdateVelocityObstacle {
         double ownShipHeading = 45;
         double targetShipHeading = 270;
 
-        Ship ownShip = new Ship(new Vector2D(0,0), 50, 20, (int) ownShipHeading);
+        Ship ownShip = new Ship(new HPoint(0,0), 50, 20, (int) ownShipHeading);
         ownShip.sog = 20;
         ownShip.cog = ownShipHeading;
         ownShip.mmsi = 1;
         ownShip.velocity = handler.CalculateVelocity(ownShip.sog, ownShipHeading);
-        ownShip.domain.Update(ownShip.sog, ownShipHeading, ownShip.position.y(), ownShip.position.x());
+        ownShip.domain.Update(ownShip.sog, ownShipHeading, ownShip.position.getY(), ownShip.position.getX());
 
-        Ship targetShip = new Ship(new Vector2D(600, 100), 50, 20, (int) targetShipHeading);
+        Ship targetShip = new Ship(new HPoint(600, 100), 50, 20, (int) targetShipHeading);
         targetShip.sog = 20;
         targetShip.cog = targetShipHeading;
         targetShip.mmsi = 2;
         targetShip.velocity = handler.CalculateVelocity(targetShip.sog, targetShipHeading);
-        targetShip.domain.Update(targetShip.sog, targetShipHeading, targetShip.position.y(), targetShip.position.x());
+        targetShip.domain.Update(targetShip.sog, targetShipHeading, targetShip.position.getY(), targetShip.position.getX());
 
 
         CASystem caSystem = new CASystem();

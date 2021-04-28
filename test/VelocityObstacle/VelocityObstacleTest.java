@@ -22,8 +22,8 @@ public class VelocityObstacleTest {
     class mockDomain implements IDomain {
         private Geometry domain;
         private double radius;
-        private Vector2D position;
-        mockDomain(Vector2D position, double radius) {
+        private HPoint position;
+        mockDomain(HPoint position, double radius) {
             this.radius = radius;
             this.position = position;
             /*
@@ -33,7 +33,7 @@ public class VelocityObstacleTest {
                     radius, radius
             );
              */
-            domain = new Ellipse(new HPoint(position.x(), position.y(), 1), radius, radius);
+            domain = new Ellipse(new HPoint(position.getX(), position.getY()), radius, radius);
         }
         // Not needed for these tests
         @Override
@@ -56,8 +56,8 @@ public class VelocityObstacleTest {
             //scaledEllipse.x = domain.getBounds2D().getX();
             //scaledEllipse.y = domain.getBounds2D().getY();
 
-            scaledEllipse.x = position.x() - (radius/scalar) / 2;
-            scaledEllipse.y = position.y() - (radius/scalar) / 2;
+            scaledEllipse.x = position.getX() - (radius/scalar) / 2;
+            scaledEllipse.y = position.getY() - (radius/scalar) / 2;
             scaledEllipse.width = radius/scalar;
             scaledEllipse.height = radius/scalar;
 
@@ -84,15 +84,15 @@ public class VelocityObstacleTest {
         @BeforeEach
         public void setUp() {
             Shape confA = new Ellipse2D.Double(-0.5, -0.5, 1, 1);
-            Vector2D velA = new Vector2D(1, 1);
-            Vector2D posA = new Vector2D(0, 0);
+            HPoint velA = new HPoint(1, 1);
+            HPoint posA = new HPoint(0, 0);
             shipA = new Ship(posA, 1, 1, 0);
             shipA.velocity = velA;
             shipA.domain = new mockDomain(posA, 1);
 
             Shape confB = new Ellipse2D.Double(-0.5, 4.5, 1, 1);
-            Vector2D velB = new Vector2D(1, 0);
-            Vector2D posB = new Vector2D(0, 5);
+            HPoint velB = new HPoint(1, 0);
+            HPoint posB = new HPoint(0, 5);
             shipB = new Ship(posB, 1,1, 0);
             shipB.velocity = velB;
             shipB.domain = new mockDomain(posB, 1);
@@ -173,7 +173,7 @@ public class VelocityObstacleTest {
 
             Area absVO = VO.Calculate(shipA, shipB, time);
 
-            assertTrue(absVO.contains(new Point2D.Double(shipB.position.x() + shipB.velocity.x(), shipB.position.y() + shipB.velocity.y())));
+            assertTrue(absVO.contains(new Point2D.Double(shipB.position.getX() + shipB.velocity.getX(), shipB.position.getY() + shipB.velocity.getY())));
 
         }
     }
@@ -188,14 +188,14 @@ public class VelocityObstacleTest {
         @BeforeEach
         public void setUp() {
             Shape confA = new Ellipse2D.Double(0, 0, 1, 1);
-            Vector2D velA = new Vector2D(1, 1);
-            Vector2D posA = new Vector2D(0, 0);
+            HPoint velA = new HPoint(1, 1);
+            HPoint posA = new HPoint(0, 0);
             shipA = new Ship(posA, velA, confA);
             shipA.domain = new mockDomain(posA, 1);
 
             Shape confB = new Ellipse2D.Double(4.5, 4.5, 1, 1);
-            Vector2D velB = new Vector2D(0, 0);
-            Vector2D posB = new Vector2D(5, 5);
+            HPoint velB = new HPoint(0, 0);
+            HPoint posB = new HPoint(5, 5);
             shipB = new Ship(posB, velB, confB);
             shipB.domain = new mockDomain(posB, 1);
         }
@@ -206,7 +206,7 @@ public class VelocityObstacleTest {
 
             Area relVO = VO.RelativeVO(shipA, shipB, time);
 
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y())));
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX(), shipB.position.getY())));
         }
 
         @Test
@@ -225,7 +225,7 @@ public class VelocityObstacleTest {
             Area relVO = VO.RelativeVO(shipA, shipB, time);
             double relativeVel = 1;
             // Assert that the returned area contains the future positions of the target ship
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y())));
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX(), shipB.position.getY())));
             assertTrue(relVO.contains(new Point2D.Double(relativeVel, relativeVel)));
             assertTrue(relVO.contains(new Point2D.Double( relativeVel * 2,  relativeVel * 2)));
             //assertTrue(relVO.contains(new Point2D.Double(relativeVel * 3,  relativeVel * 3)));
@@ -240,12 +240,12 @@ public class VelocityObstacleTest {
             Area relVO = VO.RelativeVO(shipA, shipB, time);
 
             assertTrue(relVO.intersects(shipB.conflictRegion.getBounds2D()));
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y()))); //Center
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX(), shipB.position.getY()))); //Center
             // Check that it contains points just inside the edge of the conflictRegion
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y() + 0.49))); //Top
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x(), shipB.position.y() - 0.49))); //Bottom
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x() - 0.49, shipB.position.y()))); //Left
-            assertTrue(relVO.contains(new Point2D.Double(shipB.position.x() + 0.49, shipB.position.y()))); //Right
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX(), shipB.position.getY() + 0.49))); //Top
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX(), shipB.position.getY() - 0.49))); //Bottom
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX() - 0.49, shipB.position.getY()))); //Left
+            assertTrue(relVO.contains(new Point2D.Double(shipB.position.getX() + 0.49, shipB.position.getY()))); //Right
         }
 
         @Test

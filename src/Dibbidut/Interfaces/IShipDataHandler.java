@@ -1,6 +1,6 @@
 package Dibbidut.Interfaces;
 
-import math.geom2d.Vector2D;
+import Dibbidut.Classes.Geometry.HPoint;
 
 public interface IShipDataHandler {
     int HandleMMSI();
@@ -8,8 +8,8 @@ public interface IShipDataHandler {
     int HandleLength();
     int HandleWidth();
 
-    Vector2D HandleVelocity();
-    Vector2D HandlePosition();
+    HPoint HandleVelocity();
+    HPoint HandlePosition();
 
     double HandleSOG();
     double HandleCOG();

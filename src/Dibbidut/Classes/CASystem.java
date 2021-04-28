@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Exceptions.OSNotFoundException;
@@ -210,7 +211,7 @@ public class CASystem {
             // If the potential ship is already out of range,
             // check if there is a reference to the ship in the ship list, remove it if there is,
             // and continue to next iteration
-            Vector2D shipPosition = Mercator.projection(data.longitude, data.latitude);
+            HPoint shipPosition = Mercator.projection(data.longitude, data.latitude);
             if (!isWithinRange(shipPosition, ownShip.position, range)) {
                 this.shipsInRange.remove(new Ship(data.mmsi));
                 continue;
@@ -247,11 +248,11 @@ public class CASystem {
         RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
     }
 
-    public boolean isWithinRange(Vector2D shipPosition, Vector2D ownShipPosition, double range) {
+    public boolean isWithinRange(HPoint shipPosition, HPoint ownShipPosition, double range) {
         return GetDistance(ownShipPosition, shipPosition) < range;
     }
 
-    public void RemoveShipsOutOfRange(Vector2D ownShipPosition, ArrayList<Ship> ships, double range) {
+    public void RemoveShipsOutOfRange(HPoint ownShipPosition, ArrayList<Ship> ships, double range) {
 
         ArrayList<Ship> deletionList = new ArrayList<>();
 
@@ -264,10 +265,10 @@ public class CASystem {
         ships.removeAll(deletionList);
     }
 
-    public double GetDistance(Vector2D from, Vector2D to) {
-        Vector2D difference = to.minus(from);
+    public double GetDistance(HPoint from, HPoint to) {
+        HPoint difference = to.subtract(from);
 
-        return Math.sqrt(Math.pow(difference.x(), 2) + Math.pow(difference.y(), 2));
+        return difference.length();
     }
 
     public void UpdateVelocityObstacles() {

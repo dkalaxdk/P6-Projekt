@@ -10,7 +10,11 @@ public class Transformation {
     private double rotation = 0;
 
     public Transformation() {
-        matrix = new double[][] {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+        matrix = new double[][] {
+                {1, 0, 0},
+                {0, 1, 0},
+                {0, 0, 1}
+        };
     }
 
     public Transformation(Transformation t) {
@@ -30,14 +34,18 @@ public class Transformation {
 
     public Transformation scale(double width, double height) {
         setMatrix(new double[][] {
-                {width, 0, 0}, {0, height, 0}, {0, 0, 1}
+                {width, 0, 0},
+                {0, height, 0},
+                {0, 0, 1}
         });
         return this;
     }
 
     public Transformation translate(double x, double y) {
         setMatrix(new double[][]{
-                {1, 0, 0}, {0, 1, 0}, {x, y, 1}
+                {1, 0, 0},
+                {0, 1, 0},
+                {x, y, 1}
         });
         return this;
     }

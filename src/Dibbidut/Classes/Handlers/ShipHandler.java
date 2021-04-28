@@ -1,5 +1,6 @@
 package Dibbidut.Classes.Handlers;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Ship;
 import Dibbidut.Interfaces.IShipDataHandler;
@@ -48,16 +49,19 @@ public abstract class ShipHandler implements IShipDataHandler {
         myShip.position = HandlePosition();
     }
 
-    public Vector2D CalculateVelocity(double sog, double cog) {
-        return new Vector2D(0, KnotsToMetersPerSecond(sog)).rotate(Math.toRadians(cog));
+    public HPoint CalculateVelocity(double sog, double cog) {
+        HPoint point = new HPoint(0, KnotsToMetersPerSecond(sog));
+        point.rotate(Math.toRadians(cog));
+
+        return point;
     }
 
-    public Vector2D GetVelocityPlaceHolder() {
+    public HPoint GetVelocityPlaceHolder() {
         return CalculateVelocity(sogPlaceHolder, cogPlaceholder);
     }
 
-    public Vector2D GetPositionPlaceHolder() {
-        return new Vector2D(0,0);
+    public HPoint GetPositionPlaceHolder() {
+        return new HPoint(0,0);
     }
 
     public double KnotsToMetersPerSecond(double kn) {
@@ -65,65 +69,65 @@ public abstract class ShipHandler implements IShipDataHandler {
     }
 
     public static class MovePositionToCenter {
-        public static Vector2D AftPort(Vector2D originalPosition,
+        public static HPoint AftPort(HPoint originalPosition,
                                        int aft, int port,
                                        int length, int width) {
 
-            return new Vector2D(Port(originalPosition, port, width).x(),
-                    Aft(originalPosition, aft, length).y());
+            return new HPoint(Port(originalPosition, port, width).getX(),
+                    Aft(originalPosition, aft, length).getY());
         }
 
-        public static Vector2D AftStarboard(Vector2D originalPosition,
+        public static HPoint AftStarboard(HPoint originalPosition,
                                             int aft, int starboard,
                                             int length, int width) {
 
-            return new Vector2D(Starboard(originalPosition, starboard, width).x(),
-                    Aft(originalPosition, aft, length).y());
+            return new HPoint(Starboard(originalPosition, starboard, width).getX(),
+                    Aft(originalPosition, aft, length).getY());
         }
 
-        public static Vector2D ForePort(Vector2D originalPosition,
+        public static HPoint ForePort(HPoint originalPosition,
                                         int fore, int port,
                                         int length, int width) {
 
-            return new Vector2D(Port(originalPosition, port, width).x(),
-                    Fore(originalPosition, fore, length).y());
+            return new HPoint(Port(originalPosition, port, width).getX(),
+                    Fore(originalPosition, fore, length).getY());
         }
 
-        public static Vector2D ForeStarboard(Vector2D originalPosition,
+        public static HPoint ForeStarboard(HPoint originalPosition,
                                              int fore, int starboard,
                                              int length, int width) {
 
-            return new Vector2D(Starboard(originalPosition, starboard, width).x(),
-                    Fore(originalPosition, fore, length).y());
+            return new HPoint(Starboard(originalPosition, starboard, width).getX(),
+                    Fore(originalPosition, fore, length).getY());
         }
 
 
-        public static Vector2D Fore(Vector2D originalPosition,
+        public static HPoint Fore(HPoint originalPosition,
                                     int fore, int length) {
 
-            return new Vector2D(originalPosition.x(),
-                    originalPosition.y() + fore - (((double) length) / 2));
+            return new HPoint(originalPosition.getX(),
+                    originalPosition.getY() + fore - (((double) length) / 2));
         }
 
-        public static Vector2D Aft(Vector2D originalPosition,
+        public static HPoint Aft(HPoint originalPosition,
                                    int aft, int length) {
 
-            return new Vector2D(originalPosition.x(),
-                    originalPosition.y() - aft + (((double) length / 2)));
+            return new HPoint(originalPosition.getX(),
+                    originalPosition.getY() - aft + (((double) length / 2)));
         }
 
-        public static Vector2D Starboard(Vector2D originalPosition,
+        public static HPoint Starboard(HPoint originalPosition,
                                          int starboard, int width) {
 
-            return new Vector2D(originalPosition.x() + starboard - (((double) width) / 2),
-                    originalPosition.y());
+            return new HPoint(originalPosition.getX() + starboard - (((double) width) / 2),
+                    originalPosition.getY());
         }
 
-        public static Vector2D Port(Vector2D originalPosition,
+        public static HPoint Port(HPoint originalPosition,
                                     int port, int width) {
 
-            return new Vector2D(originalPosition.x() - port + (((double) width) / 2),
-                    originalPosition.y());
+            return new HPoint(originalPosition.getX() - port + (((double) width) / 2),
+                    originalPosition.getY());
         }
     }
 }

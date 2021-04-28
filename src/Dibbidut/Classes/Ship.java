@@ -1,5 +1,6 @@
 package Dibbidut.Classes;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Handlers.AISToShipHandler;
 import Dibbidut.Classes.Handlers.UpdateShipHandler;
 import Dibbidut.Classes.InputManagement.AISData;
@@ -27,31 +28,31 @@ public class Ship extends Obstacle {
     private AISData currentData;
 
     public Ship(int mmsi) {
-        super(new Vector2D(0,0), new Vector2D(0,0));
+        super(new HPoint(0,0), new HPoint(0,0));
 
         this.mmsi = mmsi;
     }
 
-    public Ship(Vector2D position, Vector2D velocity, Shape conflictRegion) {
+    public Ship(HPoint position, HPoint velocity, Shape conflictRegion) {
         super(position, velocity);
         this.position = position;
         this.velocity = velocity;
         this.conflictRegion = conflictRegion;
     }
 
-    public Ship(Vector2D position, int length, int width, int heading) {
-        super(position, new Vector2D(0,0));
+    public Ship(HPoint position, int length, int width, int heading) {
+        super(position, new HPoint(0,0));
         this.position = position;
         this.length = length;
         this.width = width;
         this.heading = heading;
 
-        domain = new ShipDomain(length, width, "Ellipse");
-        domain.Update(sog, heading, position.y(), position.x());
+        domain = new ShipDomain(length, width, "Pentagon");
+        domain.Update(sog, heading, position.getY(), position.getX());
     }
 
     public Ship(AISData data) {
-        super(new Vector2D(0,0), new Vector2D(0,0));
+        super(new HPoint(0,0), new HPoint(0,0));
 
         warnings = new Hashtable<>();
         currentData = data;
@@ -60,8 +61,8 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
-        domain = new ShipDomain(length, width, "Ellipse");
-        domain.Update(sog, heading, position.y(), position.x());
+        domain = new ShipDomain(length, width, "Pentagon");
+        domain.Update(sog, heading, position.getY(), position.getX());
     }
 
     /**
@@ -77,7 +78,7 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
-        domain.Update(sog, heading, position.y(), position.x());
+        domain.Update(sog, heading, position.getY(), position.getX());
     }
 
     @Override

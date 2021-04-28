@@ -136,6 +136,7 @@ public class Polygon extends Geometry{
                 count++;
             }
 
+            //TODO: Should z be 1?
             center = new HPoint(x/count, y/count, z/count);
         }
     }

@@ -1,5 +1,6 @@
 package Dibbidut.Classes.Handlers;
 
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.Mercator;
 import Dibbidut.Classes.Ship;
@@ -61,7 +62,7 @@ public class AISToShipHandler extends ShipHandler {
         return data.width;
     }
 
-    public Vector2D HandleVelocity() {
+    public HPoint HandleVelocity() {
 
         if (data.sogIsSet && data.cogIsSet) {
             return CalculateVelocity(data.SOG, data.COG);
@@ -83,8 +84,8 @@ public class AISToShipHandler extends ShipHandler {
         }
     }
 
-    public Vector2D HandlePosition() {
-        Vector2D myShipPosition;
+    public HPoint HandlePosition() {
+        HPoint myShipPosition;
 
         if (data.longitude != 0 && data.latitude != 0) {
             myShipPosition = Mercator.projection(data.longitude, data.latitude);
@@ -98,7 +99,7 @@ public class AISToShipHandler extends ShipHandler {
         return HandleCentering(myShipPosition);
     }
 
-    private Vector2D HandleCentering(Vector2D myShipPosition) {
+    private HPoint HandleCentering(HPoint myShipPosition) {
 
         // Renaming for shortness sake
         int fore = data.distanceFore;
