@@ -141,6 +141,8 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
             else if (slider == this.timeFrameSlider) {
                 system.timeFrame = timeFrameSlider.getValue();
             }
+
+            system.dirty = true;
         }
     }
 }

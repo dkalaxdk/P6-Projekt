@@ -44,10 +44,6 @@ public class Display extends JPanel {
         return new Dimension(1000,1000);
     }
 
-    private double degreesToRadians(int degrees) {
-        return degrees * (Math.PI / 180);
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,7 +75,7 @@ public class Display extends JPanel {
 
         system.listLock.lock();
 
-        drawVelocityObstacles(g2, system.MVO);
+//        drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
 
@@ -134,7 +130,7 @@ public class Display extends JPanel {
     private void drawShip(Ship ship, Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g.create();
 
-        g2.rotate(degreesToRadians(360 - ship.heading), ship.position.getX(), ship.position.getY());
+        g2.rotate(Math.toRadians(360 - ship.heading), ship.position.getX(), ship.position.getY());
 
         HPoint p = getCoordinatesToDrawShipFrom(ship);
 
@@ -148,13 +144,12 @@ public class Display extends JPanel {
     private void drawShipDomain(Ship ship, Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g.create();
 
-        g2.rotate(degreesToRadians(360 - ship.heading), ship.position.getX(), ship.position.getY());
+        g2.rotate(Math.toRadians(360 - ship.heading), ship.position.getX(), ship.position.getY());
         Shape shape;
         if (ship.domain.getDomainType()) {
             // Pentagon
-            //TODO: Mirror pentagon domain?
-            ship.domain.Update(ship.sog, 0, ship.position.getY(), ship.position.getX());
 
+            ship.domain.Update(ship.sog, 0, ship.position.getY(), ship.position.getX());
 
             shape = drawPentagonDomain(ship);
         }
@@ -163,8 +158,8 @@ public class Display extends JPanel {
             HPoint p = getCoordinatesToDrawDomainFrom(ship);
 
             ship.domain.Update(ship.sog,0, p.getY(), p.getX());
-            // TODO Update to ellipseDomain
-            shape = drawPentagonDomain(ship);
+
+            shape = drawEllipseDomain(ship);
         }
 
 
@@ -180,7 +175,7 @@ public class Display extends JPanel {
 
         HPoint heading = new HPoint(0, (double) ship.length / 2);
 
-        heading.rotate(degreesToRadians(360 - ship.heading));
+        heading.rotate(ship.heading);
 
         HPoint point = ship.position.add(heading);
 
@@ -192,10 +187,10 @@ public class Display extends JPanel {
     private void drawVelocity(Ship ship, Graphics2D g) {
         g.setColor(Color.green);
 
-        HPoint velocity = new HPoint(-ship.velocity.getX(), ship.velocity.getY());
+        HPoint velocity = new HPoint(ship.velocity.getX(), ship.velocity.getY());
         velocity.scale(system.timeFrame);
 
-        ship.position.add(velocity);
+        velocity = ship.position.add(velocity);
 
         Shape shape = new Line2D.Double(ship.position.getX(), ship.position.getY(), velocity.getX(), velocity.getY());
 
@@ -230,6 +225,7 @@ public class Display extends JPanel {
     private Path2D drawPentagonDomain(Ship ship) {
         Path2D outputShape = new Path2D.Double();
         Polygon domain = (Polygon) ship.domain.getDomain();
+
         ArrayList<HPoint> coordinates = domain.coordinates;
         // P5
         outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
@@ -241,9 +237,15 @@ public class Display extends JPanel {
         outputShape.lineTo(coordinates.get(3).getX(), coordinates.get(3).getY());
         // P1
         outputShape.lineTo(coordinates.get(4).getX(), coordinates.get(4).getY());
+
         outputShape.closePath();
 
         return outputShape;
+    }
+
+    // TODO: Implement me
+    private Path2D drawEllipseDomain(Ship ship) {
+        return new Path2D.Double();
     }
     public void Update() {
         clearDisplay();

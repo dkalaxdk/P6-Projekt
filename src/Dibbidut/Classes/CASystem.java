@@ -40,7 +40,7 @@ public class CASystem {
 
     public Float timeFactor;
 
-    private boolean dirty;
+    public boolean dirty;
 
     public CASystem() {
         osBuffer = new LinkedBlockingQueue<>();
@@ -67,8 +67,8 @@ public class CASystem {
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-//        ownShipMMSI = 218176000;
-//        String inputFile = "InputFiles/AarhusEncounter.csv";
+        ownShipMMSI = 218176000;
+        String inputFile = "InputFiles/AarhusEncounter.csv";
 
 
 //        ownShipMMSI = 219017081;
@@ -86,8 +86,8 @@ public class CASystem {
 //        String inputFile = "InputFiles/NECKAR_HIGHWAY_&_ORION.csv";
 
 
-        ownShipMMSI = 305369000;
-        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
+//        ownShipMMSI = 305369000;
+//        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
 
 
 
@@ -138,8 +138,6 @@ public class CASystem {
         long duration = 0;
 
         while(running) {
-            dirty = false;
-
             start = System.nanoTime();
 
             listLock.lock();
@@ -152,6 +150,7 @@ public class CASystem {
             if (dirty) {
 //                UpdateVelocityObstacles();
                 UpdateDisplay();
+                dirty = false;
             }
 
             end = System.nanoTime();

@@ -51,7 +51,7 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     public HPoint CalculateVelocity(double sog, double cog) {
         HPoint point = new HPoint(0, KnotsToMetersPerSecond(sog));
-        point.rotate(Math.toRadians(cog));
+        point.rotate(cog);
 
         return point;
     }

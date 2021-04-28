@@ -112,4 +112,9 @@ public class HPoint extends Geometry implements Comparable {
         HPoint startingPoint = new HPoint(-1, 0, 1);
         return (int)(startingPoint.angle(this) - startingPoint.angle((HPoint)point));
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + z + ") ";
+    }
 }
