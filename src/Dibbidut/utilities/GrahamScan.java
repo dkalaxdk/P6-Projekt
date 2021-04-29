@@ -2,7 +2,6 @@ package Dibbidut.utilities;
 
 import Dibbidut.Classes.Geometry.Point;
 import Dibbidut.Classes.Geometry.PointFactory;
-import Dibbidut.Classes.Geometry.Vector;
 
 import java.util.*;
 import static java.util.stream.Collectors.toList;

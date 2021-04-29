@@ -1,9 +1,7 @@
 package utilities;
 
-import Dibbidut.Classes.Geometry.Point;
-import Dibbidut.Classes.Geometry.PointFactory;
-import Dibbidut.Classes.Geometry.Vector;
-import Dibbidut.Classes.Geometry.VectorFactory;
+import Dibbidut.Classes.Geometry.*;
+import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.utilities.ConvexHull;
 import Dibbidut.utilities.GrahamScan;
 import org.junit.jupiter.api.*;
@@ -18,7 +16,7 @@ public class GrahamScanTest {
 
     @BeforeAll
     public static void beforeAll() {
-        PointFactory factory = new VectorFactory();
+        PointFactory factory = new HPointFactory();
         convHull = new GrahamScan(factory);
     }
 
@@ -29,8 +27,8 @@ public class GrahamScanTest {
         @Test
         public void Calculate_ThrowsExceptionWhenGivenLessThanThreePoints() {
             ArrayList<Point> points = new ArrayList<>(Arrays.asList(
-                    new Vector(1, 1, 1),
-                    new Vector(2, 2, 1)
+                    new HPoint(1, 1, 1),
+                    new HPoint(2, 2, 1)
             ));
 
             assertThrows(IllegalArgumentException.class, () -> convHull.Calculate(points));
@@ -40,9 +38,9 @@ public class GrahamScanTest {
         @Test
         public void Calculate_GivenThreePointsReturnsGivenPoints() {
             ArrayList<Point> points = new ArrayList<>(Arrays.asList(
-                    new Vector(1, 1, 1),
-                    new Vector(2, 2, 1),
-                    new Vector(1, 2, 1)
+                    new HPoint(1, 1, 1),
+                    new HPoint(2, 2, 1),
+                    new HPoint(1, 2, 1)
             ));
 
             assertArrayEquals(points.toArray(), convHull.Calculate(points).toArray());
@@ -64,25 +62,25 @@ public class GrahamScanTest {
 
         private ArrayList<Point> pointList() {
             return new ArrayList<Point>(Arrays.asList(
-                    new Vector(1, 1, 1),
-                    new Vector(2.5, 1, 1),
-                    new Vector(3.5, 1.5, 1),
-                    new Vector(1.5, 2, 1),
-                    new Vector(2.5, 2.5, 1),
-                    new Vector(4, 2.5, 1),
-                    new Vector(1, 3, 1),
-                    new Vector(2.5, 3.5, 1)
+                    new HPoint(1, 1, 1),
+                    new HPoint(2.5, 1, 1),
+                    new HPoint(3.5, 1.5, 1),
+                    new HPoint(1.5, 2, 1),
+                    new HPoint(2.5, 2.5, 1),
+                    new HPoint(4, 2.5, 1),
+                    new HPoint(1, 3, 1),
+                    new HPoint(2.5, 3.5, 1)
             ));
         }
 
         private Point[] pointsInHull() {
             return new Point[] {
-                    new Vector(1, 1, 1),
-                    new Vector(2.5, 1, 1),
-                    new Vector(3.5, 1.5, 1),
-                    new Vector(4, 2.5, 1),
-                    new Vector(2.5, 3.5, 1),
-                    new Vector(1, 3, 1)
+                    new HPoint(1, 1, 1),
+                    new HPoint(2.5, 1, 1),
+                    new HPoint(3.5, 1.5, 1),
+                    new HPoint(4, 2.5, 1),
+                    new HPoint(2.5, 3.5, 1),
+                    new HPoint(1, 3, 1)
             };
         }
     }
