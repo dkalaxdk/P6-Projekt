@@ -161,15 +161,15 @@ public class ShipDomain implements IDomain {
 
         ArrayList<HPoint> coordinates = new ArrayList<>();
         // P5
-        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three,1));
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three));
         // P4
-        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four,1));
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four));
         // P3
-        coordinates.add(new HPoint(x, y + DomainDimensions.Five,1));
+        coordinates.add(new HPoint(x, y + DomainDimensions.Five));
         // P2
-        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four,1));
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four));
         // P1
-        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three,1));
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three));
         pentagonDomain = new Polygon(coordinates);
     }
 }

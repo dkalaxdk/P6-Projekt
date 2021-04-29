@@ -1,5 +1,7 @@
 package Dibbidut.Classes.Geometry;
 
+import Dibbidut.Classes.Utility;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -65,13 +67,10 @@ public class Transformation {
         double[][] rounded = new double[3][3];
         for(int i = 0; i < matrix.length; i++)
             for(int j = 0; j < matrix[i].length; j++)
-                rounded[i][j] = roundToFourDecimals(matrix[i][j]);
+                rounded[i][j] = Utility.roundToFourDecimals(matrix[i][j]);
         return rounded;
     }
 
-    private double roundToFourDecimals(double number) {
-        return (double)Math.round(number * 10000d) / 10000d;
-    }
 
     public double getRotation() {
         return rotation;
