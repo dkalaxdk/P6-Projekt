@@ -1,0 +1,2 @@
+MMSI,X,Y,SOG,COG,Heading,Length,Width
+1,1500,2800,20,1,1,20,20
