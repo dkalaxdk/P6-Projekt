@@ -2,8 +2,6 @@
 import Dibbidut.Classes.ShipDomain;
 import org.junit.jupiter.api.*;
 
-import java.awt.geom.Ellipse2D;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ShipDomainTest {
@@ -144,46 +142,46 @@ public class ShipDomainTest {
         @Test
         public void testUpdate_UpdatedRadiusFore_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusFore(), 35.80281972129252);
+            assertEquals(shipDomain.getRadiusFore(), 33.30281972129252);
         }
         @Test
         public void testUpdate_UpdatedRadiusAft_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusAft(), 21.65140986064626);
+            assertEquals(shipDomain.getRadiusAft(), 19.15140986064626);
         }
         @Test
         public void testUpdate_UpdatedRadiusStarBoard_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusStarboard(), 27.25007293461687);
+            assertEquals(shipDomain.getRadiusStarboard(), 22.25007293461687);
         }
         @Test
         public void testUpdate_UpdatedPort_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getRadiusPort(), 21.937554700962654);
+            assertEquals(shipDomain.getRadiusPort(), 16.937554700962654);
         }
 
         @Test
         public void testUpdate_StarboardOffset_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getStarboardOffset(), 27.25007293461687);
+            assertEquals(shipDomain.getStarboardOffset(), 2.6562591168271084);
         }
 
         @Test
         public void testUpdate_aftOffset_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getAftOffset(), 21.65140986064626);
+            assertEquals(shipDomain.getAftOffset(), 7.0757049303231305);
         }
 
         @Test
         public void testUpdate_height_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getHeight(), 57.45422958193878);
+            assertEquals(shipDomain.getHeight(), 52.45422958193878);
         }
 
         @Test
         public void testUpdate_width_ToCorrectValue() {
             //Assert
-            assertEquals(shipDomain.getWidth(), 49.187627635579524);
+            assertEquals(shipDomain.getWidth(), 39.187627635579524);
         }
 
         @Test

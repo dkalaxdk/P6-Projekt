@@ -3,25 +3,24 @@ package Dibbidut.Classes.Geometry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 public class Polygon extends Geometry{
 
-    public ArrayList<Vector> coordinates;
-    public Vector center;
+    public ArrayList<HPoint> coordinates;
+    public HPoint center;
 
 
 
-    public Polygon(ArrayList<Vector> coordinates){
+    public Polygon(ArrayList<HPoint> coordinates){
         this.coordinates = coordinates;
         calculateCenter();
     }
 
     @Override
     public void transform(Transformation transformation) {
-        ArrayList<Vector> newCoordinates = new ArrayList<>();
+        ArrayList<HPoint> newCoordinates = new ArrayList<>();
 
         // Translates the polygon so its center is in 0,0
         Transformation toCenter = new Transformation();
@@ -34,12 +33,12 @@ public class Polygon extends Geometry{
                 .add(transformation)
                 .add(fromCenter);
 
-        ArrayList<Vector> copiedCoordinates = new ArrayList<>(copyVectorList(coordinates));
+        ArrayList<HPoint> copiedCoordinates = new ArrayList<>(copyHPointList(coordinates));
 
         // Performs the transformation
-        for(Vector vector : copiedCoordinates) {
-            vector.transform(t);
-            newCoordinates.add(vector);
+        for(HPoint point : copiedCoordinates) {
+            point.transform(t);
+            newCoordinates.add(point);
         }
 
         coordinates = newCoordinates;
@@ -47,38 +46,38 @@ public class Polygon extends Geometry{
         calculateCenter();
     }
 
-    private List<Vector> copyVectorList(List<Vector> list) {
-        return list.stream().map(p -> copyVector(p)).collect(toList());
+    private List<HPoint> copyHPointList(List<HPoint> list) {
+        return list.stream().map(p -> copyHPoint(p)).collect(toList());
     }
 
-    private Vector copyVector(Vector vec) {
-        return new Vector(vec.getX(), vec.getY(), vec.getZ());
+    private HPoint copyHPoint(HPoint point) {
+        return new HPoint(point.getX(), point.getY(), point.getZ());
     }
 
-    public ArrayList<Vector> translatePolygon(ArrayList<Vector> coordinates, double[][] translationMatrix){
-        ArrayList<Vector> newCoordinates = new ArrayList<>();
+    public ArrayList<HPoint> translatePolygon(ArrayList<HPoint> coordinates, double[][] translationMatrix){
+        ArrayList<HPoint> newCoordinates = new ArrayList<>();
 
-        for (Vector vector : coordinates){
-            newCoordinates.add(matrixVectorProduct(translationMatrix, vector));
+        for (HPoint point : coordinates){
+            newCoordinates.add(matrixHPointProduct(translationMatrix, point));
         }
 
         return newCoordinates;
     }
 
-    public Vector matrixVectorProduct(double[][] matrix, Vector vector){
-        double x = matrix[0][0] * vector.getX() + matrix[1][0] * vector.getY() + matrix[2][0] * vector.getZ();
-        double y = matrix[0][1] * vector.getX() + matrix[1][1] * vector.getY() + matrix[2][1] * vector.getZ();
-        double z = matrix[0][2] * vector.getX() + matrix[1][2] * vector.getY() + matrix[2][2] * vector.getZ();
+    public HPoint matrixHPointProduct(double[][] matrix, HPoint point){
+        double x = matrix[0][0] * point.getX() + matrix[1][0] * point.getY() + matrix[2][0] * point.getZ();
+        double y = matrix[0][1] * point.getX() + matrix[1][1] * point.getY() + matrix[2][1] * point.getZ();
+        double z = matrix[0][2] * point.getX() + matrix[1][2] * point.getY() + matrix[2][2] * point.getZ();
 
-        return new Vector(x, y, z);
+        return new HPoint(x, y, z);
     }
     // Adapted from: https://vlecomte.github.io/cp-geo.pdf (page 61-
     // Checks if the point is contained within the polygon
     @Override
-    public boolean contains(Vector point) {
+    public boolean contains(HPoint point) {
         int numberOfCrossings = 0;
-        Vector p;
-        Vector q;
+        HPoint p;
+        HPoint q;
         for (int i = 0; i < coordinates.size(); i++){
             p = coordinates.get(i);
             q = coordinates.get((i+1)%coordinates.size());
@@ -93,29 +92,29 @@ public class Polygon extends Geometry{
 
     // Source: https://vlecomte.github.io/cp-geo.pdf (page 54)
     // Checks if point a is in line with the two end points of the segment
-    public boolean onSegment(Vector a, Vector p, Vector q){
+    public boolean onSegment(HPoint a, HPoint p, HPoint q){
         return orientation(a, p, q) == 0 && inDisk(a, p, q);
     }
 
     // Source: https://vlecomte.github.io/cp-geo.pdf (page 54)
     // Checks if point a is withing the disk with diameter |pq| and which is placed between p and q
-    public boolean inDisk(Vector a, Vector p, Vector q){
-        return p.subtractVector(a).dotProduct(q.subtractVector(a)) <= 0;
+    public boolean inDisk(HPoint a, HPoint p, HPoint q){
+        return p.subtract(a).dotProduct(q.subtract(a)) <= 0;
     }
 
     // Source: https://vlecomte.github.io/cp-geo.pdf (page 61)
     // Checks if the segment between p and q crosses a line (ray) going out from point a
-    public boolean crossesRay(Vector a, Vector p, Vector q){
+    public boolean crossesRay(HPoint a, HPoint p, HPoint q){
         int n = q.getY() >= a.getY() ? 1 : 0;
         int m = p.getY() >= a.getY() ? 1 : 0;
         return (n - m) * orientation(a,p,q) > 0;
     }
 
     // Source: https://vlecomte.github.io/cp-geo.pdf (page 40)
-    // Returns a value indicating the orientation of the three vectors compared to each other.
-    public double orientation(Vector a, Vector b, Vector c){
-        Vector temp1 = b.subtractVector(a);
-        Vector temp2 = c.subtractVector(a);
+    // Returns a value indicating the orientation of the three points compared to each other.
+    public double orientation(HPoint a, HPoint b, HPoint c){
+        HPoint temp1 = b.subtract(a);
+        HPoint temp2 = c.subtract(a);
         return temp1.getX() * temp2.getY() - temp1.getY() * temp2.getX();
     }
 
@@ -129,37 +128,37 @@ public class Polygon extends Geometry{
             center = null;
         }
         else{
-            for (Vector vector : coordinates) {
-                x = x + vector.getX();
-                y = y + vector.getY();
-                z = z + vector.getZ();
+            for (HPoint point : coordinates) {
+                x = x + point.getX();
+                y = y + point.getY();
+                z = z + point.getZ();
 
                 count++;
             }
 
-            center = new Vector(x/count, y/count, z/count);
+            center = new HPoint(x/count, y/count, z/count);
         }
     }
 
     public Polygon addPolygon(Polygon polygon){
-        ArrayList<Vector> newCoordinates = new ArrayList<>();
+        ArrayList<HPoint> newCoordinates = new ArrayList<>();
 
-        for (Vector vector : this.coordinates){
-            Vector relativeVector = vector.subtractVector(this.center);
-            newCoordinates.add(calculateNewPoint(relativeVector, polygon));
+        for (HPoint point : this.coordinates){
+            HPoint relativeHPoint = point.subtract(this.center);
+            newCoordinates.add(calculateNewHPoint(relativeHPoint, polygon));
         }
 
-        for (Vector vector : polygon.coordinates){
-            Vector relativeVector = vector.subtractVector(polygon.center);
-            newCoordinates.add(calculateNewPoint(relativeVector, this));
+        for (HPoint point : polygon.coordinates){
+            HPoint relativeHPoint = point.subtract(polygon.center);
+            newCoordinates.add(calculateNewHPoint(relativeHPoint, this));
         }
 
         Collections.sort(newCoordinates);
 
         return new Polygon (newCoordinates);
     }
-
-    public Vector calculateNewPoint(Vector vector, Polygon polygon){
-        return new Vector(1, 1, 1);
+// todo: not done here
+    public HPoint calculateNewHPoint(HPoint point, Polygon polygon){
+        return new HPoint(1, 1, 1);
     }
 }

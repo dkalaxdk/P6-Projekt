@@ -2,7 +2,7 @@ package Geometry;
 
 import Dibbidut.Classes.Geometry.Geometry;
 import Dibbidut.Classes.Geometry.Transformation;
-import Dibbidut.Classes.Geometry.Vector;
+import Dibbidut.Classes.Geometry.HPoint;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class GeometryTest {
         }
 
         @Override
-        public boolean contains(Vector point) {
+        public boolean contains(HPoint point) {
             return false;
         }
     }

@@ -90,7 +90,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
     private AffineTransform getTranslation(Vector2D objectPos, Vector2D obstaclePos, double timeframe) {
         Vector2D displacement = Displacement(objectPos, obstaclePos);
-        Vector2D centerCollisionAtTime = divideVectorByScalar(displacement, timeframe);
+        Vector2D centerCollisionAtTime = divideHPointByScalar(displacement, timeframe);
 
         // Calculate the translation that will place the conflictRegion at centerCollision
         Vector2D translationVec = Displacement(obstaclePos, centerCollisionAtTime);
