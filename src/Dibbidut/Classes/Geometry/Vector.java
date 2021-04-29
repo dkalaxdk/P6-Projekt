@@ -3,7 +3,7 @@ package Dibbidut.Classes.Geometry;
 
 import java.util.Objects;
 
-public class Vector extends Geometry implements Comparable {
+public class Vector extends Geometry implements Comparable, Point {
 
     private double x;
     private double y;

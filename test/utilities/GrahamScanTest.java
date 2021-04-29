@@ -1,25 +1,36 @@
 package utilities;
 
+import Dibbidut.Classes.Geometry.Point;
+import Dibbidut.Classes.Geometry.PointFactory;
+import Dibbidut.Classes.Geometry.Vector;
+import Dibbidut.Classes.Geometry.VectorFactory;
+import Dibbidut.utilities.ConvexHull;
 import Dibbidut.utilities.GrahamScan;
 import org.junit.jupiter.api.*;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GrahamScanTest {
+    protected static ConvexHull<Point> convHull;
+
+    @BeforeAll
+    public static void beforeAll() {
+        PointFactory factory = new VectorFactory();
+        convHull = new GrahamScan(factory);
+    }
+
     @Nested
     @DisplayName("GrahamScan.Calculate")
     class Calculate {
 
         @Test
         public void Calculate_ThrowsExceptionWhenGivenLessThanThreePoints() {
-            GrahamScan convHull = new GrahamScan();
-            ArrayList<Point2D> points = new ArrayList<>(Arrays.asList(
-                    new Point2D.Double(1, 1),
-                    new Point2D.Double(2, 2)
+            ArrayList<Point> points = new ArrayList<>(Arrays.asList(
+                    new Vector(1, 1, 1),
+                    new Vector(2, 2, 1)
             ));
 
             assertThrows(IllegalArgumentException.class, () -> convHull.Calculate(points));
@@ -28,53 +39,50 @@ public class GrahamScanTest {
         // Trivial case: Given three points, convex hull will always be those points
         @Test
         public void Calculate_GivenThreePointsReturnsGivenPoints() {
-            ArrayList<Point2D> points = new ArrayList<>(Arrays.asList(
-                    new Point2D.Double(1, 1),
-                    new Point2D.Double(2, 2),
-                    new Point2D.Double(1, 2)
+            ArrayList<Point> points = new ArrayList<>(Arrays.asList(
+                    new Vector(1, 1, 1),
+                    new Vector(2, 2, 1),
+                    new Vector(1, 2, 1)
             ));
-            GrahamScan convHull = new GrahamScan();
 
             assertArrayEquals(points.toArray(), convHull.Calculate(points).toArray());
         }
 
         @Test
         public void Calculate_ReturnsPointsInConvexHull() {
-            ArrayList<Point2D> points = pointList();
-            GrahamScan convHull = new GrahamScan();
+            ArrayList<Point> points = pointList();
 
             assertArrayEquals(pointsInHull(), convHull.Calculate(points).toArray());
         }
 
         @Test
         public void Test_doubleCompare() {
-            ArrayList<Point2D> points = pointList();
-            GrahamScan convHull = new GrahamScan();
+            ArrayList<Point> points = pointList();
 
             assertArrayEquals(pointsInHull(), convHull.Calculate(points).toArray());
         }
 
-        private ArrayList<Point2D> pointList() {
-            return new ArrayList<>(Arrays.asList(
-                    new Point2D.Double(1, 1),
-                    new Point2D.Double(2.5, 1),
-                    new Point2D.Double(3.5, 1.5),
-                    new Point2D.Double(1.5, 2),
-                    new Point2D.Double(2.5, 2.5),
-                    new Point2D.Double(4, 2.5),
-                    new Point2D.Double(1, 3),
-                    new Point2D.Double(2.5, 3.5)
+        private ArrayList<Point> pointList() {
+            return new ArrayList<Point>(Arrays.asList(
+                    new Vector(1, 1, 1),
+                    new Vector(2.5, 1, 1),
+                    new Vector(3.5, 1.5, 1),
+                    new Vector(1.5, 2, 1),
+                    new Vector(2.5, 2.5, 1),
+                    new Vector(4, 2.5, 1),
+                    new Vector(1, 3, 1),
+                    new Vector(2.5, 3.5, 1)
             ));
         }
 
-        private Point2D[] pointsInHull() {
-            return new Point2D[] {
-                    new Point2D.Double(1, 1),
-                    new Point2D.Double(2.5, 1),
-                    new Point2D.Double(3.5, 1.5),
-                    new Point2D.Double(4, 2.5),
-                    new Point2D.Double(2.5, 3.5),
-                    new Point2D.Double(1, 3)
+        private Point[] pointsInHull() {
+            return new Point[] {
+                    new Vector(1, 1, 1),
+                    new Vector(2.5, 1, 1),
+                    new Vector(3.5, 1.5, 1),
+                    new Vector(4, 2.5, 1),
+                    new Vector(2.5, 3.5, 1),
+                    new Vector(1, 3, 1)
             };
         }
     }
