@@ -23,8 +23,8 @@ def un_project_x(x):
     return math.degrees(x / earthRadius)
 
 
-def read_file():
-    time_in_minutes = 25
+def read_file(time_in_minutes):
+    time_in_minutes = int(time_in_minutes)
     output = pd.DataFrame(
         columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
                  "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
@@ -56,8 +56,8 @@ def read_file():
                 pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]
             current_line["Heading"] = [Heading]
-            current_line["Latitude"] = [un_project_y(calculatedY)]
-            current_line["Longitude"] = [un_project_x(calculatedX)]
+            current_line["Latitude"] = [un_project_x(calculatedX)]
+            current_line["Longitude"] = [un_project_y(calculatedY)]
             current_line["COG"] = [COG]
             current_line["SOG"] = [SOG]
             current_line["Length"] = [Length]
@@ -70,4 +70,4 @@ def read_file():
 
 
 if __name__ == "__main__":
-    read_file()
+    read_file(input("How long should it simulate? (Minutes) \n"))
