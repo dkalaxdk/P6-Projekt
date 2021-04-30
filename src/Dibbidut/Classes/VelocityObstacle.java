@@ -43,6 +43,7 @@ public class VelocityObstacle implements IVelocityObstacle {
         ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtBeginning.coordinates);
         VOPoints.addAll(obsDomainAtEnd.coordinates);
 
+
         // FIXME: There is a lot being handled here that should be handled at a higher level
         GrahamScan convHull = new GrahamScan(new HPointFactory());
         ArrayList<HPoint> VOPolygonVertices = new ArrayList<>();

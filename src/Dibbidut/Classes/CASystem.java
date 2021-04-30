@@ -115,7 +115,7 @@ public class CASystem {
         MVO = new Hashtable<>();
 
         range = 100000;
-        timeFrame = 30;
+        timeFrame = 200;
     }
 
     public void Start() {
@@ -272,17 +272,17 @@ public class CASystem {
 //
 //            Polygon polygon = domain.addPolygon((Polygon) ownShip.domain.getDomain());
 
-            ArrayList<HPoint> c = ((Polygon) ship.domain.getDomain()).coordinates;
+            ArrayList<HPoint> c = ((Polygon) ownShip.domain.getDomain()).coordinates;
 
             System.out.println("Domain");
             for (HPoint p : c) {
                 System.out.println(p.getX() + "\t" + p.getY() + "\r");
             }
 
-            System.out.println("Ship");
-            System.out.println(ship.position.getX() + "\t" + ship.position.getY() + "\r");
+            System.out.println("OwnShip");
+            System.out.println(ownShip.position.getX() + "\t" + ownShip.position.getY() + "\r");
 
-            System.out.println("Velocity");
+            System.out.println("Other Velocity");
             System.out.println(ship.velocity.getX() + "\t" + ship.velocity.getY() + "\r");
 
             Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.velocity, timeFrame);
