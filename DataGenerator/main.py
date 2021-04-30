@@ -13,7 +13,7 @@ def un_project_y(y):
 
 
 def unit_vector(deg):
-    degrees_as_radians = math.radians(deg - 90)
+    degrees_as_radians = math.radians(deg)
     out_x = math.cos(degrees_as_radians) * 0 - math.sin(degrees_as_radians) * 1
     out_y = math.sin(degrees_as_radians) * 0 + math.cos(degrees_as_radians) * 1
     return [out_x, out_y]
@@ -24,7 +24,7 @@ def un_project_x(x):
 
 
 def read_file():
-    time_in_minutes = 10
+    time_in_minutes = 25
     output = pd.DataFrame(
         columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
                  "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
@@ -56,8 +56,8 @@ def read_file():
                 pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]
             current_line["Heading"] = [Heading]
-            current_line["Latitude"] = [un_project_x(calculatedX)]
-            current_line["Longitude"] = [un_project_y(calculatedY)]
+            current_line["Latitude"] = [un_project_y(calculatedY)]
+            current_line["Longitude"] = [un_project_x(calculatedX)]
             current_line["COG"] = [COG]
             current_line["SOG"] = [SOG]
             current_line["Length"] = [Length]
