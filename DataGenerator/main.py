@@ -1,9 +1,4 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import math
-from time import strftime, localtime
 
 import pandas as pd
 import datetime
@@ -29,7 +24,7 @@ def un_project_x(x):
 
 
 def read_file():
-    time_in_minutes = 60
+    time_in_minutes = 10
     output = pd.DataFrame(
         columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
                  "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
@@ -54,8 +49,9 @@ def read_file():
                          "SOG", "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width",
                          "Length", "Type of position fixing device", "Draught", "Destination", "ETA",
                          "Data source type", "A", "B", "C", "D"])
-            calculatedX = calculatedX + uv[0] * SOG / 3600 * 5
-            calculatedY = calculatedY + uv[1] * SOG / 3600 * 5
+            # 0.515660452624 is a constant, which makes SOG result in the correct knots.
+            calculatedX = calculatedX + uv[0] * SOG * 0.515660452624
+            calculatedY = calculatedY + uv[1] * SOG * 0.515660452624
             current_line["Timestamp"] = [
                 pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]
