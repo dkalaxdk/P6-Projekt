@@ -13,7 +13,7 @@ def un_project_y(y):
 
 
 def unit_vector(deg):
-    degrees_as_radians = math.radians(deg)
+    degrees_as_radians = math.radians(-deg)
     out_x = math.cos(degrees_as_radians) * 0 - math.sin(degrees_as_radians) * 1
     out_y = math.sin(degrees_as_radians) * 0 + math.cos(degrees_as_radians) * 1
     return [out_x, out_y]
@@ -23,8 +23,8 @@ def un_project_x(x):
     return math.degrees(x / earthRadius)
 
 
-def read_file():
-    time_in_minutes = 25
+def read_file(time_in_minutes):
+    time_in_minutes = int(time_in_minutes)
     output = pd.DataFrame(
         columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
                  "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
@@ -70,4 +70,4 @@ def read_file():
 
 
 if __name__ == "__main__":
-    read_file()
+    read_file(input("How long should it simulate? (Minutes) \n"))
