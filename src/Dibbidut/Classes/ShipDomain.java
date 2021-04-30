@@ -158,18 +158,18 @@ public class ShipDomain implements IDomain {
 
     private void updatePentagonDomain() {
 
-        ArrayList<HPoint> list = new ArrayList<>();
-        // P5
-        list.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three,1));
-        // P4
-        list.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four,1));
-        // P3
-        list.add(new HPoint(x, y + DomainDimensions.Five,1));
-        // P2
-        list.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four,1));
-        // P1
-        list.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three,1));
 
-        pentagonDomain = new Polygon(list);
+        ArrayList<HPoint> coordinates = new ArrayList<>();
+        // P5
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three));
+        // P4
+        coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Four));
+        // P3
+        coordinates.add(new HPoint(x, y + DomainDimensions.Five));
+        // P2
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Four));
+        // P1
+        coordinates.add(new HPoint(x - DomainDimensions.Two, y + DomainDimensions.Three));
+        pentagonDomain = new Polygon(coordinates);
     }
 }
