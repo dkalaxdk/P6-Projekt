@@ -36,12 +36,12 @@ public class VelocityObstacle implements IVelocityObstacle {
         HPoint objPos = new HPoint(objectPos);
         HPoint obsPos = new HPoint(obstaclePos);
 
-        Polygon obsDomainAtT1 = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, 1);
+        // When using Linear-VO the problem can be reduced to finding the VO at the beginning and end of the desired time frame
+        Polygon obsDomainAtBeginning = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, 1);
+        Polygon obsDomainAtEnd = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, timeframe);
 
-        Polygon obsDomainAtEndOfTimeFrame = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, timeframe);
-
-        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtT1.coordinates);
-        VOPoints.addAll(obsDomainAtEndOfTimeFrame.coordinates);
+        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtBeginning.coordinates);
+        VOPoints.addAll(obsDomainAtEnd.coordinates);
 
         // FIXME: There is a lot being handled here that should be handled at a higher level
         GrahamScan convHull = new GrahamScan(new HPointFactory());
@@ -58,7 +58,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Polygon obsDomainOriginal = (Polygon)obsDomain; // The actual instance from the ship class. Should not be mutated
         // Copies the polygon
-        Polygon realtiveVO = copyPolygon(obsDomainOriginal);  //TODO: add copy method to polygon
+        Polygon realtiveVO = obsDomainOriginal.copy();
         realtiveVO.transform(transToCollisionAtTime1);
 
         return realtiveVO;
@@ -66,12 +66,12 @@ public class VelocityObstacle implements IVelocityObstacle {
 
     private Transformation calculateTransformationToCollisionAtTime(HPoint objPos, HPoint obsPos, double time) {
         HPoint collisionRelativeToObject = obsPos.subtract(objPos);
+        collisionRelativeToObject.divide(time); // TODO: Add test to check if this is done correctly (should either be before or after addition of obsPos)
         HPoint collisionRelativeToOrigin = objPos.add(collisionRelativeToObject);
-        HPoint collisionAtTRelativeToOrigin = collisionRelativeToOrigin.copy();
-        collisionAtTRelativeToOrigin.divide(time);  // Scale the collision position to the given time
+        HPoint collisionAtTimeRelativeToOrigin = collisionRelativeToOrigin;  // Scale the collision position to the given time
         return new Transformation()
                 .scale(1/time, 1/time)                          // Scale domain by time frame
-                .translate(collisionAtTRelativeToOrigin.subtract(obsPos));    // Center domain around collision
+                .translate(collisionAtTimeRelativeToOrigin.subtract(obsPos));    // Center domain around collision
 
     }
 
