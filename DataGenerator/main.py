@@ -57,7 +57,7 @@ def read_file():
             calculatedX = calculatedX + uv[0] * SOG / 3600 * 5
             calculatedY = calculatedY + uv[1] * SOG / 3600 * 5
             current_line["Timestamp"] = [
-                pd.to_datetime(dt + datetime.timedelta(seconds=5 * i)).strftime("%d-%m-%y %H:%M:%S")]
+                pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]
             current_line["Heading"] = [Heading]
             current_line["Latitude"] = [un_project_x(calculatedX)]
