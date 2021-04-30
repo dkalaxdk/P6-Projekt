@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -528,6 +529,58 @@ public class PolygonTest {
 
             assertEquals(2, result.coordinates.get(7).getX());
             assertEquals(0, result.coordinates.get(7).getY());
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.copy")
+    class copy{
+        @Test
+        public void copy_ReturnsNewInstanceWithSameValues(){
+            Polygon original = new Polygon(new ArrayList<>(Arrays.asList(
+                    new HPoint(-2, -3),
+                    new HPoint(6, -4),
+                    new HPoint(1, 3)
+            )));
+            Polygon copy = original.copy();
+
+            assertEquals(original, copy);
+            assertNotSame(original, copy);
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.copy")
+    class equals{
+        @Test
+        public void equals_ReturnsTrueWhenCoordinatesAreTheSame(){
+            Polygon polyOne = new Polygon(new ArrayList<>(Arrays.asList(
+                    new HPoint(-2, -3),
+                    new HPoint(6, -4),
+                    new HPoint(1, 3)
+            )));
+            Polygon polyTwo = new Polygon(new ArrayList<>(Arrays.asList(
+                    new HPoint(-2, -3),
+                    new HPoint(6, -4),
+                    new HPoint(1, 3)
+            )));
+            assertTrue(polyOne.equals(polyTwo));
+        }
+
+        @Test
+        public void equals_ReturnsFalseWhenCoordinatesAreDifferent(){
+            Polygon polyOne = new Polygon(new ArrayList<>(Arrays.asList(
+                    new HPoint(-2, -3),
+                    new HPoint(6, -4),
+                    new HPoint(1, 3)
+            )));
+            Polygon polyTwo = new Polygon(new ArrayList<>(Arrays.asList(
+                    new HPoint(2, 3),
+                    new HPoint(-6, 4),
+                    new HPoint(-1, -3)
+            )));
+
+            assertFalse(polyOne.equals(polyTwo));
         }
     }
 }

@@ -21,6 +21,10 @@ public class HPoint extends Geometry implements Comparable, Point {
         this.z = 1;
     }
 
+    public HPoint(Point point) {
+        this(point.getX(), point.getY());
+    }
+
     public double getX() {
         return x;
     }
@@ -34,11 +38,11 @@ public class HPoint extends Geometry implements Comparable, Point {
     }
 
     public double dotProduct(HPoint point) {
-        return point.getX() * this.x + point.getY() * this.y;
+        return point.x * this.x + point.y * this.y;
     }
 
     public double crossProduct(HPoint point) {
-        return this.x * point.getY() - this.y * point.getX();
+        return this.x * point.y - this.y * point.x;
     }
 
     public double length() {
@@ -50,21 +54,21 @@ public class HPoint extends Geometry implements Comparable, Point {
     }
 
     public void scale(double scalar) {
-        this.x = this.x * scalar;
-        this.y = this.y * scalar;
+        x = x * scalar;
+        y = y * scalar;
     }
 
     public void divide(double scalar) {
-        this.x = this.x / scalar;
-        this.y = this.y / scalar;
+        x = x / scalar;
+        y = y / scalar;
     }
 
     public HPoint add(HPoint point) {
-        return new HPoint(point.getX() + this.x, point.getY() + this.y);
+        return new HPoint(point.getX() + this.x, point.y + this.y);
     }
 
     public HPoint subtract(HPoint point) {
-        return new HPoint(this.x - point.getX(), this.y - point.getY());
+        return new HPoint(this.x - point.x, this.y - point.y);
     }
 
     @Override
@@ -116,5 +120,9 @@ public class HPoint extends Geometry implements Comparable, Point {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ") ";
+    }
+
+    public HPoint copy() {
+        return new HPoint(x, y, z);
     }
 }

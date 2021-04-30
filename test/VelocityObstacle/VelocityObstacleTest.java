@@ -152,16 +152,17 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        public void getRelativeVO_containsObstaclePosition() {
+        public void RelativeVO_containsObstaclePosition() {
             double time = 5;
 
-            Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
+            HPoint newObjPos = new HPoint(2, 2); // Testing for objPos other than 0
+            Geometry relVO = VO.RelativeVO(newObjPos, obsDomain, obsPos, time);
 
             assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY(), 1)));
         }
 
         @Test
-        public void getRelativeVO_containsVelocitiesLeadingToCollisionInFuture() {
+        public void RelativeVO_containsVelocitiesLeadingToCollisionInFuture() {
             double time = 5;
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
@@ -176,7 +177,7 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        public void getRelativeVO_ContainsTargetShipConflictRegionAtSingleTimeStep() {
+        public void RelativeVO_ContainsTargetShipConflictRegionAtSingleTimeStep() {
             double time = 1;
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
@@ -190,7 +191,7 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        public void relativeVO_RelativeVOConeIsNarrowNearOwnShip() {
+        public void RelativeVO_RelativeVOConeIsNarrowNearOwnShip() {
             double time = 5;
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
@@ -209,20 +210,6 @@ public class VelocityObstacleTest {
             assertTrue(relVO.contains(new HPoint(5, 5, 1)));
             assertFalse(relVO.contains(new HPoint(4, 6.2, 1)));
             assertFalse(relVO.contains(new HPoint(6.2, 4, 1)));
-        }
-    }
-
-    @Nested
-    @DisplayName("VelocityObstacle.ConflictRegion")
-    class ConflictRegion {
-        @Test
-        public void ConflictRegion_returnsCircleAtPointWithRadius() {
-            //Point point = new Point(0, 0);
-            HPoint point = new HPoint(0, 0, 1);
-            int radius = 2;
-            VelocityObstacle VO = new VelocityObstacle();
-
-            assertEquals(new Ellipse2D.Double(point.getX(), point.getY(), radius, radius), VO.ConflictRegion(point, radius));
         }
     }
 }

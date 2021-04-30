@@ -3,6 +3,7 @@ package Dibbidut.Classes.Geometry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -161,5 +162,22 @@ public class Polygon extends Geometry{
 // todo: not done here
     public HPoint calculateNewHPoint(HPoint point, Polygon polygon){
         return new HPoint(1, 1, 1);
+    }
+
+    public Polygon copy() {
+        return new Polygon(coordinates);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Polygon polygon = (Polygon) o;
+        return coordinates.equals(polygon.coordinates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordinates);
     }
 }

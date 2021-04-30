@@ -32,37 +32,16 @@ public class VelocityObstacle implements IVelocityObstacle {
         return null;
     }
 
-    // Possible this should be moved to obstacle
-    // To adapt this to dynamic ship domains perhaps switch Ellipse for the Shape interface
-    public Ellipse2D.Double ConflictRegion(Point point, int radius) {
-        return new Ellipse2D.Double(point.getX(), point.getY(), radius, radius);
-    }
-
     public Geometry RelativeVO(Point objectPos, Geometry obstacleDomain, Point obstaclePos, double timeframe) {
-        HPoint objPos = new HPoint(objectPos.getX(), objectPos.getY(), 1);
-        HPoint obsPos = new HPoint(obstaclePos.getX(), obstaclePos.getY(), 1);
-        HPoint centerCollisionAtTZero = displacement(objPos, obsPos); // This is the position it should be translated to, not
-        HPoint displacement = displacement(obsPos, centerCollisionAtTZero);
-        Transformation transAtTZero = new Transformation()
-                .translate(displacement.getX(), displacement.getY());
+        HPoint objPos = new HPoint(objectPos);
+        HPoint obsPos = new HPoint(obstaclePos);
 
-        Polygon obsDomainOriginal = (Polygon)obstacleDomain; // The actual instance from the ship class. Should not be mutated
-        Polygon obsDomainAtTZero = copyPolygon(obsDomainOriginal);   // Not sure how to generalize this approach
-        // Copies the points
-        obsDomainAtTZero.transform(transAtTZero);
+        Polygon obsDomainAtT1 = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, 1);
 
-        HPoint centerCollisionAtT = copyHPoint(centerCollisionAtTZero);
-        centerCollisionAtT.divide(timeframe);
-        HPoint displacement2 = displacement(obsPos, centerCollisionAtT);
-        Transformation transAtT = new Transformation()
-                .scale(1/timeframe, 1/timeframe)
-                .translate(displacement2.getX(), displacement2.getY());
+        Polygon obsDomainAtEndOfTimeFrame = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, timeframe);
 
-        Polygon obsDomainAtT = copyPolygon(obsDomainOriginal);
-        obsDomainAtT.transform(transAtT);
-
-        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtTZero.coordinates);
-        VOPoints.addAll(obsDomainAtT.coordinates);
+        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtT1.coordinates);
+        VOPoints.addAll(obsDomainAtEndOfTimeFrame.coordinates);
 
         // FIXME: There is a lot being handled here that should be handled at a higher level
         GrahamScan convHull = new GrahamScan(new HPointFactory());
@@ -74,8 +53,26 @@ public class VelocityObstacle implements IVelocityObstacle {
         return new Polygon(VOPolygonVertices);
     }
 
-    private HPoint displacement(HPoint vec1, HPoint vec2) {
-        return new HPoint(vec2.getX() - vec1.getX(), vec2.getY() - vec1.getY(), 1);
+    private Geometry createRelativeVOAtTime(HPoint objPos, Geometry obsDomain, HPoint obsPos, double time) {
+        Transformation transToCollisionAtTime1 = calculateTransformationToCollisionAtTime(objPos, obsPos, time);
+
+        Polygon obsDomainOriginal = (Polygon)obsDomain; // The actual instance from the ship class. Should not be mutated
+        // Copies the polygon
+        Polygon realtiveVO = copyPolygon(obsDomainOriginal);  //TODO: add copy method to polygon
+        realtiveVO.transform(transToCollisionAtTime1);
+
+        return realtiveVO;
+    }
+
+    private Transformation calculateTransformationToCollisionAtTime(HPoint objPos, HPoint obsPos, double time) {
+        HPoint collisionRelativeToObject = obsPos.subtract(objPos);
+        HPoint collisionRelativeToOrigin = objPos.add(collisionRelativeToObject);
+        HPoint collisionAtTRelativeToOrigin = collisionRelativeToOrigin.copy();
+        collisionAtTRelativeToOrigin.divide(time);  // Scale the collision position to the given time
+        return new Transformation()
+                .scale(1/time, 1/time)                          // Scale domain by time frame
+                .translate(collisionAtTRelativeToOrigin.subtract(obsPos));    // Center domain around collision
+
     }
 
     private Polygon copyPolygon(Polygon poly) {

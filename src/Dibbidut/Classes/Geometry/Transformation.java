@@ -52,6 +52,11 @@ public class Transformation {
         return this;
     }
 
+    public Transformation translate(HPoint vector) {
+        this.translate(vector.getX(), vector.getY());
+        return this;
+    }
+
     private void setMatrix(double[][] value) {
         // Possible that the order of the matrices are wrong
         matrix = multiplyMatrix(value, matrix);

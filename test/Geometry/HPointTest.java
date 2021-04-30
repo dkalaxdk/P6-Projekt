@@ -280,4 +280,17 @@ public class HPointTest {
             assertTrue(HPoint2.compareTo(HPoint1) < 0);
         }
     }
+
+    @Nested
+    @DisplayName("HPoint.copy")
+    class copy{
+        @Test
+        public void copy_ReturnsNewInstanceWithSameValues(){
+            HPoint original = new HPoint(-83, 237, 903.66);
+            HPoint copy = original.copy();
+
+            assertEquals(original, copy);
+            assertNotSame(original, copy);
+        }
+    }
 }
