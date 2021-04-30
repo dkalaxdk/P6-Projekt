@@ -168,7 +168,7 @@ public class VelocityObstacleTest {
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
             double relativeVel = 1;
             // Assert that the returned area contains the future positions of the target ship
-            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY(), 1)));
+            assertTrue(relVO.contains(new HPoint(obsPos)));
             assertTrue(relVO.contains(new HPoint(relativeVel, relativeVel, 1)));
             assertTrue(relVO.contains(new HPoint( relativeVel * 2,  relativeVel * 2, 1)));
             assertTrue(relVO.contains(new HPoint(relativeVel * 3,  relativeVel * 3, 1)));
@@ -182,12 +182,12 @@ public class VelocityObstacleTest {
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
 
-            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY(), 1))); //Center
+            assertTrue(relVO.contains(new HPoint(obsPos))); //Center
             // Check that it contains points just inside the edge of the conflictRegion
-            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY() + 0.49, 1))); //Top
-            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY() - 0.49, 1))); //Bottom
-            assertTrue(relVO.contains(new HPoint(obsPos.getX() - 0.49, obsPos.getY(), 1))); //Left
-            assertTrue(relVO.contains(new HPoint(obsPos.getX() + 0.49, obsPos.getY(), 1))); //Right
+            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY() + 0.49))); //Top
+            assertTrue(relVO.contains(new HPoint(obsPos.getX(), obsPos.getY() - 0.49))); //Bottom
+            assertTrue(relVO.contains(new HPoint(obsPos.getX() - 0.49, obsPos.getY()))); //Left
+            assertTrue(relVO.contains(new HPoint(obsPos.getX() + 0.49, obsPos.getY()))); //Right
         }
 
         @Test
@@ -207,9 +207,20 @@ public class VelocityObstacleTest {
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
 
-            assertTrue(relVO.contains(new HPoint(5, 5, 1)));
-            assertFalse(relVO.contains(new HPoint(4, 6.2, 1)));
-            assertFalse(relVO.contains(new HPoint(6.2, 4, 1)));
+            assertTrue(relVO.contains(new HPoint(5, 5)));
+            assertFalse(relVO.contains(new HPoint(4, 6.2)));
+            assertFalse(relVO.contains(new HPoint(6.2, 4)));
+        }
+
+        @Test
+        public void RelativeVO_DoesNotContainVelocitiesInDirectionOppositeObstacle() {
+            double time = 5;
+
+            HPoint newObjPos = new HPoint(1, 1); // Testing for objPos other than 0
+            Geometry relVO = VO.RelativeVO(newObjPos, obsDomain, obsPos, time);
+
+            assertTrue(relVO.contains(new HPoint(obsPos)));
+            assertFalse(relVO.contains(new HPoint(0.9, 0.9)));
         }
     }
 }
