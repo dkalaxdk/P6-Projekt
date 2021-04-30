@@ -36,20 +36,12 @@ public class VelocityObstacle implements IVelocityObstacle {
         HPoint objPos = new HPoint(objectPos);
         HPoint obsPos = new HPoint(obstaclePos);
 
-        Transformation transToCollisionAtTime1 = calculateTransformationToCollisionAtTime(objPos, obsPos, 1);
+        Polygon obsDomainAtT1 = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, 1);
 
-        Polygon obsDomainOriginal = (Polygon)obstacleDomain; // The actual instance from the ship class. Should not be mutated
-        // Copies the polygon
-        Polygon obsDomainAtTZero = copyPolygon(obsDomainOriginal);  //TODO: add copy method to polygon
-        obsDomainAtTZero.transform(transToCollisionAtTime1);
+        Polygon obsDomainAtEndOfTimeFrame = (Polygon)createRelativeVOAtTime(objPos, obstacleDomain, obsPos, timeframe);
 
-        Transformation transToCollisionAtEndOfTimeFrame = calculateTransformationToCollisionAtTime(objPos, obsPos, timeframe);
-
-        Polygon obsDomainAtT = copyPolygon(obsDomainOriginal);
-        obsDomainAtT.transform(transToCollisionAtEndOfTimeFrame);
-
-        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtTZero.coordinates);
-        VOPoints.addAll(obsDomainAtT.coordinates);
+        ArrayList<Point> VOPoints = new ArrayList<>(obsDomainAtT1.coordinates);
+        VOPoints.addAll(obsDomainAtEndOfTimeFrame.coordinates);
 
         // FIXME: There is a lot being handled here that should be handled at a higher level
         GrahamScan convHull = new GrahamScan(new HPointFactory());
@@ -59,6 +51,17 @@ public class VelocityObstacle implements IVelocityObstacle {
             VOPolygonVertices.add(new HPoint(p.getX(), p.getY(), 1));
 
         return new Polygon(VOPolygonVertices);
+    }
+
+    private Geometry createRelativeVOAtTime(HPoint objPos, Geometry obsDomain, HPoint obsPos, double time) {
+        Transformation transToCollisionAtTime1 = calculateTransformationToCollisionAtTime(objPos, obsPos, time);
+
+        Polygon obsDomainOriginal = (Polygon)obsDomain; // The actual instance from the ship class. Should not be mutated
+        // Copies the polygon
+        Polygon realtiveVO = copyPolygon(obsDomainOriginal);  //TODO: add copy method to polygon
+        realtiveVO.transform(transToCollisionAtTime1);
+
+        return realtiveVO;
     }
 
     private Transformation calculateTransformationToCollisionAtTime(HPoint objPos, HPoint obsPos, double time) {
