@@ -35,8 +35,7 @@ public class InputSimulatorTest {
 
         return simulator;
     }
-
-    @Disabled
+    
     @Nested
     @DisplayName("InputSimulator.run")
     class run{
