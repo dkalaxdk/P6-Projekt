@@ -1,12 +1,17 @@
-package Dibbidut.Classes;
+package Dibbidut.Classes.UI;
 
+import Dibbidut.Classes.CASystem;
 import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Classes.Geometry.HPoint;
+import Dibbidut.Classes.Ship;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Set;
 
 
 public class Display extends JPanel {
@@ -21,7 +26,7 @@ public class Display extends JPanel {
         zoom = 2;
     }
 
-    public Display(Ship ownShip, ArrayList<Ship> ships, Area MVO) {
+    public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO) {
         this.system = new CASystem();
         system.ownShip = ownShip;
         system.shipsInRange = ships;
@@ -75,7 +80,7 @@ public class Display extends JPanel {
 
         system.listLock.lock();
 
-//        drawVelocityObstacles(g2, system.MVO);
+        drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
 
@@ -197,11 +202,36 @@ public class Display extends JPanel {
         g.draw(shape);
     }
 
-    private void drawVelocityObstacles(Graphics2D g, Area mvo) {
+    private void drawVelocityObstacles(Graphics2D g, Hashtable<Ship, Polygon> mvo) {
         g.setColor(new Color(1f, 0f, 0f, 0.5f));
 
-        g.fill(mvo);
-        g.draw(mvo);
+        Set<Ship> setOfShips = mvo.keySet();
+
+        for (Ship ship : setOfShips) {
+            drawVelocityObstacle(g, ship, mvo.get(ship));
+        }
+    }
+
+    private void drawVelocityObstacle(Graphics2D g, Ship ship, Polygon vo) {
+
+        Area area = new Area(drawPolygon(vo));
+
+        g.fill(area);
+        g.draw(area);
+    }
+
+    public Path2D drawPolygon(Polygon vo) {
+        Path2D outputShape = new Path2D.Double();
+
+        outputShape.moveTo(vo.coordinates.get(0).getX(), vo.coordinates.get(0).getY());
+
+        for (int i = 1; i < vo.coordinates.size(); i++) {
+            outputShape.lineTo(vo.coordinates.get(i).getX(), vo.coordinates.get(i).getY());
+        }
+
+        outputShape.closePath();
+
+        return outputShape;
     }
 
     public HPoint getCoordinatesToDrawShipFrom(Ship ship) {
@@ -223,24 +253,26 @@ public class Display extends JPanel {
     }
 
     private Path2D drawPentagonDomain(Ship ship) {
-        Path2D outputShape = new Path2D.Double();
+//        Path2D outputShape = new Path2D.Double();
         Polygon domain = (Polygon) ship.domain.getDomain();
 
-        ArrayList<HPoint> coordinates = domain.coordinates;
-        // P5
-        outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
-        // P4
-        outputShape.lineTo(coordinates.get(1).getX(), coordinates.get(1).getY());
-        // P3
-        outputShape.lineTo(coordinates.get(2).getX(), coordinates.get(2).getY());
-        // P2
-        outputShape.lineTo(coordinates.get(3).getX(), coordinates.get(3).getY());
-        // P1
-        outputShape.lineTo(coordinates.get(4).getX(), coordinates.get(4).getY());
+        return drawPolygon(domain);
 
-        outputShape.closePath();
-
-        return outputShape;
+//        ArrayList<HPoint> coordinates = domain.coordinates;
+//        // P5
+//        outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
+//        // P4
+//        outputShape.lineTo(coordinates.get(1).getX(), coordinates.get(1).getY());
+//        // P3
+//        outputShape.lineTo(coordinates.get(2).getX(), coordinates.get(2).getY());
+//        // P2
+//        outputShape.lineTo(coordinates.get(3).getX(), coordinates.get(3).getY());
+//        // P1
+//        outputShape.lineTo(coordinates.get(4).getX(), coordinates.get(4).getY());
+//
+//        outputShape.closePath();
+//
+//        return outputShape;
     }
 
     // TODO: Implement me

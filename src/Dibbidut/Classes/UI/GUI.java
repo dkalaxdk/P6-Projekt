@@ -1,4 +1,6 @@
-package Dibbidut.Classes;
+package Dibbidut.Classes.UI;
+
+import Dibbidut.Classes.CASystem;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;

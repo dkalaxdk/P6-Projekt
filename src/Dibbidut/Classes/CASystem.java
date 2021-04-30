@@ -1,14 +1,17 @@
 package Dibbidut.Classes;
 
 import Dibbidut.Classes.Geometry.HPoint;
+import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
+import Dibbidut.Classes.UI.Display;
+import Dibbidut.Classes.UI.GUI;
 import Dibbidut.Exceptions.OSNotFoundException;
 
 import javax.swing.*;
-import java.awt.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +31,7 @@ public class CASystem {
     public Display display;
     public GUI gui;
     public VelocityObstacle obstacleCalculator;
-    public Area MVO;
+    public Hashtable<Ship, Polygon> MVO;
 
     public final Lock bufferLock;
     public final Lock listLock;
@@ -54,8 +57,8 @@ public class CASystem {
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-//        ownShipMMSI = 211235221;
-//        String inputFile = "test/TestFiles/TestInput2.csv";
+        ownShipMMSI = 211235221;
+        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -65,8 +68,8 @@ public class CASystem {
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
-        ownShipMMSI = 218176000;
-        String inputFile = "InputFiles/AarhusEncounter.csv";
+//        ownShipMMSI = 218176000;
+//        String inputFile = "InputFiles/AarhusEncounter.csv";
 
 
 //        ownShipMMSI = 219017081;
@@ -112,7 +115,7 @@ public class CASystem {
 
         shipsInRange = new ArrayList<>();
         obstacleCalculator = new VelocityObstacle();
-        MVO = new Area();
+        MVO = new Hashtable<>();
 
         range = 100000;
         timeFrame = 1;
@@ -146,7 +149,7 @@ public class CASystem {
             listLock.unlock();
 
             if (dirty) {
-//                UpdateVelocityObstacles();
+                UpdateVelocityObstacles();
                 UpdateDisplay();
                 dirty = false;
             }
@@ -267,11 +270,9 @@ public class CASystem {
 
     public void UpdateVelocityObstacles() {
 
-        MVO.reset();
-
         for (Ship ship : shipsInRange) {
-            Area area = obstacleCalculator.Calculate(this.ownShip, ship, timeFrame);
-            MVO.add(area);
+            Polygon area = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.velocity, timeFrame);
+            MVO.put(ship, area);
         }
     }
 
