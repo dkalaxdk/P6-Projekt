@@ -13,7 +13,7 @@ def un_project_y(y):
 
 
 def unit_vector(deg):
-    degrees_as_radians = math.radians(deg)
+    degrees_as_radians = math.radians(deg - 90)
     out_x = math.cos(degrees_as_radians) * 0 - math.sin(degrees_as_radians) * 1
     out_y = math.sin(degrees_as_radians) * 0 + math.cos(degrees_as_radians) * 1
     return [out_x, out_y]
@@ -50,8 +50,8 @@ def read_file():
                          "Length", "Type of position fixing device", "Draught", "Destination", "ETA",
                          "Data source type", "A", "B", "C", "D"])
             # 0.515660452624 is a constant, which makes SOG result in the correct knots.
-            calculatedX = calculatedX + uv[0] * SOG * 0.515660452624
-            calculatedY = calculatedY + uv[1] * SOG * 0.515660452624
+            calculatedX = calculatedX + uv[0] * (SOG * 0.515660452624)
+            calculatedY = calculatedY + uv[1] * (SOG * 0.515660452624)
             current_line["Timestamp"] = [
                 pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]
