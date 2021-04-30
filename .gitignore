@@ -28,7 +28,3 @@ target/
 test/BigTestFiles/
 
 DataGenerator/output.csv
-
-InputFiles/generated_file.csv
-
-DataGenerator/input.txt
