@@ -17,32 +17,60 @@ def un_project_y(y):
     return math.degrees(a)
 
 
+def unit_vector(deg):
+    degrees_as_radians = math.radians(deg)
+    out_x = math.cos(degrees_as_radians) * 0 - math.sin(degrees_as_radians) * 1
+    out_y = math.sin(degrees_as_radians) * 0 + math.cos(degrees_as_radians) * 1
+    return [out_x, out_y]
+
+
+def un_project_x(x):
+    return math.degrees(x / earthRadius)
+
+
 def read_file():
-    timeinHours = 1
+    time_in_minutes = 60
     output = pd.DataFrame(
         columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
                  "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
                  "Type of position fixing device", "Draught", "Destination", "ETA", "Data source type", "A", "B", "C",
                  "D"])
     inputString = pd.read_csv("input.txt")
-    calculatedX = 0
-    for MMSI, Heading, X, Y, COG, SOG, Length, Width in zip(inputString["MMSI"], inputString["Heading"],
-                                                            inputString["X"], inputString["Y"],
-                                                            inputString["COG"], inputString["SOG"],
-                                                            inputString["Length"], inputString["Width"]):
-        for i in range(1, timeinHours * 60 * 60):
-            calculatedX += SOG
-            output["Timestamp"] = pd.to_datetime(datetime.datetime.now())
-            output["MMSI"] = MMSI
-            output["Heading"] = Heading
-            output["Latitude"] = math.degrees(calculatedX + SOG / earthRadius)
-            output["Longitude"] = un_project_y(Y)
-            output["COG"] = COG
-            output["SOG"] = SOG
-            output["Length"] = Length
-            output["Width"] = Width
 
-    output.to_csv("output.txt", index=False)
+    MMSI = 0
+    dt = datetime.datetime.now()
+    for Heading, X, Y, COG, SOG, Length, Width in zip(inputString["Heading"],
+                                                      inputString["X"], inputString["Y"],
+                                                      inputString["COG"], inputString["SOG"],
+                                                      inputString["Length"], inputString["Width"]):
+        MMSI += 1
+        calculatedX = X
+        calculatedY = Y
+        all_lines = []
+        uv = unit_vector(COG)
+        for i in range(1, time_in_minutes * 60):
+            current_line = pd.DataFrame(
+                columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT",
+                         "SOG", "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width",
+                         "Length", "Type of position fixing device", "Draught", "Destination", "ETA",
+                         "Data source type", "A", "B", "C", "D"])
+            calculatedX = calculatedX + uv[0] * SOG / 3600 * 5
+            calculatedY = calculatedY + uv[1] * SOG / 3600 * 5
+            current_line["Timestamp"] = [
+                pd.to_datetime(dt + datetime.timedelta(seconds=5 * i)).strftime("%d-%m-%y %H:%M:%S")]
+            current_line["MMSI"] = [MMSI]
+            current_line["Heading"] = [Heading]
+            current_line["Latitude"] = [un_project_x(calculatedX)]
+            current_line["Longitude"] = [un_project_y(calculatedY)]
+            current_line["COG"] = [COG]
+            current_line["SOG"] = [SOG]
+            current_line["Length"] = [Length]
+            current_line["Width"] = [Width]
+            all_lines.append(current_line)
+        output = output.append(all_lines)
+        output = output.sort_values(by=["Timestamp"], ascending=True)
+
+    output.to_csv("output.csv", index=False)
 
 
 if __name__ == "__main__":
