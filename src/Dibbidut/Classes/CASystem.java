@@ -4,12 +4,10 @@ import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Exceptions.OSNotFoundException;
-import math.geom2d.Vector2D;
 
 import javax.swing.*;
 import java.awt.geom.Area;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -163,8 +161,6 @@ public class CASystem {
                 e.printStackTrace();
             }
 
-
-
             duration = 0;
         }
     }
@@ -265,9 +261,8 @@ public class CASystem {
     }
 
     public double GetDistance(HPoint from, HPoint to) {
-        HPoint difference = to.subtract(from);
 
-        return difference.length();
+        return to.subtract(from).length();
     }
 
     public void UpdateVelocityObstacles() {
