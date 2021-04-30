@@ -171,5 +171,7 @@ public class ShipDomain implements IDomain {
         // P1
         coordinates.add(new HPoint(x - DomainDimensions.One, y + DomainDimensions.Three));
         pentagonDomain = new Polygon(coordinates);
+
+        pentagonDomain.rotate(Heading);
     }
 }

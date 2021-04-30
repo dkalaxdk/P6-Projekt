@@ -193,7 +193,6 @@ public class Display extends JPanel {
         g.setColor(Color.green);
 
         HPoint velocity = new HPoint(ship.velocity.getX(), ship.velocity.getY());
-        velocity.scale(system.timeFrame);
 
         velocity = ship.position.add(velocity);
 

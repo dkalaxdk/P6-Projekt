@@ -57,8 +57,8 @@ public class CASystem {
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
 
-        ownShipMMSI = 211235221;
-        String inputFile = "test/TestFiles/TestInput2.csv";
+//        ownShipMMSI = 211235221;
+//        String inputFile = "test/TestFiles/TestInput2.csv";
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
@@ -71,26 +71,18 @@ public class CASystem {
 //        ownShipMMSI = 218176000;
 //        String inputFile = "InputFiles/AarhusEncounter.csv";
 
-
 //        ownShipMMSI = 219017081;
 //        String inputFile = "InputFiles/aisdk_20190510.csv";
 //        String inputFile = "InputFiles/EXPRESS_1_&_BALTIC_CONDOR.csv";
 
-
-
 //        ownShipMMSI = 219678000;
 //        String inputFile = "InputFiles/SKULD_&_ENSCO_72.csv";
-
-
 
 //        ownShipMMSI = 212172000;
 //        String inputFile = "InputFiles/NECKAR_HIGHWAY_&_ORION.csv";
 
-
 //        ownShipMMSI = 305369000;
 //        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
-
-
 
         // HELLE
 //        ownShipMMSI = 219001359;
@@ -103,6 +95,11 @@ public class CASystem {
         // #1
 //        ownShipMMSI = 1;
 //        String inputFile = "InputFiles/Simulation1.csv";
+
+
+        ownShipMMSI = 1;
+        String inputFile = "InputFiles/generated_file.csv";
+//        String inputFile = "InputFiles/generated_file_1.csv";
 
         timeFactor = 1f;
 
@@ -118,7 +115,7 @@ public class CASystem {
         MVO = new Hashtable<>();
 
         range = 100000;
-        timeFrame = 1;
+        timeFrame = 30;
     }
 
     public void Start() {
@@ -271,8 +268,31 @@ public class CASystem {
     public void UpdateVelocityObstacles() {
 
         for (Ship ship : shipsInRange) {
-            Polygon area = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.velocity, timeFrame);
-            MVO.put(ship, area);
+//            Polygon domain = (Polygon) ship.domain.getDomain();
+//
+//            Polygon polygon = domain.addPolygon((Polygon) ownShip.domain.getDomain());
+
+            ArrayList<HPoint> c = ((Polygon) ship.domain.getDomain()).coordinates;
+
+            System.out.println("Domain");
+            for (HPoint p : c) {
+                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+            }
+
+            System.out.println("Ship");
+            System.out.println(ship.position.getX() + "\t" + ship.position.getY() + "\r");
+
+            System.out.println("Velocity");
+            System.out.println(ship.velocity.getX() + "\t" + ship.velocity.getY() + "\r");
+
+            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.velocity, timeFrame);
+
+            System.out.println("VO");
+            for (HPoint p : vo.coordinates) {
+                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+            }
+
+            MVO.put(ship, vo);
         }
     }
 
