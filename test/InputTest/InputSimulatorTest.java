@@ -3,6 +3,7 @@ package InputTest;
 import Dibbidut.Classes.InputManagement.AISData;
 import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Exceptions.OSNotFoundException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ public class InputSimulatorTest {
         return simulator;
     }
 
+    @Disabled
     @Nested
     @DisplayName("InputSimulator.run")
     class run{
