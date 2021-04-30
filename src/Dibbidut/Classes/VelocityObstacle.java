@@ -66,7 +66,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
     private Transformation calculateTransformationToCollisionAtTime(HPoint objPos, HPoint obsPos, double time) {
         HPoint collisionRelativeToObject = obsPos.subtract(objPos);
-        collisionRelativeToObject.divide(time); // TODO: Add test to check if this is done correctly (should either be before or after addition of obsPos)
+        collisionRelativeToObject.divide(time); 
         HPoint collisionRelativeToOrigin = objPos.add(collisionRelativeToObject);
         HPoint collisionAtTimeRelativeToOrigin = collisionRelativeToOrigin;  // Scale the collision position to the given time
         return new Transformation()
