@@ -66,7 +66,7 @@ def read_file():
         output = output.append(all_lines)
         output = output.sort_values(by=["Timestamp"], ascending=True)
 
-    output.to_csv("output.csv", index=False)
+    output.to_csv("../InputFiles/generated_file.csv", index=False)
 
 
 if __name__ == "__main__":
