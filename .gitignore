@@ -26,3 +26,9 @@ hs_err_pid*
 target/
 
 test/BigTestFiles/
+
+DataGenerator/output.csv
+
+InputFiles/generated_file.csv
+
+DataGenerator/input.txt
