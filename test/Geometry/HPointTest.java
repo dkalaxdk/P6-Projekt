@@ -2,20 +2,24 @@ package Geometry;
 
 import Dibbidut.Classes.Geometry.Transformation;
 import Dibbidut.Classes.Geometry.HPoint;
+import Dibbidut.Classes.Utility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class HPointTest {
-    HPoint HPoint;
+    HPoint hPoint;
 
     @BeforeEach
     public void setUp() {
-        HPoint = new HPoint(5,5,1);
+        hPoint = new HPoint(5,5,1);
     }
 
     @Nested
@@ -26,7 +30,7 @@ public class HPointTest {
         public void crossProduct_returns_correct_Number() {
             HPoint testHPoint = new HPoint(1, 2, 1);
 
-            assertEquals(5, HPoint.crossProduct(testHPoint));
+            assertEquals(5, hPoint.crossProduct(testHPoint));
         }
     }
 
@@ -36,13 +40,13 @@ public class HPointTest {
         @Test
         public void dotProduct_returns_Number() {
             HPoint testHPoint = new HPoint(3,3,1);
-            assertNotEquals(0, HPoint.dotProduct(testHPoint));
+            assertNotEquals(0, hPoint.dotProduct(testHPoint));
         }
 
         @Test
         public void dotProduct_returns_Number_correct_value() {
             HPoint testHPoint = new HPoint(3,3,1);
-            assertEquals(30, HPoint.dotProduct(testHPoint));
+            assertEquals(30, hPoint.dotProduct(testHPoint));
         }
     }
 
@@ -51,8 +55,8 @@ public class HPointTest {
     class length {
         @Test
         public void length_ReturnsCorrectValue(){
-            HPoint HPoint = new HPoint(1, 0);
-            assertEquals(1, HPoint.length());
+            HPoint point = new HPoint(1, 0);
+            assertEquals(1, point.length());
         }
     }
 
@@ -61,16 +65,130 @@ public class HPointTest {
     class angle{
         @Test
         public void angle_ReturnsCorrectAngle(){
-            HPoint HPoint1 = new HPoint(1, 0);
-            HPoint HPoint2 = new HPoint(0,1);
+            HPoint point1 = new HPoint(1, 0);
+            HPoint point2 = new HPoint(0,1);
 
-            assertEquals(Math.toRadians(90), HPoint1.angle(HPoint2));
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(90)),
+                    Utility.roundToFourDecimals(point1.angle(point2)));
+        }
+
+        @Test
+        public void angle_ReturnsCorrectAngle_ReverseOrder(){
+            HPoint point1 = new HPoint(1, 0);
+            HPoint point2 = new HPoint(0,1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(90)),
+                    Utility.roundToFourDecimals(point2.angle(point1)));
         }
 
         @Test
         public void angle_returns_correct_number(){
             HPoint testHPoint = new HPoint(3,3,1);
-            assertEquals(0, HPoint.angle(testHPoint));
+            assertEquals(0, hPoint.angle(testHPoint));
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.clockwiseAngle")
+    class clockwiseAngle{
+        @Test
+        public void clockwiseAngle_ReturnsCorrectAngle_clockwise(){
+            HPoint point1 = new HPoint(0, 1);
+            HPoint point2 = new HPoint(1,0);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(270)),
+                    Utility.roundToFourDecimals(point1.counterClockwiseAngle(point2)));
+        }
+
+        @Test
+        public void clockwiseAngle_ReturnsCorrectAngle_counterclockwise(){
+            HPoint point1 = new HPoint(1, 0);
+            HPoint point2 = new HPoint(0,1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(90)),
+                    Utility.roundToFourDecimals(point1.counterClockwiseAngle(point2)));
+        }
+
+        @Test
+        public void clockwiseAngle_ReturnsCorrectAngle_180Degrees(){
+            HPoint point1 = new HPoint(0, -1);
+            HPoint point2 = new HPoint(0,1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(180)),
+                    Utility.roundToFourDecimals(point1.counterClockwiseAngle(point2)));
+        }
+
+        @Test
+        public void clockwiseAngle_returns_correct_number(){
+            HPoint testHPoint = new HPoint(3,3,1);
+            assertEquals(0, hPoint.counterClockwiseAngle(testHPoint));
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.standardClockwiseAngle")
+    class standardClockwiseAngle{
+        @Test
+        public void standardClockwiseAngle_ReturnsCorrectAngle_90Degrees(){
+            HPoint point = new HPoint(0, 1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(90)),
+                    Utility.roundToFourDecimals(point.standardCounterClockwiseAngle()));
+        }
+
+        @Test
+        public void standardClockwiseAngle_ReturnsCorrectAngle_270Degrees(){
+            HPoint point = new HPoint(0,-1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(270)),
+                    Utility.roundToFourDecimals(point.standardCounterClockwiseAngle()));
+        }
+
+        @Test
+        public void standardClockwiseAngle_ReturnsCorrectAngle_45Degrees(){
+            HPoint point = new HPoint(1, 1);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(45)),
+                    Utility.roundToFourDecimals(point.standardCounterClockwiseAngle()));
+        }
+
+        @Test
+        public void standardClockwiseAngle_ReturnsCorrectAngle_180Degrees(){
+            HPoint point = new HPoint(-1,0);
+
+            assertEquals(Utility.roundToFourDecimals(Math.toRadians(180)),
+                    Utility.roundToFourDecimals(point.standardCounterClockwiseAngle()));
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.orientation")
+    class orientation{
+        @Test
+        public void orientation_ReturnsZeroWhenPointsAreOnALine(){
+            HPoint a = new HPoint(1, 1, 1);
+            HPoint p1 = new HPoint(2, 2, 1);
+            HPoint p2 = new HPoint(3, 3, 1);
+
+            assertEquals(0, a.orientation(p1, p2));
+        }
+
+        @Test
+        public void orientation_ReturnsPositiveValueWhenLeftTurnOrientation(){
+            HPoint a = new HPoint(1, 1, 1);
+            HPoint p1 = new HPoint(2, 0, 1);
+            HPoint p2 = new HPoint(2, 2, 1);
+
+            assertTrue(a.orientation(p1, p2) > 0);
+        }
+
+        @Test
+        public void orientation_ReturnsNegativeValueWhenRightTurnOrientation(){
+            HPoint a = new HPoint(1, 1, 1);
+            HPoint p1 = new HPoint(2, 2, 1);
+            HPoint p2 = new HPoint(2, 0, 1);
+
+            assertTrue(a.orientation(p1, p2) < 0);
         }
     }
 
@@ -80,32 +198,32 @@ public class HPointTest {
     public class scale {
         @Test
         public void scale_length_is_scaled() {
-            double startingValue = HPoint.length();
+            double startingValue = hPoint.length();
             // Act
-            HPoint.scale(2);
-            assertEquals(startingValue*2, HPoint.length());
+            hPoint.scale(2);
+            assertEquals(startingValue*2, hPoint.length());
         }
 
         @Test
         public void scale_x_is_scaled() {
-            double startingValue = HPoint.getX();
+            double startingValue = hPoint.getX();
             // Act
-            HPoint.scale(2);
-            assertEquals(startingValue*2, HPoint.getX());
+            hPoint.scale(2);
+            assertEquals(startingValue*2, hPoint.getX());
         }
 
         @Test
         public void scale_y_is_scaled() {
-            double startingValue = HPoint.getY();
+            double startingValue = hPoint.getY();
             // Act
-            HPoint.scale(2);
-            assertEquals(startingValue*2, HPoint.getY());
+            hPoint.scale(2);
+            assertEquals(startingValue*2, hPoint.getY());
         }
 
         @Test
         public void scale_z_is_scaled() {
-            HPoint.scale(2);
-            assertEquals(1, HPoint.getZ());
+            hPoint.scale(2);
+            assertEquals(1, hPoint.getZ());
         }
     }
 
@@ -114,32 +232,32 @@ public class HPointTest {
     public class divide {
         @Test
         public void divide_length_is_divided() {
-            double startingValue = HPoint.length();
+            double startingValue = hPoint.length();
             // Act
-            HPoint.divide(2);
-            assertEquals(startingValue/2, HPoint.length());
+            hPoint.divide(2);
+            assertEquals(startingValue/2, hPoint.length());
         }
 
         @Test
         public void divide_x_is_divided() {
-            double startingValue = HPoint.getX();
+            double startingValue = hPoint.getX();
             // Act
-            HPoint.divide(2);
-            assertEquals(startingValue/2, HPoint.getX());
+            hPoint.divide(2);
+            assertEquals(startingValue/2, hPoint.getX());
         }
 
         @Test
         public void divide_y_is_divided() {
-            double startingValue = HPoint.getY();
+            double startingValue = hPoint.getY();
             // Act
-            HPoint.divide(2);
-            assertEquals(startingValue/2, HPoint.getY());
+            hPoint.divide(2);
+            assertEquals(startingValue/2, hPoint.getY());
         }
 
         @Test
         public void divide_z_is_divided() {
-            HPoint.divide(2);
-            assertEquals(1, HPoint.getZ());
+            hPoint.divide(2);
+            assertEquals(1, hPoint.getZ());
         }
     }
 
@@ -151,7 +269,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(2,2,1);
 
             //Act
-            HPoint resultHPoint = HPoint.add(testHPoint);
+            HPoint resultHPoint = hPoint.add(testHPoint);
 
             // Assert
             assertEquals(resultHPoint.getX(),7);
@@ -162,7 +280,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(2,2,1);
 
             //Act
-            HPoint resultHPoint = HPoint.add(testHPoint);
+            HPoint resultHPoint = hPoint.add(testHPoint);
 
             // Assert
             assertEquals(resultHPoint.getY(),7);
@@ -173,7 +291,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(2,2,1);
 
             //Act
-            HPoint resultHPoint = HPoint.add(testHPoint);
+            HPoint resultHPoint = hPoint.add(testHPoint);
 
             // Assert
             assertEquals(1, resultHPoint.getZ());
@@ -188,7 +306,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(8, 8, 1);
 
             // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
+            HPoint resultHPoint = hPoint.subtract(testHPoint);
 
             assertEquals(5 - 8, resultHPoint.getX());
         }
@@ -198,7 +316,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(8, 8, 1);
 
             // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
+            HPoint resultHPoint = hPoint.subtract(testHPoint);
 
             assertEquals(5 - 8, resultHPoint.getX());
         }
@@ -208,7 +326,7 @@ public class HPointTest {
             HPoint testHPoint = new HPoint(8, 8, 1);
 
             // Act
-            HPoint resultHPoint = HPoint.subtract(testHPoint);
+            HPoint resultHPoint = hPoint.subtract(testHPoint);
 
             assertEquals(1, resultHPoint.getZ());
         }
@@ -259,25 +377,39 @@ public class HPointTest {
     class compareTo{
         @Test
         public void compareTo_ReturnsZeroWhenHPointComparedToItSelf(){
-            HPoint HPoint1 = new HPoint(-1, 0, 1);
+            HPoint point1 = new HPoint(-1, 0, 1);
 
-            assertEquals(0, HPoint1.compareTo(HPoint1));
+            assertEquals(0, point1.compareTo(point1));
         }
 
         @Test
         public void compareTo_ReturnsPositiveWhenComparingToHPointCloserToStartingPoint(){
-            HPoint HPoint1 = new HPoint(0, 1, 1);
-            HPoint HPoint2 = new HPoint(-1, 1, 1);
+            HPoint point1 = new HPoint(-1, 1);
+            HPoint point2 = new HPoint(0, 1);
 
-            assertTrue(HPoint1.compareTo(HPoint2) > 0);
+            assertTrue(point1.compareTo(point2) > 0);
         }
 
         @Test
         public void compareTo_ReturnsNegativeWhenComparingToHPointFartherFromStartingPoint(){
-            HPoint HPoint1 = new HPoint(0, 1, 1);
-            HPoint HPoint2 = new HPoint(-1, 1, 1);
+            HPoint point1 = new HPoint(-1, 1);
+            HPoint point2 = new HPoint(0, 1);
 
-            assertTrue(HPoint2.compareTo(HPoint1) < 0);
+            assertTrue(point2.compareTo(point1) < 0);
+        }
+
+        @Test
+        public void compareTo_SortsListCorrectly(){
+            ArrayList<HPoint> list = new ArrayList<>();
+            list.add(new HPoint(2, 2));
+            list.add(new HPoint(3, -3));
+            list.add(new HPoint(-1, 1));
+
+            Collections.sort(list);
+
+            assertEquals(2, list.get(0).getX());
+            assertEquals(-1, list.get(1).getX());
+            assertEquals(3, list.get(2).getX());
         }
     }
 

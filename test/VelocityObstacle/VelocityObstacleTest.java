@@ -162,7 +162,18 @@ public class VelocityObstacleTest {
         }
 
         @Test
-        public void RelativeVO_containsVelocitiesLeadingToCollisionInFuture() {
+        public void relativeVO_containsVelocitiesLeadingToCollisionInFuture() {
+
+/*
+                The asserts that are commented out are ones that should pass
+                but currently do not due to the size of the time steps.
+
+                Currently it calculates and combines all the areas that cause a collision
+                at the exact time step. This leads to several separate and non intersecting
+                areas.
+                To all the asserts, the space between the individual areas should be included
+             */
+
             double time = 5;
 
             Geometry relVO = VO.RelativeVO(objPos, obsDomain, obsPos, time);
