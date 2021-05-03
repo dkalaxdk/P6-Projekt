@@ -20,7 +20,7 @@ public class PolygonTest {
     class transform{
         @Test
         public void transform_rotatesPolygonAroundItsCenter(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
             points.add(new HPoint(3, 1, 1));
@@ -40,13 +40,11 @@ public class PolygonTest {
 
             assertEquals(1, polygon.coordinates.get(3).getX());
             assertEquals(3, polygon.coordinates.get(3).getY());
-
-
         }
 
         @Test
         public void transform_CenterTheSameAfterRotation(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -55,13 +53,37 @@ public class PolygonTest {
 
             polygon.rotate(90);
 
-            assertEquals(2, polygon.center.getX());
-            assertEquals(2, polygon.center.getY());
+            assertEquals(2, polygon.referencePoint.getX());
+            assertEquals(2, polygon.referencePoint.getY());
+        }
+
+        @Test
+        public void transform_rotatesPolygonAroundItsReferencePointNotInCenter(){
+            ArrayList<HPoint> points = new ArrayList<>();
+            points.add(new HPoint(4, 4, 1));
+            points.add(new HPoint(4, 1, 1));
+            points.add(new HPoint(1, 1, 1));
+            points.add(new HPoint(1, 4, 1));
+            Polygon polygon = new Polygon(points, new HPoint(2, 2));
+
+            polygon.rotate(90);
+
+            assertEquals(4, polygon.coordinates.get(0).getX());
+            assertEquals(0, polygon.coordinates.get(0).getY());
+
+            assertEquals(1, polygon.coordinates.get(1).getX());
+            assertEquals(0, polygon.coordinates.get(1).getY());
+
+            assertEquals(1, polygon.coordinates.get(2).getX());
+            assertEquals(3, polygon.coordinates.get(2).getY());
+
+            assertEquals(4, polygon.coordinates.get(3).getX());
+            assertEquals(3, polygon.coordinates.get(3).getY());
         }
 
         @Test
         public void transform_scalesPolygonFromItsCenter(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -85,7 +107,7 @@ public class PolygonTest {
 
         @Test
         public void transform_CenterTheSameAfterScaling(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -94,13 +116,37 @@ public class PolygonTest {
 
             polygon.scale(2, 2);
 
-            assertEquals(2, polygon.center.getX());
-            assertEquals(2, polygon.center.getY());
+            assertEquals(2, polygon.referencePoint.getX());
+            assertEquals(2, polygon.referencePoint.getY());
+        }
+
+        @Test
+        public void transform_scalesPolygonAroundItsReferencePointNotInCenter(){
+            ArrayList<HPoint> points = new ArrayList<>();
+            points.add(new HPoint(4, 4, 1));
+            points.add(new HPoint(4, 1, 1));
+            points.add(new HPoint(1, 1, 1));
+            points.add(new HPoint(1, 4, 1));
+            Polygon polygon = new Polygon(points, new HPoint(2, 2));
+
+            polygon.scale(2,2);
+
+            assertEquals(6, polygon.coordinates.get(0).getX());
+            assertEquals(6, polygon.coordinates.get(0).getY());
+
+            assertEquals(6, polygon.coordinates.get(1).getX());
+            assertEquals(0, polygon.coordinates.get(1).getY());
+
+            assertEquals(0, polygon.coordinates.get(2).getX());
+            assertEquals(0, polygon.coordinates.get(2).getY());
+
+            assertEquals(0, polygon.coordinates.get(3).getX());
+            assertEquals(6, polygon.coordinates.get(3).getY());
         }
 
         @Test
         public void transform_translatesPolygon(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -124,7 +170,7 @@ public class PolygonTest {
 
         @Test
         public void transform_CenterCorrectAfterTranslation(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -133,8 +179,32 @@ public class PolygonTest {
 
             polygon.translate(1, 1);
 
-            assertEquals(3, polygon.center.getX());
-            assertEquals(3, polygon.center.getY());
+            assertEquals(3, polygon.referencePoint.getX());
+            assertEquals(3, polygon.referencePoint.getY());
+        }
+
+        @Test
+        public void transform_translatesPolygonAroundItsReferencePointNotInCenter(){
+            ArrayList<HPoint> points = new ArrayList<>();
+            points.add(new HPoint(4, 4, 1));
+            points.add(new HPoint(4, 1, 1));
+            points.add(new HPoint(1, 1, 1));
+            points.add(new HPoint(1, 4, 1));
+            Polygon polygon = new Polygon(points, new HPoint(2, 2));
+
+            polygon.translate(1, 1);
+
+            assertEquals(5, polygon.coordinates.get(0).getX());
+            assertEquals(5, polygon.coordinates.get(0).getY());
+
+            assertEquals(5, polygon.coordinates.get(1).getX());
+            assertEquals(2, polygon.coordinates.get(1).getY());
+
+            assertEquals(2, polygon.coordinates.get(2).getX());
+            assertEquals(2, polygon.coordinates.get(2).getY());
+
+            assertEquals(2, polygon.coordinates.get(3).getX());
+            assertEquals(5, polygon.coordinates.get(3).getY());
         }
     }
 
@@ -143,7 +213,7 @@ public class PolygonTest {
     class calculateCenter{
         @Test
         public void calculateCenter_SetCenterXCorrectly(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -152,12 +222,12 @@ public class PolygonTest {
 
             polygon.calculateCenter();
 
-            assertEquals(2, polygon.center.getX());
+            assertEquals(2, polygon.referencePoint.getX());
         }
 
         @Test
         public void calculateCenter_SetCenterYCorrectly(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -166,17 +236,17 @@ public class PolygonTest {
 
             polygon.calculateCenter();
 
-            assertEquals(2, polygon.center.getY());
+            assertEquals(2, polygon.referencePoint.getY());
         }
 
         @Test
         public void calculateCenter_centerSetToNullIfPointsListIsEmpty(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             Polygon polygon = new Polygon(points);
 
             polygon.calculateCenter();
 
-            assertEquals(null, polygon.center);
+            assertNull(polygon.referencePoint);
         }
     }
 
@@ -231,7 +301,7 @@ public class PolygonTest {
     class contains{
         @Test
         public void contains_ReturnsTrueWhenPolygonContainsPoint(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -245,7 +315,7 @@ public class PolygonTest {
 
         @Test
         public void contains_ReturnsFalseWhenPolygonDoesNotContainPoint(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -259,7 +329,7 @@ public class PolygonTest {
 
         @Test
         public void contains_ReturnsFalseWhenPointIsOnSegmentOfPolygon(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -273,7 +343,7 @@ public class PolygonTest {
 
         @Test
         public void contains_ReturnsFalseWhenPointIsInHPointListForPolygon(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -343,7 +413,7 @@ public class PolygonTest {
     class crossesRay{
         @Test
         public void crossesRay_ReturnsTrueWhenRayCrossesSegment(){
-            Polygon polygon = new Polygon(new ArrayList<HPoint>());
+            Polygon polygon = new Polygon(new ArrayList<>());
             HPoint a = new HPoint(1, 1, 1);
             HPoint p1 = new HPoint(2, 2, 1);
             HPoint p2 = new HPoint(2, 0, 1);
@@ -353,7 +423,7 @@ public class PolygonTest {
 
         @Test
         public void crossesRay_ReturnsTrueWhenRayCrossesSegment_UpperPointInSegmentOnRay(){
-            Polygon polygon = new Polygon(new ArrayList<HPoint>());
+            Polygon polygon = new Polygon(new ArrayList<>());
             HPoint a = new HPoint(1, 1, 1);
             HPoint p1 = new HPoint(2, 1, 1);
             HPoint p2 = new HPoint(2, 0, 1);
@@ -363,7 +433,7 @@ public class PolygonTest {
 
         @Test
         public void crossesRay_ReturnsFalseWhenRayDoesNotCrossSegment(){
-            Polygon polygon = new Polygon(new ArrayList<HPoint>());
+            Polygon polygon = new Polygon(new ArrayList<>());
             HPoint a = new HPoint(1, 1, 1);
             HPoint p1 = new HPoint(0, 2, 1);
             HPoint p2 = new HPoint(0, 0, 1);
@@ -373,7 +443,7 @@ public class PolygonTest {
 
         @Test
         public void crossesRay_ReturnsFalseWhenRayCrossesSegment_LowerPointInSegmentOnRay(){
-            Polygon polygon = new Polygon(new ArrayList<HPoint>());
+            Polygon polygon = new Polygon(new ArrayList<>());
             HPoint a = new HPoint(1, 1, 1);
             HPoint p1 = new HPoint(2, 2, 1);
             HPoint p2 = new HPoint(2, 1, 1);
@@ -387,7 +457,7 @@ public class PolygonTest {
     class addPolygon{
         @Test
         public void addPolygon_ReturnsCorrectPolygonWhenAddingAPolygonToItself(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -418,14 +488,14 @@ public class PolygonTest {
 
         @Test
         public void addPolygon_ReturnsCorrectPolygonWhenAddingTwoPolygonsOnTopOfEachOtherWithDifferentOrientations(){
-            ArrayList<HPoint> points1 = new ArrayList<HPoint>();
+            ArrayList<HPoint> points1 = new ArrayList<>();
             points1.add(new HPoint(1, 1, 1));
             points1.add(new HPoint(1, 3, 1));
             points1.add(new HPoint(3, 3, 1));
             points1.add(new HPoint(3, 1, 1));
             Polygon polygon1 = new Polygon(points1);
 
-            ArrayList<HPoint> points2 = new ArrayList<HPoint>();
+            ArrayList<HPoint> points2 = new ArrayList<>();
             points2.add(new HPoint(0, 2, 1));
             points2.add(new HPoint(2, 4, 1));
             points2.add(new HPoint(4, 2, 1));
@@ -468,14 +538,14 @@ public class PolygonTest {
 
         @Test
         public void addPolygon_ReturnsCorrectPolygonWhenAddingTwoPolygonsNotTouchingEachOtherWithDifferentOrientations(){
-            ArrayList<HPoint> points1 = new ArrayList<HPoint>();
+            ArrayList<HPoint> points1 = new ArrayList<>();
             points1.add(new HPoint(1, 3, 1));
             points1.add(new HPoint(3, 3, 1));
             points1.add(new HPoint(3, 1, 1));
             points1.add(new HPoint(1, 1, 1));
             Polygon polygon1 = new Polygon(points1);
 
-            ArrayList<HPoint> points2 = new ArrayList<HPoint>();
+            ArrayList<HPoint> points2 = new ArrayList<>();
             points2.add(new HPoint(4, 4, 1));
             points2.add(new HPoint(5, 5, 1));
             points2.add(new HPoint(6, 4, 1));
@@ -515,6 +585,51 @@ public class PolygonTest {
             assertEquals(3.5, Utility.roundToFourDecimals(result.coordinates.get(7).getX()));
             assertEquals(0.5, Utility.roundToFourDecimals(result.coordinates.get(7).getY()));
         }
+
+        @Test
+        public void addPolygon_ReturnsCorrectPolygonWhenAddingTwoPolygonsNotTouchingEachOtherWithReferencePointsNotInCenter(){
+            ArrayList<HPoint> points1 = new ArrayList<>();
+            points1.add(new HPoint(4, 4, 1));
+            points1.add(new HPoint(4, 1, 1));
+            points1.add(new HPoint(1, 1, 1));
+            points1.add(new HPoint(1, 4, 1));
+            Polygon polygon1 = new Polygon(points1, new HPoint(3, 3));
+
+            ArrayList<HPoint> points2 = new ArrayList<>();
+            points2.add(new HPoint(9, 7, 1));
+            points2.add(new HPoint(9, 5, 1));
+            points2.add(new HPoint(6, 5, 1));
+            points2.add(new HPoint(6, 7, 1));
+            Polygon polygon2 = new Polygon(points2, new HPoint(8, 6));
+
+            Polygon result = null;
+            try {
+                result = polygon1.addPolygon(polygon2);
+            } catch (PolygonNotCenteredOnOrigin e) {
+                e.printStackTrace();
+            }
+
+            assertEquals(6, result.coordinates.size());
+
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(0).getX()));
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(0).getY()));
+
+            assertEquals(-1, Utility.roundToFourDecimals(result.coordinates.get(1).getX()));
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(1).getY()));
+
+            assertEquals(-1, Utility.roundToFourDecimals(result.coordinates.get(2).getX()));
+            assertEquals(1, Utility.roundToFourDecimals(result.coordinates.get(2).getY()));
+
+            assertEquals(0, Utility.roundToFourDecimals(result.coordinates.get(3).getX()));
+            assertEquals(0, Utility.roundToFourDecimals(result.coordinates.get(3).getY()));
+
+            assertEquals(4.5, Utility.roundToFourDecimals(result.coordinates.get(4).getX()));
+            assertEquals(0, Utility.roundToFourDecimals(result.coordinates.get(4).getY()));
+
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(5).getX()));
+            assertEquals(1, Utility.roundToFourDecimals(result.coordinates.get(5).getY()));
+
+        }
     }
 
     @Nested
@@ -522,7 +637,7 @@ public class PolygonTest {
     class makeCopy{
         @Test
         public void makeCopy_ReturnsCorrectCopy(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
@@ -549,7 +664,7 @@ public class PolygonTest {
     class calculateNewHPoint{
         @Test
         public void calculateNewHPoint_ReturnsCorrectPoint(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(-1, -1, 1));
             points.add(new HPoint(-1, 1, 1));
             points.add(new HPoint(1, 1, 1));
@@ -576,7 +691,7 @@ public class PolygonTest {
     class lengthToEdgeAtAngle{
         @Test
         public void lengthToEdgeAtAngle_ReturnsCorrectLength(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(-1, 1, 1));
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, -1, 1));
@@ -596,7 +711,7 @@ public class PolygonTest {
 
         @Test
         public void lengthToEdgeAtAngle_ReturnsCorrectLengthWhenAngleIsLargerThan180Degrees(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(-1, 1, 1));
             points.add(new HPoint(1, 1, 1));
             points.add(new HPoint(1, -1, 1));
@@ -620,7 +735,7 @@ public class PolygonTest {
     class findSegmentAtAngle {
         @Test
         public void findSegmentAtAngle_ReturnsCorrectSegment() {
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(-1, -1, 1));
             points.add(new HPoint(-1, 1, 1));
             points.add(new HPoint(1, 1, 1));
@@ -648,7 +763,7 @@ public class PolygonTest {
 
         @Test
         public void findSegmentAtAngle_ReturnsOneHPointIfHPointIsAtAngle() {
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(-1, -1, 1));
             points.add(new HPoint(-1, 1, 1));
             points.add(new HPoint(1, 1, 1));
@@ -675,7 +790,7 @@ public class PolygonTest {
         public void findSegmentAtAngle_ThrowsExceptionIfTooManyElementsInSegment() {
             boolean exceptionThrown = false;
 
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(2, 4, 1));
             points.add(new HPoint(4, 4, 1));
             points.add(new HPoint(4, 2, 1));
@@ -768,7 +883,6 @@ public class PolygonTest {
             Polygon polygon = new Polygon(new ArrayList<>());
 
             ArrayList<PolarPoint> segment = new ArrayList<>();
-            double length = Math.sqrt(Math.pow(1, 2) + Math.pow(2, 2));
             segment.add(new HPoint(-2, -1).toPolarPoint());
             segment.add(new HPoint(2, -1).toPolarPoint());
 
@@ -816,7 +930,7 @@ public class PolygonTest {
     class sortCoordinates{
         @Test
         public void sortCoordinates_SortsListCorrectly(){
-            ArrayList<HPoint> points = new ArrayList<HPoint>();
+            ArrayList<HPoint> points = new ArrayList<>();
             points.add(new HPoint(1, 3, 1));
             points.add(new HPoint(3, 3, 1));
             points.add(new HPoint(3, 1, 1));
@@ -836,6 +950,49 @@ public class PolygonTest {
 
             assertEquals(3, polygon.coordinates.get(3).getX());
             assertEquals(1, polygon.coordinates.get(3).getY());
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.flipInDirectionOf")
+    class flipInDirectionOf{
+        @Test
+        public void flipInDirectionOf_FlipsPolygonCorrectly(){
+            ArrayList<HPoint> points = new ArrayList<>();
+            points.add(new HPoint(4, 4, 1));
+            points.add(new HPoint(1, 4, 1));
+            points.add(new HPoint(1, 1, 1));
+            points.add(new HPoint(4, 1, 1));
+            Polygon polygon = new Polygon(points, new HPoint(3, 3));
+
+            Polygon result = polygon.flipInDirectionOf(new HPoint(6, 6));
+
+            //assertEquals(2, Utility.roundToFourDecimals(result.coordinates.get(0).getX()));
+            //assertEquals(2, Utility.roundToFourDecimals(result.coordinates.get(0).getY()));
+
+            //assertEquals(2, Utility.roundToFourDecimals(result.coordinates.get(1).getX()));
+            //assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(1).getY()));
+
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(2).getX()));
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(2).getY()));
+
+            assertEquals(5, Utility.roundToFourDecimals(result.coordinates.get(3).getX()));
+            assertEquals(2, Utility.roundToFourDecimals(result.coordinates.get(3).getY()));
+        }
+
+        @Test
+        public void flipInDirectionOf_ReferencePointDoesNotChange(){
+            ArrayList<HPoint> points = new ArrayList<>();
+            points.add(new HPoint(4, 4, 1));
+            points.add(new HPoint(1, 4, 1));
+            points.add(new HPoint(1, 1, 1));
+            points.add(new HPoint(4, 1, 1));
+            Polygon polygon = new Polygon(points, new HPoint(3, 3));
+
+            Polygon result = polygon.flipInDirectionOf(new HPoint(6, 6));
+
+            assertEquals(3, Utility.roundToFourDecimals(result.referencePoint.getX()));
+            assertEquals(3, Utility.roundToFourDecimals(result.referencePoint.getY()));
         }
     }
 
