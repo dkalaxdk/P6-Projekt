@@ -13,12 +13,17 @@ public class Polygon extends Geometry {
 
     public ArrayList<HPoint> coordinates;
     public ArrayList<PolarPoint> PolarCoordinates;
-    public HPoint center;
+    public HPoint referencePoint;
 
 
     public Polygon(ArrayList<HPoint> coordinates) {
         this.coordinates = coordinates;
         calculateCenter();
+    }
+
+    public Polygon(ArrayList<HPoint> coordinates, HPoint referencePoint) {
+        this.coordinates = coordinates;
+        this.referencePoint = referencePoint;
     }
 
     @Override
@@ -27,9 +32,9 @@ public class Polygon extends Geometry {
 
         // Translates the polygon so its center is in 0,0
         Transformation toCenter = new Transformation();
-        toCenter.translate(-center.getX(), -center.getY());     // Translation points to center around origin
+        toCenter.translate(-referencePoint.getX(), -referencePoint.getY());     // Translation points to center around origin
         Transformation fromCenter = new Transformation();
-        fromCenter.translate(center.getX(), center.getY());     // Translation points back
+        fromCenter.translate(referencePoint.getX(), referencePoint.getY());     // Translation points back
 
         Transformation t = new Transformation()
                 .add(toCenter)
@@ -46,7 +51,8 @@ public class Polygon extends Geometry {
 
         coordinates = newCoordinates;
 
-        calculateCenter();
+        referencePoint.transform(t);
+        //calculateCenter();
     }
 
     private List<HPoint> copyHPointList(List<HPoint> list) {
@@ -120,7 +126,7 @@ public class Polygon extends Geometry {
         int count = 0;
 
         if (coordinates == null || coordinates.size() == 0) {
-            center = null;
+            referencePoint = null;
         }
         else {
             for (HPoint point : coordinates) {
@@ -130,21 +136,19 @@ public class Polygon extends Geometry {
                 count++;
             }
 
-            center = new HPoint(x / count, y / count, 1);
+            referencePoint = new HPoint(x / count, y / count, 1);
         }
     }
 
     public Polygon addPolygon(Polygon polygon) throws PolygonNotCenteredOnOrigin {
         ArrayList<HPoint> newCoordinates = new ArrayList<>();
 
-        // lav metoder for kopiering af vektorer(i HPoint) og polygoner (her)
-
         Polygon polygon1 = this.makeCopy();
         Polygon polygon2 = polygon.makeCopy();
 
 
-        polygon1.translate(-polygon1.center.getX(), -polygon1.center.getY());
-        polygon2.translate(-polygon2.center.getX(), -polygon2.center.getY());
+        polygon1.translate(-polygon1.referencePoint.getX(), -polygon1.referencePoint.getY());
+        polygon2.translate(-polygon2.referencePoint.getX(), -polygon2.referencePoint.getY());
 
         polygon1.convertCoordinatesToPolarCoordinates();
         polygon2.convertCoordinatesToPolarCoordinates();
@@ -159,9 +163,10 @@ public class Polygon extends Geometry {
 
         newCoordinates = removeDuplicates(newCoordinates);
 
-        Polygon newPolygon = new Polygon(newCoordinates);
+        Polygon newPolygon = new Polygon(newCoordinates,
+                new HPoint(polygon1.referencePoint.getX(), polygon1.referencePoint.getY()));
         newPolygon.sortCoordinates();
-        newPolygon.translate(this.center.getX(), this.center.getY());
+        newPolygon.translate(this.referencePoint.getX(), this.referencePoint.getY());
 
         return newPolygon;
     }
@@ -171,7 +176,7 @@ public class Polygon extends Geometry {
         for (HPoint point : coordinates) {
             list.add(new HPoint(point.getX(), point.getY()));
         }
-        return new Polygon(list);
+        return new Polygon(list, new HPoint(referencePoint.getX(), referencePoint.getY()));
     }
 
     public HPoint calculateNewHPoint(PolarPoint point, Polygon polygon) throws PolygonNotCenteredOnOrigin {
@@ -286,7 +291,7 @@ public class Polygon extends Geometry {
 //    }
 
     public void sortCoordinates(){
-        HPoint c = copyHPoint(center);
+        HPoint c = copyHPoint(referencePoint);
 
         this.translate(-c.getX(), -c.getY());
         Collections.sort(coordinates);
@@ -317,5 +322,43 @@ public class Polygon extends Geometry {
                 newList.add(point);
         }
         return newList;
+    }
+
+    public Polygon flipInDirectionOf(HPoint point){
+        // Translate polygon to origin
+        Polygon polygon = this.makeCopy();
+        polygon.translate(-polygon.referencePoint.getX(), -polygon.referencePoint.getY());
+
+        // Translate point
+        HPoint tempPoint = new HPoint(point.getX(), point.getY());
+        point.translate(-polygon.referencePoint.getX(), -polygon.referencePoint.getY());
+
+        // convert HPoints to PolarPoints
+        polygon.convertCoordinatesToPolarCoordinates();
+        PolarPoint mirrorPoint = tempPoint.toPolarPoint();
+
+        mirrorPoint.angle = (mirrorPoint.angle + Math.toRadians(90)) % Math.toRadians(360);
+
+        ArrayList<HPoint> list = new ArrayList<>();
+        for(PolarPoint p : polygon.PolarCoordinates){
+            double angleDiff = mirrorPoint.angle - p.angle;
+            double newAngle = mirrorPoint.angle + angleDiff;
+
+            if (newAngle > Math.toRadians(360))
+                newAngle -= Math.toRadians(360);
+            else if (newAngle < 0)
+                newAngle += Math.toRadians(360);
+
+            list.add(new PolarPoint(p.length, newAngle).toHPoint());
+        }
+
+        Polygon result = new Polygon(list, new HPoint(0, 0));
+        result.translate(this.referencePoint.getX(), this.referencePoint.getY());
+
+        return result;
+    }
+
+    public Polygon flipAndAddPolygon(Polygon polygon) throws PolygonNotCenteredOnOrigin {
+        return this.flipInDirectionOf(polygon.referencePoint).addPolygon(polygon);
     }
 }
