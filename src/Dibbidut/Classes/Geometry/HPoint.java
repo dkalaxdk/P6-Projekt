@@ -49,6 +49,31 @@ public class HPoint extends Geometry implements Comparable {
         return Math.acos(dotProduct(point) / (this.length() * point.length()));
     }
 
+    public double counterClockwiseAngle(HPoint point){
+        double angle = this.angle(point);
+        double orientation = new HPoint(0,0).orientation(this, point);
+
+        // Source: https://vlecomte.github.io/cp-geo.pdf (page 40)
+        // The cross product indicates the orientation of the two points relative to each other,
+        // and therefore determines whether the angle is larger or smaller that 180 degrees
+        if(orientation >= 0)
+            return angle;
+        else
+            return Math.toRadians(360) - angle;
+    }
+
+    public double standardCounterClockwiseAngle(){
+        return new HPoint(1, 0).counterClockwiseAngle(this);
+    }
+
+    // Source: https://vlecomte.github.io/cp-geo.pdf (page 40)
+    // Returns a value indicating the orientation of point p and q relative to the calling HPoint (this)
+    public double orientation(HPoint p, HPoint q) {
+        HPoint temp1 = p.subtract(this);
+        HPoint temp2 = q.subtract(this);
+        return temp1.getX() * temp2.getY() - temp1.getY() * temp2.getX();
+    }
+
     public void scale(double scalar) {
         this.x = this.x * scalar;
         this.y = this.y * scalar;
@@ -109,7 +134,19 @@ public class HPoint extends Geometry implements Comparable {
 
     @Override
     public int compareTo(Object point) {
-        HPoint startingPoint = new HPoint(-1, 0, 1);
-        return (int)(startingPoint.angle(this) - startingPoint.angle((HPoint)point));
+        double result = this.standardCounterClockwiseAngle() - ((HPoint)point).standardCounterClockwiseAngle();
+
+        if (result > 0)
+            return 1;
+        else if (result < 0)
+            return -1;
+        else
+            return 0;
+    }
+
+    public PolarPoint toPolarPoint(){
+        double length = this.length();
+        double angle = this.standardCounterClockwiseAngle();
+        return new PolarPoint(length, angle);
     }
 }
