@@ -78,6 +78,8 @@ public class Ship extends Obstacle {
 
         handler.Run();
 
+        this.velocity.scale(10);
+
         domain.Update(sog, heading, position.getY(), position.getX());
     }
 

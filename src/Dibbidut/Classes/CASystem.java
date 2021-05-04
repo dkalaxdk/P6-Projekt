@@ -7,6 +7,7 @@ import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Classes.UI.Display;
 import Dibbidut.Classes.UI.GUI;
 import Dibbidut.Exceptions.OSNotFoundException;
+import Dibbidut.Exceptions.PolygonNotCenteredOnOrigin;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -98,8 +99,8 @@ public class CASystem {
 
 
         ownShipMMSI = 1;
-        String inputFile = "InputFiles/generated_file.csv";
-//        String inputFile = "InputFiles/generated_file_1.csv";
+//        String inputFile = "InputFiles/generated_file.csv";
+        String inputFile = "InputFiles/generated_file_1.csv";
 
         timeFactor = 1f;
 
@@ -115,7 +116,7 @@ public class CASystem {
         MVO = new Hashtable<>();
 
         range = 100000;
-        timeFrame = 200;
+        timeFrame = 1;
     }
 
     public void Start() {
@@ -268,29 +269,23 @@ public class CASystem {
     public void UpdateVelocityObstacles() {
 
         for (Ship ship : shipsInRange) {
-//            Polygon domain = (Polygon) ship.domain.getDomain();
-//
-//            Polygon polygon = domain.addPolygon((Polygon) ownShip.domain.getDomain());
 
-            ArrayList<HPoint> c = ((Polygon) ownShip.domain.getDomain()).coordinates;
+            Polygon domain = (Polygon) ship.domain.getDomain();
+            domain.referencePoint = ship.position;
 
-            System.out.println("Domain");
-            for (HPoint p : c) {
-                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+            Polygon ownShipDomain = (Polygon) ownShip.domain.getDomain();
+            ownShipDomain.referencePoint = ownShip.position;
+
+            Polygon combinedDomain = new Polygon(new ArrayList<>());
+
+            try {
+                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
             }
 
-            System.out.println("OwnShip");
-            System.out.println(ownShip.position.getX() + "\t" + ownShip.position.getY() + "\r");
-
-            System.out.println("Other Velocity");
-            System.out.println(ship.velocity.getX() + "\t" + ship.velocity.getY() + "\r");
-
-            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.velocity, timeFrame);
-
-            System.out.println("VO");
-            for (HPoint p : vo.coordinates) {
-                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+            catch (PolygonNotCenteredOnOrigin e) {
+                e.printStackTrace();
             }
+            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.velocity, timeFrame);
 
             MVO.put(ship, vo);
         }

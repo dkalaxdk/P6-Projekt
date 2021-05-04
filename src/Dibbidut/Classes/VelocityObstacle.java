@@ -59,7 +59,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Polygon obsDomainOriginal = (Polygon)obsDomain; // The actual instance from the ship class. Should not be mutated
         // Copies the polygon
-        Polygon realtiveVO = obsDomainOriginal.copy();
+        Polygon realtiveVO = obsDomainOriginal.makeCopy();
         realtiveVO.transform(transToCollisionAtTime1);
 
         return realtiveVO;

@@ -56,7 +56,7 @@ public class Polygon extends Geometry {
     }
 
     private List<HPoint> copyHPointList(List<HPoint> list) {
-        return list.stream().map(p -> copyHPoint(p)).collect(toList());
+        return list.stream().map(p -> p.copy()).collect(toList());
     }
 
     private HPoint copyHPoint(HPoint point) {
@@ -145,7 +145,6 @@ public class Polygon extends Geometry {
 
         Polygon polygon1 = this.makeCopy();
         Polygon polygon2 = polygon.makeCopy();
-
 
         polygon1.translate(-polygon1.referencePoint.getX(), -polygon1.referencePoint.getY());
         polygon2.translate(-polygon2.referencePoint.getX(), -polygon2.referencePoint.getY());
@@ -258,37 +257,7 @@ public class Polygon extends Geometry {
         double length = a / Math.sin(A) * Math.sin(B);
 
         return new PolarPoint(length, angle);
-
-//        // Find the angle corresponding with in input parameter angle and which is between 0 and 180 degrees
-//        double angle1 = angle >= Math.toRadians(0) && angle <= Math.toRadians(180) ? angle : angle - Math.toRadians(180);
-//
-//        // Find slope and intersection with the x axis for the lines of the segment and for the angle
-//        double slopeOfSegment = (segment.get(0).getY() - segment.get(1).getY()) / (segment.get(0).getX() - segment.get(1).getX());
-//        double intersectionOfXAxisAndSegment = segment.get(0).getY() - slopeOfSegment * segment.get(0).getX();
-//        double slopeOfAngle = Math.tan(Math.toRadians(180) - angle1);
-//
-//        if (angle1 == Math.toRadians(90))
-//            return new HPoint(0, intersectionOfXAxisAndSegment);
-//        else {
-//            double x = (slopeOfSegment - slopeOfAngle) / (-intersectionOfXAxisAndSegment);
-//            double y = slopeOfAngle * x;
-//            return new HPoint(x, y);
-//        }
     }
-
-//    public HPoint findPointAtLengthAndAngle(double length, double angle){
-//        double x;
-//        double y;
-//        if (angle >= Math.toRadians(0) && angle <= Math.toRadians(180)) {
-//            x = length * Math.cos(Math.toRadians(180) - angle);
-//            y = length * Math.sin(Math.toRadians(180) - angle);
-//        }
-//        else {
-//            x = length * Math.cos(Math.toRadians(360 + 180) - angle);
-//            y = length * Math.sin(Math.toRadians(360 + 180)- angle);
-//        }
-//        return new HPoint(x,y);
-//    }
 
     public void sortCoordinates(){
         HPoint c = copyHPoint(referencePoint);
@@ -297,9 +266,6 @@ public class Polygon extends Geometry {
         Collections.sort(coordinates);
         this.translate(c.getX(), c.getY());
     }
-
-    // todo: husk af det ene ship domain skal spejles i forhold til det andet (længden fra ts til det samlede shipdomain
-    //  i retning af os, skal være summen af afstanden fra hvert skib til deres egen ship domain i retningen af det andet skib)
 
     public void convertCoordinatesToPolarCoordinates(){
         PolarCoordinates = new ArrayList<>();
@@ -325,13 +291,14 @@ public class Polygon extends Geometry {
     }
 
     public Polygon flipInDirectionOf(HPoint point){
+
         // Translate polygon to origin
         Polygon polygon = this.makeCopy();
         polygon.translate(-polygon.referencePoint.getX(), -polygon.referencePoint.getY());
 
         // Translate point
         HPoint tempPoint = new HPoint(point.getX(), point.getY());
-        point.translate(-polygon.referencePoint.getX(), -polygon.referencePoint.getY());
+        tempPoint.translate(-this.referencePoint.getX(), -this.referencePoint.getY());
 
         // convert HPoints to PolarPoints
         polygon.convertCoordinatesToPolarCoordinates();
@@ -359,6 +326,9 @@ public class Polygon extends Geometry {
     }
 
     public Polygon flipAndAddPolygon(Polygon polygon) throws PolygonNotCenteredOnOrigin {
-        return this.flipInDirectionOf(polygon.referencePoint).addPolygon(polygon);
+
+        return this.addPolygon(polygon.flipInDirectionOf(this.referencePoint));
+
+//        return this.flipInDirectionOf(polygon.referencePoint).addPolygon(polygon);
     }
 }
