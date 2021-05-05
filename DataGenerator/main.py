@@ -33,7 +33,7 @@ def read_file(time_in_minutes):
     inputString = pd.read_csv("input.txt")
 
     MMSI = 0
-    dt = datetime.datetime.now()
+    dt = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     for Heading, X, Y, COG, SOG, Length, Width in zip(inputString["Heading"],
                                                       inputString["X"], inputString["Y"],
                                                       inputString["COG"], inputString["SOG"],
