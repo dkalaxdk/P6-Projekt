@@ -3,8 +3,13 @@ import math
 import pandas as pd
 import datetime
 
+from classes.ship import Ship
+
 earthRadius = 6378137.0
 knotsToMetersPerSecond = 0.514444
+outputFile = "../InputFiles/generated_file.csv"
+inputFile = "input.txt"
+
 
 def un_project_y(y):
     n = math.exp(y / earthRadius)
@@ -12,56 +17,44 @@ def un_project_y(y):
     return math.degrees(a)
 
 
-def unit_vector(deg):
-    degrees_as_radians = math.radians(-deg)
-    out_x = math.cos(degrees_as_radians) * 0 - math.sin(degrees_as_radians) * 1
-    out_y = math.sin(degrees_as_radians) * 0 + math.cos(degrees_as_radians) * 1
-    return [out_x, out_y]
-
-
 def un_project_x(x):
     return math.degrees(x / earthRadius)
 
 
-def read_file(time_in_minutes):
-    time_in_minutes = int(time_in_minutes)
-    output = pd.DataFrame(
-        columns=["Timestamp", "Type of mobile", "MMSI", "Latitude", "Longitude", "Navigational status", "ROT", "SOG",
-                 "COG", "Heading", "IMO", "Callsign", "Name", "Ship" "type", "Cargo type", "Width", "Length",
-                 "Type of position fixing device", "Draught", "Destination", "ETA", "Data source type", "A", "B", "C",
-                 "D"])
-    inputString = pd.read_csv("input.txt")
+def read_file():
+    inputString = pd.read_csv(inputFile)
 
     MMSI = 0
-    dt = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    Ships = []
     for Heading, X, Y, COG, SOG, Length, Width in zip(inputString["Heading"],
                                                       inputString["X"], inputString["Y"],
                                                       inputString["COG"], inputString["SOG"],
                                                       inputString["Length"], inputString["Width"]):
         MMSI += 1
-        calculatedX = X
-        calculatedY = Y
-        all_lines = []
-        uv = unit_vector(COG)
-        for i in range(1, time_in_minutes * 60):
-            current_line = pd.DataFrame()
-            calculatedX = calculatedX + uv[0] * (SOG * knotsToMetersPerSecond)
-            calculatedY = calculatedY + uv[1] * (SOG * knotsToMetersPerSecond)
-            current_line["Timestamp"] = [
-                pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
-            current_line["MMSI"] = [MMSI]
-            current_line["Heading"] = [Heading]
-            current_line["Latitude"] = [un_project_y(calculatedY)]
-            current_line["Longitude"] = [un_project_x(calculatedX)]
-            current_line["COG"] = [COG]
-            current_line["SOG"] = [SOG]
-            current_line["Length"] = [Length]
-            current_line["Width"] = [Width]
-            output = output.append(current_line)
-        output = output.sort_values(by=["Timestamp"], ascending=True)
+        Ships.append(Ship(MMSI, Heading, X, Y, COG, SOG, Length, Width))
+    return Ships
 
-    output.to_csv("../InputFiles/generated_file.csv", index=False)
+
+def create_output(time_in_minutes, ships):
+    output = "Timestamp,Type of mobile,MMSI,Latitude,Longitude,Navigational status,ROT,SOG,COG,Heading,IMO,Callsign," \
+             "Name,Shiptype,Cargo type,Width,Length,Type of position fixing device,Draught,Destination,ETA," \
+             "Data source type,A,B,C,D\n"
+
+    time_in_minutes = int(time_in_minutes)
+    dt = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
+
+    for i in range(1, time_in_minutes * 60+1):
+        for ship in ships:
+            date = datetime.datetime.fromtimestamp(dt + i).strftime("%d/%m/%Y %H:%M:%S")
+            uv = ship.get_unit_vector()
+            ship.X = ship.X + uv[0] * (ship.SOG * knotsToMetersPerSecond)
+            ship.Y = ship.Y + uv[1] * (ship.SOG * knotsToMetersPerSecond)
+            output += str(date) + ",," + str(ship.MMSI) + "," + str(un_project_y(ship.Y)) + "," + str(un_project_x(
+                ship.X)) + ",,," + str(ship.SOG) + "," + str(ship.COG) + ",,,,,,," + str(ship.Width) + "," + str(
+                ship.Length) + ",,,,,,,,,\n"
+    file = open(outputFile, "w")
+    file.write(output)
 
 
 if __name__ == "__main__":
-    read_file(input("How long should it simulate? (Minutes) \n"))
+    create_output(input("How long should it simulate? (Minutes) \n"), read_file())
