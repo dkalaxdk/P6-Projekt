@@ -222,12 +222,12 @@ public class Display extends JPanel {
     private void drawVelocityObstacle(Graphics2D g, Ship ship, Polygon vo) {
         Graphics2D g2 = (Graphics2D) g.create();
 
-        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+//        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
 
         Area area = new Area(drawPolygon(vo));
 
         g2.fill(area);
-        g2.draw(area);
+//        g2.draw(area);
 
         g2.dispose();
     }
