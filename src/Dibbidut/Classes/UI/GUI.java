@@ -1,6 +1,7 @@
 package Dibbidut.Classes.UI;
 
 import Dibbidut.Classes.CASystem;
+import Dibbidut.Classes.Utility;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -27,6 +28,12 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
     JSlider zoomSlider;
 
     JSlider timeFrameSlider;
+    JLabel timeFrameLabel;
+
+    JSlider lookAheadSlider;
+    JLabel lookAheadLabel;
+
+    JLabel lookAheadValues;
 
     public GUI(CASystem system) {
         this.system = system;
@@ -35,22 +42,35 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setAlignmentY(Component.TOP_ALIGNMENT);
 
-
         simulationTimeLabel = new JLabel("Simulation time: " + system.inputSimulator.currentTime.toLocalTime(), JLabel.LEFT);
         simulationTimeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        simulationTimeLabel.setIgnoreRepaint(true);
         add(simulationTimeLabel);
 
         timeFactorLabel = new JLabel("Time factor: " + system.inputSimulator.GetTimeFactor());
         timeFactorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        timeFactorLabel.setIgnoreRepaint(true);
         add(timeFactorLabel);
 
         timeFactorSlider = createSlider(0, 120, 1);
         add(timeFactorSlider);
 
-        timeFrameSlider = createSlider(1, 100, 1);
+        timeFrameLabel = new JLabel("Time frame: " + system.timeFrame);
+        timeFrameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(timeFrameLabel);
+
+        timeFrameSlider = createSlider(0, 100, 1);
         add(timeFrameSlider);
+
+        lookAheadLabel = new JLabel("Lookahead: " + system.lookAhead);
+        lookAheadLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(lookAheadLabel);
+
+        lookAheadValues = new JLabel("Seconds: " + system.timeFrame * system.lookAhead +
+                ", Minutes: " + (system.timeFrame * system.lookAhead) / 60);
+        lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(lookAheadValues);
+
+        lookAheadSlider = createSlider(0, 100, 1);
+        add(lookAheadSlider);
 
         zoomSlider = createSlider(1, 10, 1);
         add(zoomSlider);
@@ -133,16 +153,30 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
             JSlider slider = (JSlider) e.getSource();
 
             if (slider == this.timeFactorSlider) {
-                float a = (float) timeFactorSlider.getValue();
-                system.inputSimulator.SetTimeFactor(a);
-                timeFactorLabel.setText("Time factor: " + system.inputSimulator.GetTimeFactor());
+                float value = (float) timeFactorSlider.getValue();
+                system.inputSimulator.SetTimeFactor(value);
+                timeFactorLabel.setText("Time factor: " + value);
             }
             else if (slider == this.zoomSlider) {
                 system.display.zoom = zoomSlider.getValue();
             }
             else if (slider == this.timeFrameSlider) {
-                system.timeFrame = timeFrameSlider.getValue();
+
+                float value = timeFrameSlider.getValue();
+                system.timeFrame = (value == 0) ? 1 : value;
+                timeFrameLabel.setText("Time frame: " + value);
             }
+            else if (slider == this.lookAheadSlider) {
+                float value = lookAheadSlider.getValue();
+                system.lookAhead = (value == 0) ? 1 : value;
+                lookAheadLabel.setText("Lookahead: " + value);
+            }
+
+            double seconds = Utility.roundToTwoDecimals(system.timeFrame * system.lookAhead);
+            double minutes = Utility.roundToTwoDecimals((system.timeFrame * system.lookAhead) / 60);
+            double hours = Utility.roundToTwoDecimals((system.timeFrame * system.lookAhead) / 3600);
+
+            lookAheadValues.setText("Seconds: " + seconds + ", Minutes: " + minutes + ", Hours: " + hours);
 
             system.dirty = true;
         }

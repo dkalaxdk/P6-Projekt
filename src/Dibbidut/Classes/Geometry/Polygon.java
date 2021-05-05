@@ -1,6 +1,7 @@
 package Dibbidut.Classes.Geometry;
 
 import Dibbidut.Exceptions.PolygonNotCenteredOnOrigin;
+import com.seisw.util.geom.Poly;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -330,5 +331,13 @@ public class Polygon extends Geometry {
         return this.addPolygon(polygon.flipInDirectionOf(this.referencePoint));
 
 //        return this.flipInDirectionOf(polygon.referencePoint).addPolygon(polygon);
+    }
+
+    public Polygon rotateAndAddPolygon(Polygon polygon) throws PolygonNotCenteredOnOrigin {
+        Polygon p = polygon.makeCopy();
+
+        p.rotate(180);
+
+        return this.addPolygon(p);
     }
 }

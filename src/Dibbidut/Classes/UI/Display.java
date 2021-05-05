@@ -23,7 +23,7 @@ public class Display extends JPanel {
     public Display(CASystem system) {
 
         this.system = system;
-        zoom = 2;
+        zoom = 1;
     }
 
     public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO) {
@@ -65,10 +65,19 @@ public class Display extends JPanel {
         // Mirror across the x-axis so that up is north. Rotation is dealt with in other places
         g2.scale(1, -1);
 
+        g2.scale(1/ zoom,1 / zoom);
+
         // Translate so that own ship is in the center
-        g2.translate(((displayWith / 2) - system.ownShip.position.getX()),
-                ((displayHeight / 2) - system.ownShip.position.getY()) - displayHeight
+        g2.translate((((displayWith / 2) * zoom)- system.ownShip.position.getX()),
+                (((displayHeight / 2) * zoom)- system.ownShip.position.getY()) - (displayHeight * zoom)
         );
+
+
+//        g2.translate((((displayWith / 2) )- system.ownShip.position.getX()),
+//                (((displayHeight / 2) )- system.ownShip.position.getY()) - (displayHeight )
+//        );
+
+
 
         drawGUIElements(g2, system.ownShip, system.shipsInRange);
 
@@ -80,6 +89,8 @@ public class Display extends JPanel {
 
         system.listLock.lock();
 
+
+
         drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
         drawTargetShips(g2, system.shipsInRange);
@@ -87,7 +98,6 @@ public class Display extends JPanel {
         system.listLock.unlock();
     }
 
-    //TODO: Use me
     public HPoint getZoomedPosition(HPoint ownShip, HPoint targetShip, double zoom) {
         HPoint point = targetShip.subtract(ownShip);
         point.scale(zoom);
@@ -126,6 +136,7 @@ public class Display extends JPanel {
 
     //TODO: Better name please
     private void drawShipVisualisation(Graphics2D g, Ship ship) {
+
         drawShip(ship, g);
         drawShipDomain(ship, g);
         drawHeading(ship, g);
@@ -147,14 +158,10 @@ public class Display extends JPanel {
     }
 
     private void drawShipDomain(Ship ship, Graphics2D g) {
-        Graphics2D g2 = (Graphics2D) g.create();
 
-        g2.rotate(Math.toRadians(360 - ship.heading), ship.position.getX(), ship.position.getY());
         Shape shape;
         if (ship.domain.getDomainType()) {
             // Pentagon
-
-            ship.domain.Update(ship.sog, 0, ship.position.getY(), ship.position.getX());
 
             shape = drawPentagonDomain(ship);
         }
@@ -167,12 +174,7 @@ public class Display extends JPanel {
             shape = drawEllipseDomain(ship);
         }
 
-
-        ship.domain.Update(ship.sog, ship.heading, ship.position.getY(), ship.position.getX());
-
-        g2.draw(shape);
-
-        g2.dispose();
+        g.draw(shape);
     }
 
     private void drawHeading(Ship ship, Graphics2D g) {
@@ -190,15 +192,21 @@ public class Display extends JPanel {
     }
 
     private void drawVelocity(Ship ship, Graphics2D g) {
-        g.setColor(Color.green);
+        Graphics2D g2 = (Graphics2D) g.create();
 
-        HPoint velocity = new HPoint(ship.velocity.getX(), ship.velocity.getY());
+        g2.setColor(Color.green);
+        g2.setStroke(new BasicStroke((float) zoom * 4));
+        g2.setBackground(Color.BLACK);
+
+        HPoint velocity = new HPoint(ship.scaledVelocity.getX(), ship.scaledVelocity.getY());
 
         velocity = ship.position.add(velocity);
 
         Shape shape = new Line2D.Double(ship.position.getX(), ship.position.getY(), velocity.getX(), velocity.getY());
 
-        g.draw(shape);
+        g2.draw(shape);
+
+        g2.dispose();
     }
 
     private void drawVelocityObstacles(Graphics2D g, Hashtable<Ship, Polygon> mvo) {
@@ -216,16 +224,16 @@ public class Display extends JPanel {
         Area area = new Area(drawPolygon(vo));
 
         g.fill(area);
-        g.draw(area);
+//        g.draw(area);
     }
 
-    public Path2D drawPolygon(Polygon vo) {
+    public Path2D drawPolygon(Polygon polygon) {
         Path2D outputShape = new Path2D.Double();
 
-        outputShape.moveTo(vo.coordinates.get(0).getX(), vo.coordinates.get(0).getY());
+        outputShape.moveTo(polygon.coordinates.get(0).getX(), polygon.coordinates.get(0).getY());
 
-        for (int i = 1; i < vo.coordinates.size(); i++) {
-            outputShape.lineTo(vo.coordinates.get(i).getX(), vo.coordinates.get(i).getY());
+        for (int i = 1; i < polygon.coordinates.size(); i++) {
+            outputShape.lineTo(polygon.coordinates.get(i).getX(), polygon.coordinates.get(i).getY());
         }
 
         outputShape.closePath();
@@ -234,8 +242,6 @@ public class Display extends JPanel {
     }
 
     public HPoint getCoordinatesToDrawShipFrom(Ship ship) {
-
-        HPoint position = getZoomedPosition(system.ownShip.position, ship.position, this.zoom);
 
         double x = ship.position.getX() - (((double) ship.width) / 2);
         double y = ship.position.getY() - (((double) ship.length) / 2);
@@ -252,26 +258,10 @@ public class Display extends JPanel {
     }
 
     private Path2D drawPentagonDomain(Ship ship) {
-//        Path2D outputShape = new Path2D.Double();
         Polygon domain = (Polygon) ship.domain.getDomain();
+        domain.referencePoint = ship.position;
 
         return drawPolygon(domain);
-
-//        ArrayList<HPoint> coordinates = domain.coordinates;
-//        // P5
-//        outputShape.moveTo(coordinates.get(0).getX(), coordinates.get(0).getY());
-//        // P4
-//        outputShape.lineTo(coordinates.get(1).getX(), coordinates.get(1).getY());
-//        // P3
-//        outputShape.lineTo(coordinates.get(2).getX(), coordinates.get(2).getY());
-//        // P2
-//        outputShape.lineTo(coordinates.get(3).getX(), coordinates.get(3).getY());
-//        // P1
-//        outputShape.lineTo(coordinates.get(4).getX(), coordinates.get(4).getY());
-//
-//        outputShape.closePath();
-//
-//        return outputShape;
     }
 
     // TODO: Implement me

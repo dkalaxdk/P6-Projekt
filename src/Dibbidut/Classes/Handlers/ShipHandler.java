@@ -45,6 +45,7 @@ public abstract class ShipHandler implements IShipDataHandler {
 
         // Has to happen after HandleSOG and HandleCOG
         myShip.velocity = HandleVelocity();
+        myShip.scaledVelocity = myShip.velocity;
 
         myShip.position = HandlePosition();
     }

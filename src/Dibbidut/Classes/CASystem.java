@@ -39,6 +39,7 @@ public class CASystem {
 
     public double range;
     public double timeFrame;
+    public double lookAhead;
 
     public Float timeFactor;
 
@@ -63,6 +64,7 @@ public class CASystem {
 
         // Near miss at 13:00 (+-)
         // Ship domain too small at 16:00
+        // 8:00 spotty connection to a target ship
 //        ownShipMMSI = 377739000;
 //        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
 
@@ -99,10 +101,13 @@ public class CASystem {
 
 
         ownShipMMSI = 1;
-//        String inputFile = "InputFiles/generated_file.csv";
-        String inputFile = "InputFiles/generated_file_1.csv";
+        String inputFile = "InputFiles/generated_file.csv";
+//        String inputFile = "InputFiles/generated_file_1.csv";
 
         timeFactor = 1f;
+        range = 20000;
+        timeFrame = 1;
+        lookAhead = 1;
 
         try {
             // Set time factor and AIS data input file here:
@@ -114,9 +119,6 @@ public class CASystem {
         shipsInRange = new ArrayList<>();
         obstacleCalculator = new VelocityObstacle();
         MVO = new Hashtable<>();
-
-        range = 100000;
-        timeFrame = 1;
     }
 
     public void Start() {
@@ -127,7 +129,6 @@ public class CASystem {
             return;
         }
         inputSimulator.start();
-        inputSimulator.setPriority(Thread.MAX_PRIORITY);
 
         boolean running = true;
         dirty = false;
@@ -144,13 +145,14 @@ public class CASystem {
             UpdateOwnShip();
             UpdateShipList();
 
-            listLock.unlock();
-
             if (dirty) {
+                UpdateLookAhead();
                 UpdateVelocityObstacles();
                 UpdateDisplay();
                 dirty = false;
             }
+
+            listLock.unlock();
 
             end = System.nanoTime();
 
@@ -161,8 +163,6 @@ public class CASystem {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            duration = 0;
         }
     }
 
@@ -244,6 +244,14 @@ public class CASystem {
         RemoveShipsOutOfRange(ownShip.position, shipsInRange, range);
     }
 
+    public void UpdateLookAhead() {
+        for (Ship ship : shipsInRange) {
+            ship.setScaledVelocity(lookAhead);
+        }
+
+        ownShip.setScaledVelocity(lookAhead);
+    }
+
     public boolean isWithinRange(HPoint shipPosition, HPoint ownShipPosition, double range) {
         return GetDistance(ownShipPosition, shipPosition) < range;
     }
@@ -268,24 +276,46 @@ public class CASystem {
 
     public void UpdateVelocityObstacles() {
 
+        MVO.clear();
+
         for (Ship ship : shipsInRange) {
 
-            Polygon domain = (Polygon) ship.domain.getDomain();
+            Polygon domain = ((Polygon) ship.domain.getDomain()).makeCopy();
             domain.referencePoint = ship.position;
 
-            Polygon ownShipDomain = (Polygon) ownShip.domain.getDomain();
+            Polygon ownShipDomain = ((Polygon) ownShip.domain.getDomain()).makeCopy();
             ownShipDomain.referencePoint = ownShip.position;
 
             Polygon combinedDomain = new Polygon(new ArrayList<>());
 
             try {
-                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
+//                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
+                combinedDomain = domain.rotateAndAddPolygon(ownShipDomain);
             }
-
             catch (PolygonNotCenteredOnOrigin e) {
                 e.printStackTrace();
             }
-            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.velocity, timeFrame);
+
+            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.scaledVelocity, timeFrame);
+
+//            System.out.println("CA: (");
+//
+//            System.out.println("Domain");
+//            ArrayList<HPoint> coordinates = ((Polygon) ship.domain.getDomain()).coordinates;
+//
+//            for (HPoint p : coordinates) {
+//                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+//            }
+//
+//            System.out.println("VO");
+//            for (HPoint p : vo.coordinates) {
+//                System.out.println(p.getX() + "\t" + p.getY() + "\r");
+//            }
+//
+//            System.out.println("Position");
+//            System.out.println(ship.position.getX() + "\t" + ship.position.getY() + "\r");
+//
+//            System.out.println(")");
 
             MVO.put(ship, vo);
         }
