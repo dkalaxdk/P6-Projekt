@@ -50,7 +50,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         timeFactorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(timeFactorLabel);
 
-        timeFactorSlider = createSlider(0, 120, 1);
+        timeFactorSlider = createSlider(0, 120, 0);
         add(timeFactorSlider);
 
         timeFrameLabel = new JLabel("Time frame: " + system.timeFrame);
@@ -72,7 +72,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         lookAheadSlider = createSlider(0, 100, 1);
         add(lookAheadSlider);
 
-        zoomSlider = createSlider(1, 10, 1);
+        zoomSlider = createSlider(-10, 10, 1);
         add(zoomSlider);
 
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -158,7 +158,15 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 timeFactorLabel.setText("Time factor: " + value);
             }
             else if (slider == this.zoomSlider) {
-                system.display.zoom = zoomSlider.getValue();
+                double value = zoomSlider.getValue();
+
+                value = (value == 0) ? 1 : value;
+
+                if (value < 0) {
+                    value = 1 / (Math.abs(value));
+                }
+
+                system.display.zoom = value;
             }
             else if (slider == this.timeFrameSlider) {
 

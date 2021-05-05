@@ -4,7 +4,7 @@ import pandas as pd
 import datetime
 
 earthRadius = 6378137.0
-
+knotsToMetersPerSecond = 0.514444
 
 def un_project_y(y):
     n = math.exp(y / earthRadius)
@@ -45,9 +45,8 @@ def read_file(time_in_minutes):
         uv = unit_vector(COG)
         for i in range(1, time_in_minutes * 60):
             current_line = pd.DataFrame()
-            # 0.515660452624 is a constant, which makes SOG result in the correct knots.
-            calculatedX = calculatedX + uv[0] * (SOG * 0.515660452624)
-            calculatedY = calculatedY + uv[1] * (SOG * 0.515660452624)
+            calculatedX = calculatedX + uv[0] * (SOG * knotsToMetersPerSecond)
+            calculatedY = calculatedY + uv[1] * (SOG * knotsToMetersPerSecond)
             current_line["Timestamp"] = [
                 pd.to_datetime(dt + datetime.timedelta(seconds=1 * i)).strftime("%d/%m/%Y %H:%M:%S")]
             current_line["MMSI"] = [MMSI]

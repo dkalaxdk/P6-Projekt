@@ -104,7 +104,7 @@ public class CASystem {
         String inputFile = "InputFiles/generated_file.csv";
 //        String inputFile = "InputFiles/generated_file_1.csv";
 
-        timeFactor = 1f;
+        timeFactor = 0f;
         range = 20000;
         timeFrame = 1;
         lookAhead = 1;
@@ -115,6 +115,8 @@ public class CASystem {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        inputSimulator.SetTimeFactor(timeFactor);
 
         shipsInRange = new ArrayList<>();
         obstacleCalculator = new VelocityObstacle();
