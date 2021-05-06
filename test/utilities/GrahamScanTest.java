@@ -83,5 +83,33 @@ public class GrahamScanTest {
                     new HPoint(1, 3, 1)
             };
         }
+
+        @Test
+        public void Calculate_ReturnsPointsInConvexHullWhenSomePointsAreAtSameAngle(){
+            ArrayList<Point> points = new ArrayList<Point>(Arrays.asList(
+                    new HPoint(1, 1, 1),
+                    new HPoint(1, 3, 1),
+                    new HPoint(1, 5, 1),
+                    new HPoint(3, 6, 1),
+                    new HPoint(4, 5, 1),
+                    new HPoint(4, 4, 1),
+                    new HPoint(3, 3, 1),
+                    new HPoint(5, 2, 1),
+                    new HPoint(5, 1, 1),
+                    new HPoint(3, 1, 1)
+            ));
+
+            Point[] expectedResult = new Point[] {
+                    new HPoint(1, 1, 1),
+                    new HPoint(5, 1, 1),
+                    new HPoint(5, 2, 1),
+                    new HPoint(4, 5, 1),
+                    new HPoint(3, 6, 1),
+                    new HPoint(1, 5, 1)
+
+            };
+
+            assertArrayEquals(expectedResult, convHull.Calculate(points).toArray());
+        }
     }
 }

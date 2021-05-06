@@ -7,7 +7,6 @@ import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Classes.UI.Display;
 import Dibbidut.Classes.UI.GUI;
 import Dibbidut.Exceptions.OSNotFoundException;
-import Dibbidut.Exceptions.PolygonNotCenteredOnOrigin;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -282,10 +281,10 @@ public class CASystem {
 
         for (Ship ship : shipsInRange) {
 
-            Polygon domain = ((Polygon) ship.domain.getDomain()).makeCopy();
+            Polygon domain = ((Polygon) ship.domain.getDomain()).copy();
             domain.referencePoint = ship.position;
 
-            Polygon ownShipDomain = ((Polygon) ownShip.domain.getDomain()).makeCopy();
+            Polygon ownShipDomain = ((Polygon) ownShip.domain.getDomain()).copy();
             ownShipDomain.referencePoint = ownShip.position;
 
             Polygon combinedDomain = new Polygon(new ArrayList<>());
@@ -298,7 +297,7 @@ public class CASystem {
 //                e.printStackTrace();
 //            }
 
-            combinedDomain = domain.addPolygon2(ownShipDomain);
+            combinedDomain = domain.combineWith(ownShipDomain);
 
 //            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, combinedDomain, ship.position, timeFrame);
 

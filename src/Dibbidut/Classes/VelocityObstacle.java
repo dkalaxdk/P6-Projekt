@@ -4,16 +4,10 @@ import Dibbidut.Classes.Geometry.*;
 import Dibbidut.Classes.Geometry.Point;
 import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Interfaces.IVelocityObstacle;
-import Dibbidut.utilities.ConvexHull;
 import Dibbidut.utilities.GrahamScan;
-import Dibbidut.utilities.ShapeBorder;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 public class VelocityObstacle implements IVelocityObstacle {
@@ -59,7 +53,7 @@ public class VelocityObstacle implements IVelocityObstacle {
 
         Polygon obsDomainOriginal = (Polygon)obsDomain; // The actual instance from the ship class. Should not be mutated
         // Copies the polygon
-        Polygon realtiveVO = obsDomainOriginal.makeCopy();
+        Polygon realtiveVO = obsDomainOriginal.copy();
         realtiveVO.transform(transToCollisionAtTime1);
 
         return realtiveVO;
