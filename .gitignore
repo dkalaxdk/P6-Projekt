@@ -28,3 +28,5 @@ target/
 test/BigTestFiles/
 
 DataGenerator/output.csv
+
+DataGenerator/classes/__pycache__/
