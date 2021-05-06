@@ -174,8 +174,8 @@ public class Polygon extends Geometry {
 
     public Polygon addPolygon2(Polygon polygon) {
         List<Point> list = new ArrayList<>();
-        for (HPoint vertex1 :this.coordinates){
-            for (HPoint vertex2 :polygon.coordinates){
+        for (HPoint vertex1 : this.coordinates){
+            for (HPoint vertex2 : polygon.coordinates){
                 list.add(vertex1.add(polygon.referencePoint.subtract(vertex2)));
             }
         }
@@ -183,10 +183,11 @@ public class Polygon extends Geometry {
         GrahamScan convHull = new GrahamScan(new HPointFactory());
         ArrayList<HPoint> newPolygonVertices = new ArrayList<>();
 
-        for(Point p : convHull.Calculate(list))
+        for (Point p : convHull.Calculate(list)) {
             newPolygonVertices.add(new HPoint(p.getX(), p.getY(), 1));
-
-        return new Polygon(newPolygonVertices);
+        }
+        
+        return new Polygon(newPolygonVertices, this.referencePoint.copy());
     }
 
     public Polygon makeCopy() {

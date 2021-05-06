@@ -290,15 +290,24 @@ public class CASystem {
 
             Polygon combinedDomain = new Polygon(new ArrayList<>());
 
-            try {
-//                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
-                combinedDomain = domain.rotateAndAddPolygon(ownShipDomain);
-            }
-            catch (PolygonNotCenteredOnOrigin e) {
-                e.printStackTrace();
-            }
+//            try {
+////                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
+////                combinedDomain = domain.rotateAndAddPolygon(ownShipDomain);
+//            }
+//            catch (PolygonNotCenteredOnOrigin e) {
+//                e.printStackTrace();
+//            }
+
+            combinedDomain = domain.addPolygon2(ownShipDomain);
+
+//            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, combinedDomain, ship.position, timeFrame);
 
             Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.scaledVelocity, timeFrame);
+
+
+//            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, ship.domain.getDomain(), ship.position, timeFrame);
+
+//            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.scaledVelocity, timeFrame);
 
 //            System.out.println("CA: (");
 //
