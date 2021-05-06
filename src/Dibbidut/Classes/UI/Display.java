@@ -17,6 +17,7 @@ import java.util.Set;
 public class Display extends JPanel {
 
     public double zoom;
+    public boolean violation;
 
     private final CASystem system;
 
@@ -24,6 +25,7 @@ public class Display extends JPanel {
 
         this.system = system;
         zoom = 1;
+        violation = false;
     }
 
     public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO) {
@@ -58,13 +60,13 @@ public class Display extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
-
         double displayWith = this.getWidth();
         double displayHeight = this.getHeight();
 
         // Mirror across the x-axis so that up is north. Rotation is dealt with in other places
         g2.scale(1, -1);
 
+        // Apply zoom
         g2.scale(1/ zoom,1 / zoom);
 
         // Translate so that own ship is in the center
@@ -88,8 +90,6 @@ public class Display extends JPanel {
 //        g2.rotate(Math.PI - degreesToRadians(ownShip.heading), ownShip.position.getX(), ownShip.position.getY());
 
         system.listLock.lock();
-
-
 
         drawVelocityObstacles(g2, system.MVO);
         drawOwnShip(g2, system.ownShip);
@@ -129,7 +129,7 @@ public class Display extends JPanel {
     private void drawTargetShips(Graphics2D g, ArrayList<Ship> targetShips) {
 
         for (Ship ship : targetShips) {
-            g.setColor(Color.black);
+            g.setColor(Color.blue);
             drawShipVisualisation(g, ship);
         }
     }
@@ -194,9 +194,14 @@ public class Display extends JPanel {
     private void drawVelocity(Ship ship, Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g.create();
 
-        g2.setColor(Color.green);
+        if (violation && ship.mmsi == system.ownShipMMSI) {
+            g2.setColor(Color.red);
+        }
+        else {
+            g2.setColor(Color.green);
+        }
+
         g2.setStroke(new BasicStroke((float) zoom * 4));
-        g2.setBackground(Color.BLACK);
 
         HPoint velocity = new HPoint(ship.scaledVelocity.getX(), ship.scaledVelocity.getY());
 
@@ -204,30 +209,46 @@ public class Display extends JPanel {
 
         Shape shape = new Line2D.Double(ship.position.getX(), ship.position.getY(), velocity.getX(), velocity.getY());
 
+
+
         g2.draw(shape);
 
         g2.dispose();
     }
 
     private void drawVelocityObstacles(Graphics2D g, Hashtable<Ship, Polygon> mvo) {
-        g.setColor(new Color(1f, 0f, 0f, 0.5f));
+//        g.setColor(new Color(1f, 0f, 0f, 0.5f));
 
         Set<Ship> setOfShips = mvo.keySet();
 
+        violation = false;
+
         for (Ship ship : setOfShips) {
-            drawVelocityObstacle(g, ship, mvo.get(ship));
+            Polygon p = mvo.get(ship);
+
+            if (p.contains(system.ownShip.position.add(system.ownShip.scaledVelocity))) {
+                violation = true;
+                drawVelocityObstacle(g, p, true);
+            }
+            else {
+                drawVelocityObstacle(g, p, false);
+            }
         }
     }
 
-    private void drawVelocityObstacle(Graphics2D g, Ship ship, Polygon vo) {
-        Graphics2D g2 = (Graphics2D) g.create();
+    private void drawVelocityObstacle(Graphics2D g, Polygon vo, boolean violation) {
+        if (violation) {
+            g.setColor(new Color(1f, 0f, 0f, 0.5f));
+        }
+        else {
+            g.setColor(new Color(0f, 0f, 0f, 0.3f));
+        }
 
-//        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+        Graphics2D g2 = (Graphics2D) g.create();
 
         Area area = new Area(drawPolygon(vo));
 
         g2.fill(area);
-//        g2.draw(area);
 
         g2.dispose();
     }

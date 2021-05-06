@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAmount;
 
 public class GUI extends JPanel implements ActionListener, WindowListener, ChangeListener {
 
@@ -64,15 +66,14 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         lookAheadLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lookAheadLabel);
 
-        lookAheadValues = new JLabel("Seconds: " + system.timeFrame * system.lookAhead +
-                ", Minutes: " + (system.timeFrame * system.lookAhead) / 60);
+        lookAheadValues = new JLabel("00:00:00");
         lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lookAheadValues);
 
         lookAheadSlider = createSlider(0, 100, 1);
         add(lookAheadSlider);
 
-        zoomSlider = createSlider(-10, 10, 1);
+        zoomSlider = createSimpleSlider(-1000, 1000, 1);
         add(zoomSlider);
 
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -99,6 +100,17 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         slider.setAlignmentX(Component.CENTER_ALIGNMENT);
         slider.setAlignmentY(Component.CENTER_ALIGNMENT);
 
+        slider.setIgnoreRepaint(true);
+        return slider;
+    }
+
+    private JSlider createSimpleSlider(int min, int max, int current) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, current);
+
+        slider.addChangeListener(this);
+        slider.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        slider.setAlignmentX(Component.CENTER_ALIGNMENT);
+        slider.setAlignmentY(Component.CENTER_ALIGNMENT);
         slider.setIgnoreRepaint(true);
         return slider;
     }
@@ -152,6 +164,8 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         if (e.getSource().getClass() == JSlider.class) {
             JSlider slider = (JSlider) e.getSource();
 
+            boolean timeChange = false;
+
             if (slider == this.timeFactorSlider) {
                 float value = (float) timeFactorSlider.getValue();
                 system.inputSimulator.SetTimeFactor(value);
@@ -161,6 +175,8 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 double value = zoomSlider.getValue();
 
                 value = (value == 0) ? 1 : value;
+
+                value = value / 100;
 
                 if (value < 0) {
                     value = 1 / (Math.abs(value));
@@ -173,18 +189,32 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 float value = timeFrameSlider.getValue();
                 system.timeFrame = (value == 0) ? 1 : value;
                 timeFrameLabel.setText("Time frame: " + value);
+
+                timeChange = true;
             }
             else if (slider == this.lookAheadSlider) {
                 float value = lookAheadSlider.getValue();
                 system.lookAhead = (value == 0) ? 1 : value;
                 lookAheadLabel.setText("Lookahead: " + value);
+
+                timeChange = true;
             }
 
-            double seconds = Utility.roundToTwoDecimals(system.timeFrame * system.lookAhead);
-            double minutes = Utility.roundToTwoDecimals((system.timeFrame * system.lookAhead) / 60);
-            double hours = Utility.roundToTwoDecimals((system.timeFrame * system.lookAhead) / 3600);
 
-            lookAheadValues.setText("Seconds: " + seconds + ", Minutes: " + minutes + ", Hours: " + hours);
+            if (timeChange) {
+                int value = (int) (system.timeFrame * system.lookAhead);
+
+                int hours = value / 3600;
+                int minutes = (value % 3600) / 60;
+                int seconds = (value % 3600) % 60;
+
+                LocalTime timeTo = LocalTime.of(hours, minutes, seconds);
+                LocalTime timeOf = system.inputSimulator.currentTime.toLocalTime().plusSeconds(value);
+
+                lookAheadValues.setText(timeTo + " \uD83E\uDC26 " + timeOf.toString());
+
+                timeChange = false;
+            }
 
             system.dirty = true;
         }

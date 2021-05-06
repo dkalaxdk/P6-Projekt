@@ -51,9 +51,6 @@ public class CASystem {
         bufferLock = new ReentrantLock(true);
         listLock = new ReentrantLock(true);
 
-//        System.out.println("Long: " + Mercator.unprojectionX(Mercator.nauticalToMeters(4)));
-//        System.out.println("Lat:  " + Mercator.unprojectionY(Mercator.nauticalToMeters(18)));
-
         // Set own ship's MMSI here:
 //        ownShipMMSI = 219004612;
 //        String inputFile = "test/TestFiles/TestInput1.csv";
@@ -71,37 +68,39 @@ public class CASystem {
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
 //        ownShipMMSI = 218176000;
-//        String inputFile = "InputFiles/AarhusEncounter.csv";
+//        String inputFile = "InputFiles/RealWorld/AarhusEncounter.csv";
 
 //        ownShipMMSI = 219017081;
 //        String inputFile = "InputFiles/aisdk_20190510.csv";
-//        String inputFile = "InputFiles/EXPRESS_1_&_BALTIC_CONDOR.csv";
+//        String inputFile = "InputFiles/RealWorld/EXPRESS_1_&_BALTIC_CONDOR.csv";
 
 //        ownShipMMSI = 219678000;
-//        String inputFile = "InputFiles/SKULD_&_ENSCO_72.csv";
+//        String inputFile = "InputFiles/RealWorld/SKULD_&_ENSCO_72.csv";
 
 //        ownShipMMSI = 212172000;
-//        String inputFile = "InputFiles/NECKAR_HIGHWAY_&_ORION.csv";
+//        String inputFile = "InputFiles/RealWorld/NECKAR_HIGHWAY_&_ORION.csv";
 
 //        ownShipMMSI = 305369000;
-//        String inputFile = "InputFiles/FRANK_&_LILLY.csv";
+//        String inputFile = "InputFiles/RealWorld/FRANK_&_LILLY.csv";
 
         // HELLE
 //        ownShipMMSI = 219001359;
 
         // TØNNE
 //        ownShipMMSI = 219798000;
-//        String inputFile = "InputFiles/TOENNE_&_HELLE.csv";
+//        String inputFile = "InputFiles/RealWorld/TOENNE_&_HELLE.csv";
 
         // https://doi.org/10.1016/j.oceaneng.2016.11.044
         // #1
 //        ownShipMMSI = 1;
-//        String inputFile = "InputFiles/Simulation1.csv";
+//        String inputFile = "InputFiles/RealWorld/Simulation1.csv";
 
 
         ownShipMMSI = 1;
+//        String inputFile = "InputFiles/Crossings/collision.csv";
+//        String inputFile = "InputFiles/Overtakings/overtaking_starboard.csv";
         String inputFile = "InputFiles/generated_file.csv";
-//        String inputFile = "InputFiles/generated_file_1.csv";
+
 
         timeFactor = 0f;
         range = 20000;

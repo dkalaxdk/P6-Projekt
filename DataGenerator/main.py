@@ -43,7 +43,7 @@ def create_output(time_in_minutes, ships):
     time_in_minutes = int(time_in_minutes)
     dt = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
 
-    for i in range(1, time_in_minutes * 60+1):
+    for i in range(0, time_in_minutes * 60+1):
         for ship in ships:
             date = datetime.datetime.fromtimestamp(dt + i).strftime("%d/%m/%Y %H:%M:%S")
             uv = ship.get_unit_vector()
