@@ -70,6 +70,22 @@ public class Polygon extends Geometry {
         return numberOfCrossings % 2 == 1;
     }
 
+    public boolean inOrOn(HPoint point) {
+        int numberOfCrossings = 0;
+        HPoint p;
+        HPoint q;
+        for (int i = 0; i < coordinates.size(); i++) {
+            p = coordinates.get(i);
+            q = coordinates.get((i + 1) % coordinates.size());
+            if (onSegment(point, p, q))
+                return true;
+
+            if (crossesRay(point, p, q))
+                numberOfCrossings++;
+        }
+        return numberOfCrossings % 2 == 1;
+    }
+
     // Source: https://vlecomte.github.io/cp-geo.pdf (page 54)
     // Checks if point a is in line with the two end points of the segment
     public boolean onSegment(HPoint a, HPoint p, HPoint q) {

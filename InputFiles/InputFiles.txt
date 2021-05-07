@@ -12,9 +12,13 @@ Behind violation:
 
 Behind angled violation:
 
-In front safe:
+Ahead safe: (--)
+0,0,5.0,0.0,,50,10
+500,1000,5.0,270,,50,10
 
-In front violation:
+Ahead violation: (8, 19 -> 2:32, actual 2:30)
+0,0,5.0,0.0,,50,10
+500,700,5.0,270,,50,10
 
 
 
@@ -46,6 +50,9 @@ Angled violation:
 Multi
 
 Scenario 1:
+0,0,5.0,0.0,,50,10
+600,800,5.0,270,,50,10
+300, -500, 10.0, 350,,50,10
 
 Scenario 2:
 

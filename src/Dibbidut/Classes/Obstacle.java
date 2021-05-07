@@ -25,7 +25,7 @@ public abstract class Obstacle {
 
     public void setScaledVelocity(double scale) {
         scaledVelocity = velocity.copy();
-        scaledVelocity.scale(scale);
+        scaledVelocity.scale(scale /* * 60 */ );
     }
 
     public HPoint getScaledVelocity() {

@@ -108,16 +108,16 @@ public class Display extends JPanel {
         g.setColor(Color.gray);
 
         // Horizontal
-        g.draw(new Line2D.Double(ownShip.position.getX() - this.getWidth(),
+        g.draw(new Line2D.Double(ownShip.position.getX() - this.getWidth() * zoom,
                 ownShip.position.getY(),
-                ownShip.position.getX() + this.getWidth(),
+                ownShip.position.getX() + this.getWidth() * zoom,
                 ownShip.position.getY()));
 
         // Vertical
         g.draw(new Line2D.Double(ownShip.position.getX(),
-                ownShip.position.getY() - this.getHeight(),
+                ownShip.position.getY() - this.getHeight() * zoom,
                 ownShip.position.getX(),
-                ownShip.position.getY() + this.getHeight()));
+                ownShip.position.getY() + this.getHeight() * zoom));
     }
 
     private void drawOwnShip(Graphics2D g, Ship ship) {
@@ -226,7 +226,7 @@ public class Display extends JPanel {
         for (Ship ship : setOfShips) {
             Polygon p = mvo.get(ship);
 
-            if (p.contains(system.ownShip.position.add(system.ownShip.scaledVelocity))) {
+            if (p.inOrOn(system.ownShip.position.add(system.ownShip.scaledVelocity))) {
                 violation = true;
                 drawVelocityObstacle(g, p, true);
             }

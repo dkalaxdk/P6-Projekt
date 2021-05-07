@@ -52,26 +52,26 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         timeFactorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(timeFactorLabel);
 
-        timeFactorSlider = createSlider(0, 120, 0);
+        timeFactorSlider = createSimpleSlider(0, 120, 0);
         add(timeFactorSlider);
 
         timeFrameLabel = new JLabel("Time frame: " + system.timeFrame);
         timeFrameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(timeFrameLabel);
 
-        timeFrameSlider = createSlider(0, 100, 1);
-        add(timeFrameSlider);
-
-        lookAheadLabel = new JLabel("Lookahead: " + system.lookAhead);
-        lookAheadLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        add(lookAheadLabel);
-
         lookAheadValues = new JLabel("00:00:00");
         lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lookAheadValues);
 
-        lookAheadSlider = createSlider(0, 100, 1);
-        add(lookAheadSlider);
+        timeFrameSlider = createSimpleSlider(0, 7200, 1);
+        add(timeFrameSlider);
+
+//        lookAheadLabel = new JLabel("Lookahead: " + system.lookAhead);
+//        lookAheadLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//        add(lookAheadLabel);
+
+//        lookAheadSlider = createSimpleSlider(0, 4000, 1);
+//        add(lookAheadSlider);
 
         zoomSlider = createSimpleSlider(-1000, 1000, 1);
         add(zoomSlider);
@@ -186,9 +186,9 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
             }
             else if (slider == this.timeFrameSlider) {
 
-                float value = timeFrameSlider.getValue();
+                int value = timeFrameSlider.getValue();
                 system.timeFrame = (value == 0) ? 1 : value;
-                timeFrameLabel.setText("Time frame: " + value);
+                timeFrameLabel.setText("Time frame: " + value + " minutes");
 
                 timeChange = true;
             }
@@ -202,7 +202,8 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
 
             if (timeChange) {
-                int value = (int) (system.timeFrame * system.lookAhead);
+
+                int value = (int) (system.timeFrame * (system.lookAhead /* * 60 */));
 
                 int hours = value / 3600;
                 int minutes = (value % 3600) / 60;
@@ -211,9 +212,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 LocalTime timeTo = LocalTime.of(hours, minutes, seconds);
                 LocalTime timeOf = system.inputSimulator.currentTime.toLocalTime().plusSeconds(value);
 
-                lookAheadValues.setText(timeTo + " \uD83E\uDC26 " + timeOf.toString());
-
-                timeChange = false;
+                lookAheadValues.setText(timeTo + " \uD83E\uDC26 " + timeOf.toString() + "                 (" + value + " seconds)");
             }
 
             system.dirty = true;
