@@ -155,4 +155,19 @@ public class Polygon extends Geometry {
     private List<HPoint> copyHPointList(List<HPoint> list) {
         return list.stream().map(p -> p.copy()).collect(toList());
     }
+
+    public List<Line> getVertices() {
+        ArrayList<Line> vertices = new ArrayList();
+
+        // Create lines between all points
+        // Last point is excluded and handled separately
+        for(int i = 0; i < coordinates.size() - 1; i++) {
+            vertices.add(new Line(coordinates.get(i), coordinates.get(i+1)));
+        }
+        HPoint lastPoint = coordinates.get(coordinates.size() - 1);
+        HPoint firstPoint = coordinates.get(0);
+        vertices.add(new Line(lastPoint, firstPoint));
+
+        return vertices;
+    }
 }

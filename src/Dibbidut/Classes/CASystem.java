@@ -7,6 +7,7 @@ import Dibbidut.Classes.InputSimulation.InputSimulator;
 import Dibbidut.Classes.UI.Display;
 import Dibbidut.Classes.UI.GUI;
 import Dibbidut.Exceptions.OSNotFoundException;
+import Dibbidut.utilities.TimeOFCollision;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -301,6 +302,9 @@ public class CASystem {
 //            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, combinedDomain, ship.position, timeFrame);
 
             Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.scaledVelocity, timeFrame);
+
+            double collisionTime = TimeOFCollision.calculate(combinedDomain, ownShip.position, ownShip.velocity, ship.velocity);
+            System.out.println("Time to collision: " + collisionTime + " seconds");
 
 
 //            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, ship.domain.getDomain(), ship.position, timeFrame);

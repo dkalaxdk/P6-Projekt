@@ -162,4 +162,22 @@ public class HPoint extends Geometry implements Comparable, Point {
     public HPoint copy() {
         return new HPoint(x, y, z);
     }
+
+    public double distance(HPoint point) {
+        return Math.sqrt(Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2));
+    }
+
+    public HPoint getUnitVector() {
+        HPoint copy = copy();
+        copy.divide(length());
+        return copy;
+    }
+
+    public HPoint roundElements() {
+        return new HPoint(roundToFourDecimals(x),roundToFourDecimals(y), roundToFourDecimals(z));
+    }
+
+    private double roundToFourDecimals(double number) {
+        return (double)Math.round(number * 10000d) / 10000d;
+    }
 }

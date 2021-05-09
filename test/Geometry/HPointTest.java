@@ -425,4 +425,87 @@ public class HPointTest {
             assertNotSame(original, copy);
         }
     }
+
+    @Nested
+    @DisplayName("HPoint.distance")
+    class distance{
+        @Test
+        public void distance_returnsZeroWhenGivenPointInSamePlace(){
+            HPoint p1 = new HPoint(5.5, 3.3);
+            HPoint p2 = new HPoint(5.5, 3.3);
+
+            assertEquals(0, p1.distance(p2));
+        }
+
+        @Test
+        public void distance_returnsCorrectDistanceWhenPointsHaveSameXValue(){
+            HPoint p1 = new HPoint(5.5, 3);
+            HPoint p2 = new HPoint(5.5, 6);
+
+            assertEquals(3, p1.distance(p2));
+        }
+
+        @Test
+        public void distance_returnsCorrectDistanceWhenPointsHaveSameYValue(){
+            HPoint p1 = new HPoint(2.7, 3.3);
+            HPoint p2 = new HPoint(5.5, 3.3);
+
+            assertEquals(2.8, p1.distance(p2));
+        }
+
+        @Test
+        public void distance_returnsCorrectDistanceWhenPointsHaveNoValuesInCommon(){
+            HPoint p1 = new HPoint(8.9, 55);
+            HPoint p2 = new HPoint(55, 3.3);
+
+            assertEquals(69.26831887666974, p1.distance(p2));
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.getUnitVector")
+    public class getUnitVector {
+        @Test
+        public void getUnitVector_returnsVectorWithLengthOne() {
+            double expected = 1;
+            HPoint vec = new HPoint(8, -3.4);
+            double actual = vec.getUnitVector().length();
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void getUnitVector_returnsUnitVectorForYVector() {
+            HPoint expected = new HPoint(0, 1);
+            HPoint actual = new HPoint(0,987.2).getUnitVector();
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void getUnitVector_returnsUnitVectorForXVector() {
+            HPoint expected = new HPoint(-1, 0);
+            HPoint actual = new HPoint(-3.41,0).getUnitVector();
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void getUnitVector_returnsUnitVectorForXYVector() {
+            HPoint expected = new HPoint(0.7071067811865475, 0.7071067811865475);
+            HPoint actual = new HPoint(10,10).getUnitVector();
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    @DisplayName("HPoint.roundElements")
+    public class roundElements {
+        @Test
+        public void roundElements_roundsElementsToFourDecimals() {
+            HPoint expected = new HPoint(0.7071, -0.7071);
+            HPoint vec = new HPoint(0.7071067811865475, -0.7071067811865475);
+
+            HPoint actual = vec.roundElements();
+
+            assertEquals(expected, actual);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package Geometry;
 
+import Dibbidut.Classes.Geometry.Line;
 import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Classes.Geometry.HPoint;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -475,6 +477,29 @@ public class PolygonTest {
             assertEquals(3, result.coordinates.get(2).getX());
             assertEquals(3, result.coordinates.get(2).getY());
 
+        }
+    }
+
+    @Nested
+    @DisplayName("Polygon.getVertices")
+    class getVertices{
+        @Test
+        public void getVertices_returnsVerticesOfPolygon() {
+            HPoint p1 = new HPoint(-3, 0);
+            HPoint p2 = new HPoint(3, 0);
+            HPoint p3 = new HPoint(0,3);
+
+            ArrayList<Line> expected = new ArrayList<>(Arrays.asList(
+                    new Line(p1, p2),
+                    new Line(p2, p3),
+                    new Line(p3, p1)
+            ));
+
+            Polygon poly = new Polygon(new ArrayList<>(Arrays.asList(
+                    p1, p2, p3
+            )));
+
+            assertEquals(expected, poly.getVertices());
         }
     }
 }
