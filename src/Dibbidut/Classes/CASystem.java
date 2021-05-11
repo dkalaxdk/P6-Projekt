@@ -64,6 +64,7 @@ public class CASystem {
         // 8:00 spotty connection to a target ship
 //        ownShipMMSI = 377739000;
 //        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
+//        String inputFile = "InputFiles/RealWorld/chaos.csv";
 
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
@@ -289,46 +290,14 @@ public class CASystem {
 
             Polygon combinedDomain = new Polygon(new ArrayList<>());
 
-//            try {
-////                combinedDomain = domain.flipAndAddPolygon(ownShipDomain);
-////                combinedDomain = domain.rotateAndAddPolygon(ownShipDomain);
-//            }
-//            catch (PolygonNotCenteredOnOrigin e) {
-//                e.printStackTrace();
-//            }
-
             combinedDomain = domain.combineWith(ownShipDomain);
 
 //            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, combinedDomain, ship.position, timeFrame);
 
             Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, combinedDomain, ship.position, ship.scaledVelocity, timeFrame);
 
-            double collisionTime = TimeOFCollision.calculate(combinedDomain, ownShip.position, ownShip.velocity, ship.velocity);
-            System.out.println("Time to collision: " + collisionTime + " seconds");
-
-
-//            Polygon vo = (Polygon) obstacleCalculator.RelativeVO(ownShip.position, ship.domain.getDomain(), ship.position, timeFrame);
-
-//            Polygon vo = (Polygon) obstacleCalculator.Calculate(ownShip.position, ship.domain.getDomain(), ship.position, ship.scaledVelocity, timeFrame);
-
-//            System.out.println("CA: (");
-//
-//            System.out.println("Domain");
-//            ArrayList<HPoint> coordinates = ((Polygon) ship.domain.getDomain()).coordinates;
-//
-//            for (HPoint p : coordinates) {
-//                System.out.println(p.getX() + "\t" + p.getY() + "\r");
-//            }
-//
-//            System.out.println("VO");
-//            for (HPoint p : vo.coordinates) {
-//                System.out.println(p.getX() + "\t" + p.getY() + "\r");
-//            }
-//
-//            System.out.println("Position");
-//            System.out.println(ship.position.getX() + "\t" + ship.position.getY() + "\r");
-//
-//            System.out.println(")");
+//            double collisionTime = TimeOFCollision.calculate(combinedDomain, ownShip.position, ownShip.velocity, ship.velocity);
+//            System.out.println("Time to collision: " + collisionTime + " seconds");
 
             MVO.put(ship, vo);
         }

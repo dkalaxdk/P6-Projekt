@@ -37,6 +37,9 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
     JLabel lookAheadValues;
 
+    JSlider xOffsetSlider;
+    JSlider yOffsetSlider;
+
     public GUI(CASystem system) {
         this.system = system;
         this.setIgnoreRepaint(true);
@@ -59,9 +62,9 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         timeFrameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(timeFrameLabel);
 
-        lookAheadValues = new JLabel("00:00:00");
-        lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
-        add(lookAheadValues);
+//        lookAheadValues = new JLabel("00:00:00");
+//        lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
+//        add(lookAheadValues);
 
         timeFrameSlider = createSimpleSlider(0, 7200, 1);
         add(timeFrameSlider);
@@ -75,6 +78,12 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
         zoomSlider = createSimpleSlider(-1000, 1000, 1);
         add(zoomSlider);
+
+//        xOffsetSlider = createSlider(-1000, 1000, 0);
+//        add(xOffsetSlider);
+//
+//        yOffsetSlider = createSlider(-1000, 1000, 0);
+//        add(yOffsetSlider);
 
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
@@ -188,7 +197,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
                 int value = timeFrameSlider.getValue();
                 system.timeFrame = (value == 0) ? 1 : value;
-                timeFrameLabel.setText("Time frame: " + value + " minutes");
+                timeFrameLabel.setText("Time frame: " + (value / 60) + " minutes");
 
                 timeChange = true;
             }
@@ -199,21 +208,27 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
 
                 timeChange = true;
             }
-
-
-            if (timeChange) {
-
-                int value = (int) (system.timeFrame * (system.lookAhead /* * 60 */));
-
-                int hours = value / 3600;
-                int minutes = (value % 3600) / 60;
-                int seconds = (value % 3600) % 60;
-
-                LocalTime timeTo = LocalTime.of(hours, minutes, seconds);
-                LocalTime timeOf = system.inputSimulator.currentTime.toLocalTime().plusSeconds(value);
-
-                lookAheadValues.setText(timeTo + " \uD83E\uDC26 " + timeOf.toString() + "                 (" + value + " seconds)");
+            else if (slider == this.xOffsetSlider) {
+                system.display.xOffset = -xOffsetSlider.getValue();
             }
+            else if (slider == this.yOffsetSlider) {
+                system.display.yOffset = -yOffsetSlider.getValue();
+            }
+
+
+//            if (timeChange) {
+//
+//                int value = (int) (system.timeFrame * (system.lookAhead));
+//
+//                int hours = value / 3600;
+//                int minutes = (value % 3600) / 60;
+//                int seconds = (value % 3600) % 60;
+//
+//                LocalTime timeTo = LocalTime.of(hours, minutes, seconds);
+//                LocalTime timeOf = system.inputSimulator.currentTime.toLocalTime().plusSeconds(value);
+//
+//                lookAheadValues.setText(timeTo + " \uD83E\uDC26 " + timeOf.toString() + "                 (" + value + " seconds)");
+//            }
 
             system.dirty = true;
         }

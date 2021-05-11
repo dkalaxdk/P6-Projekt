@@ -18,6 +18,8 @@ public class Display extends JPanel {
 
     public double zoom;
     public boolean violation;
+    public double xOffset;
+    public double yOffset;
 
     private final CASystem system;
 
@@ -26,6 +28,8 @@ public class Display extends JPanel {
         this.system = system;
         zoom = 1;
         violation = false;
+        xOffset = 0;
+        yOffset = 0;
     }
 
     public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO) {
@@ -70,8 +74,8 @@ public class Display extends JPanel {
         g2.scale(1/ zoom,1 / zoom);
 
         // Translate so that own ship is in the center
-        g2.translate((((displayWith / 2) * zoom)- system.ownShip.position.getX()),
-                (((displayHeight / 2) * zoom)- system.ownShip.position.getY()) - (displayHeight * zoom)
+        g2.translate((((displayWith / 2) * zoom) - system.ownShip.position.getX()) + xOffset,
+                (((displayHeight / 2) * zoom) - system.ownShip.position.getY()) - (displayHeight * zoom) + yOffset
         );
 
 
@@ -224,14 +228,16 @@ public class Display extends JPanel {
         violation = false;
 
         for (Ship ship : setOfShips) {
-            Polygon p = mvo.get(ship);
+            Polygon polygon = mvo.get(ship);
 
-            if (p.inOrOn(system.ownShip.position.add(system.ownShip.scaledVelocity))) {
+            HPoint point = system.ownShip.position.add(system.ownShip.scaledVelocity);
+
+            if (polygon.inOrOn(point)) {
                 violation = true;
-                drawVelocityObstacle(g, p, true);
+                drawVelocityObstacle(g, polygon, true);
             }
             else {
-                drawVelocityObstacle(g, p, false);
+                drawVelocityObstacle(g, polygon, false);
             }
         }
     }
