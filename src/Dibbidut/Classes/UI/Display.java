@@ -4,6 +4,7 @@ import Dibbidut.Classes.CASystem;
 import Dibbidut.Classes.Geometry.Polygon;
 import Dibbidut.Classes.Geometry.HPoint;
 import Dibbidut.Classes.Ship;
+import math.geom2d.conic.Circle2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,19 +110,30 @@ public class Display extends JPanel {
     }
 
     private void drawGUIElements(Graphics2D g, Ship ownShip, ArrayList<Ship> ships) {
-        g.setColor(Color.gray);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setColor(Color.gray);
 
         // Horizontal
-        g.draw(new Line2D.Double(ownShip.position.getX() - this.getWidth() * zoom,
+        g2.draw(new Line2D.Double(ownShip.position.getX() - this.getWidth() * zoom,
                 ownShip.position.getY(),
                 ownShip.position.getX() + this.getWidth() * zoom,
                 ownShip.position.getY()));
 
         // Vertical
-        g.draw(new Line2D.Double(ownShip.position.getX(),
+        g2.draw(new Line2D.Double(ownShip.position.getX(),
                 ownShip.position.getY() - this.getHeight() * zoom,
                 ownShip.position.getX(),
                 ownShip.position.getY() + this.getHeight() * zoom));
+
+
+        g2.setStroke(new BasicStroke((float) zoom * 3));
+
+        g2.draw(new Ellipse2D.Double(ownShip.position.getX() - system.range,
+                ownShip.position.getY() - system.range,
+                system.range * 2,
+                system.range * 2));
+
+        g2.dispose();
     }
 
     private void drawOwnShip(Graphics2D g, Ship ship) {
