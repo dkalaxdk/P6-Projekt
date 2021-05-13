@@ -1,0 +1,4 @@
+# Timestamp,Type of mobile,MMSI,Latitude,Longitude,Navigational status,ROT,SOG,COG,Heading,IMO,Callsign,Name,Ship type,Cargo type,Width,Length,Type of position fixing device,Draught,Destination,ETA,Data source type,A,B,C,D
+23/06/2017 00:00:00,Base Station,2194005,56.344267,4.272000,Unknown value,,,,,Unknown,,,Undefined,,,,Surveyed,,,,AIS,,,,
+23/06/2017 00:00:00,Class A,219002624,55.507902,7.874188,Unknown value,,0.0,0.0,,Unknown,,,Undefined,,,,Undefined,,,,AIS,,,,
+23/06/2017 00:00:00,Base Station,2190064,56.716565,11.519050,Unknown value,,,,,Unknown,,,Undefined,,,,GPS,,,,AIS,,,,
