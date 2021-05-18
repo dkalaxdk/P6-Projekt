@@ -1,17 +1,17 @@
 # Dynamic Ship Domain Linear Velocity Obstacle algorithm
-Dynamic Ship Domain Linear Velocity Obstacle algorithm (DSDLVO) is a project implemented in Java, which combines the Dynamic Ship Domains of [Bakdi et al, 2020](https://www.mdpi.com/2077-1312/8/1/5) with the linear velocity algorithm from [Huang et al,2018](https://www.sciencedirect.com/science/article/abs/pii/S0029801818300015). <br>
-The project is based on AIS data given from a CSV file from [Danish Maritime Authority (FTP link)](ftp://ftp.ais.dk/ais_data/).<br>
-Made for a bachelor project from Aalborg University.
+Dynamic Ship Domain Linear Velocity Obstacle (DSDLVO) is a project implemented in Java, which combines the Dynamic Ship Domains of [Bakdi et al, 2020](https://www.mdpi.com/2077-1312/8/1/5) with the linear velocity obstacle algorithm from [Huang et al,2018](https://www.sciencedirect.com/science/article/abs/pii/S0029801818300015). <br>
+The project uses AIS data read from a CSV file acquired from [Danish Maritime Authority (FTP link)](ftp://ftp.ais.dk/ais_data/). <br>
+This project is made as a part of a bachelor project from Aalborg University.
 
 ## Setup
-The program comes with the Java project, as well as a python project.<br>
-The Java project contains the implementation of the two algorithms as well as a CSV reader which read the AIS data.
+The program comes with the Java project and a python project.<br>
+The Java project contains the implementation of the dynamic ship domain and the velocity obstacle algorithm, as well as a CSV reader which reads the AIS data.
 
 * **Define input file:**<br>
-  The GitHub repository contains a set of predefined input files [Input InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles) to change which file is being used, one currently have to change the input within the Main class of the Java project [Reference til Main](https://www.youtube.com/watch?v=dQw4w9WgXcQ). <br>
+  The GitHub repository contains a set of predefined input files [Input InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). To change which file is being used, one currently have to change the input within the Main class of the Java project [Reference til Main](https://www.youtube.com/watch?v=dQw4w9WgXcQ). <br>
   The program repository also contains a python script to define a custom input file. [Input File Creator](#input-file-creator)<br>
 * **Define MMSI**<br>
-  When running the program, the Own Ship should be defined, therefore the MMSI of the ship which should be interpreted as the OS, should be defined.
+  When running the program, the Own Ship (OS) should be defined. Therefore, the MMSI of the ship that should be interpreted as the OS, should be defined.
 * **Build the project**<br>
   After the correct file have been selected, the project should be built. <br>
 
