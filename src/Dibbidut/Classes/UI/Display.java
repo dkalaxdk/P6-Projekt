@@ -113,6 +113,8 @@ public class Display extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setColor(Color.gray);
 
+        g2.setStroke(new BasicStroke((float) zoom * 1.5f));
+
         // Horizontal
         g2.draw(new Line2D.Double(ownShip.position.getX() - this.getWidth() * zoom,
                 ownShip.position.getY(),
