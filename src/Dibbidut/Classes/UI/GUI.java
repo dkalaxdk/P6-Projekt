@@ -47,26 +47,34 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setAlignmentY(Component.TOP_ALIGNMENT);
 
+        Font font = new Font(null, Font.PLAIN, 24);
+
         simulationTimeLabel = new JLabel("Simulation time: " + system.inputSimulator.currentTime.toLocalTime(), JLabel.LEFT);
         simulationTimeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        simulationTimeLabel.setFont(font);
         add(simulationTimeLabel);
 
         timeFactorLabel = new JLabel("Time factor: " + system.inputSimulator.GetTimeFactor());
         timeFactorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        timeFactorLabel.setFont(font);
         add(timeFactorLabel);
 
-        timeFactorSlider = createSimpleSlider(0, 120, 0);
+        timeFactorSlider = createSlider(0, 120, 0);
         add(timeFactorSlider);
 
         timeFrameLabel = new JLabel("Time frame: " + system.timeFrame);
         timeFrameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        timeFrameLabel.setFont(font);
         add(timeFrameLabel);
 
 //        lookAheadValues = new JLabel("00:00:00");
 //        lookAheadValues.setAlignmentX(Component.LEFT_ALIGNMENT);
 //        add(lookAheadValues);
 
-        timeFrameSlider = createSimpleSlider(0, 7200, 1);
+//        timeFrameSlider = createSimpleSlider(0, 7200, 1);
+//        add(timeFrameSlider);
+
+        timeFrameSlider = createSlider(0, 120, 0);
         add(timeFrameSlider);
 
 //        lookAheadLabel = new JLabel("Lookahead: " + system.lookAhead);
@@ -196,8 +204,8 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
             else if (slider == this.timeFrameSlider) {
 
                 int value = timeFrameSlider.getValue();
-                system.timeFrame = (value == 0) ? 1 : value;
-                timeFrameLabel.setText("Time frame: " + (value / 60) + " minutes");
+                system.timeFrame = (value == 0) ? 1 : value * 60;
+                timeFrameLabel.setText("Time frame: " + (value) + " minutes");
 
                 timeChange = true;
             }
