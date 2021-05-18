@@ -28,6 +28,6 @@ The Java project contains the implementation of the two algorithms as well as a 
 
 The python input file creator reads the content of the [input.txt](https://github.com/dkalaxdk/P6-Projekt/blob/master/DataGenerator/input.txt) which should be structured as a CSV file. <br>
 The CSV file should have the following structure:
-| X | Y | SOG | COG | Heading | Length | Width|
-| :--------- | :--------- | :--------- | :--------- |
-|X Coordinates, will be converted to longitude |Y coordinates, will be converted to latitude |Speed of the vessel in knots| Heading as degress)| Length of the ship | Width of the ship|
+| X | Y | SOG | COG | Heading | Length | Width| <br>
+| :--------- | :--------- | :--------- | :--------- | <br>
+|X Coordinates, will be converted to longitude |Y coordinates, will be converted to latitude |Speed of the vessel in knots| Heading as degress)| Length of the ship | Width of the ship|<br>
