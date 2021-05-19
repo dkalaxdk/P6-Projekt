@@ -1,6 +1,5 @@
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.Classes.Mercator;
-import math.geom2d.Vector2D;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Mercator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

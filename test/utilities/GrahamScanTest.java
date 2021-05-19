@@ -1,9 +1,9 @@
 package utilities;
 
-import Dibbidut.Classes.Geometry.*;
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.utilities.ConvexHull;
-import Dibbidut.utilities.GrahamScan;
+import DSDLVO.Classes.Geometry.*;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.utilities.ConvexHull;
+import DSDLVO.utilities.GrahamScan;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;

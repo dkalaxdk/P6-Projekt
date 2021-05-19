@@ -2,24 +2,15 @@ package VelocityObstacle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Dibbidut.Classes.Geometry.*;
+import DSDLVO.Classes.Geometry.*;
 
-import Dibbidut.Classes.Geometry.Point;
-import Dibbidut.Classes.Geometry.Polygon;
-import Dibbidut.Classes.Geometry.Ellipse;
-import Dibbidut.Classes.Geometry.Geometry;
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.Classes.Ship;
-import Dibbidut.Classes.ShipDomain;
-import Dibbidut.Classes.VelocityObstacle;
-import Dibbidut.Interfaces.IDomain;
+import DSDLVO.Classes.Geometry.Point;
+import DSDLVO.Classes.Geometry.Polygon;
+import DSDLVO.Classes.Geometry.Geometry;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.VelocityObstacle;
 import org.junit.jupiter.api.*;
 
-import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 

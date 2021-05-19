@@ -1,9 +1,9 @@
 package HandlerTest;
 
-import Dibbidut.Classes.Handlers.ShipHandler;
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.Ship;
-import Dibbidut.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Handlers.ShipHandler;
+import DSDLVO.Classes.InputManagement.AISData;
+import DSDLVO.Classes.Ship;
+import DSDLVO.Classes.Geometry.HPoint;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

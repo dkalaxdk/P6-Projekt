@@ -1,9 +1,8 @@
 package InputTest;
 
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.InputSimulation.InputSimulator;
-import Dibbidut.Exceptions.OSNotFoundException;
-import org.junit.jupiter.api.Disabled;
+import DSDLVO.Classes.InputManagement.AISData;
+import DSDLVO.Classes.InputSimulation.InputSimulator;
+import DSDLVO.Exceptions.OSNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

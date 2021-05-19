@@ -1,9 +1,8 @@
-import Dibbidut.Classes.UI.Display;
-import Dibbidut.Classes.Ship;
-import Dibbidut.Classes.Geometry.HPoint;
+import DSDLVO.Classes.UI.Display;
+import DSDLVO.Classes.Ship;
+import DSDLVO.Classes.Geometry.HPoint;
 import org.junit.jupiter.api.Test;
 
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Hashtable;
 

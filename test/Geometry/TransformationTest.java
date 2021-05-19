@@ -1,6 +1,6 @@
 package Geometry;
 
-import Dibbidut.Classes.Geometry.Transformation;
+import DSDLVO.Classes.Geometry.Transformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;

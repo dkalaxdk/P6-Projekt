@@ -1,8 +1,8 @@
 package Geometry;
 
-import Dibbidut.Classes.Geometry.Transformation;
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.Classes.Utility;
+import DSDLVO.Classes.Geometry.Transformation;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Utility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,7 +1,7 @@
 package InputTest;
 
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.InputSimulation.FileParser;
+import DSDLVO.Classes.InputManagement.AISData;
+import DSDLVO.Classes.InputSimulation.FileParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

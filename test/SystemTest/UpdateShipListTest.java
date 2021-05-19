@@ -1,9 +1,9 @@
 package SystemTest;
 
-import Dibbidut.Classes.*;
-import Dibbidut.Classes.CASystem;
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Classes.Geometry.HPoint;
+import DSDLVO.Classes.*;
+import DSDLVO.Classes.CASystem;
+import DSDLVO.Classes.InputManagement.AISData;
+import DSDLVO.Classes.Geometry.HPoint;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-import Dibbidut.Classes.Velocity;
+import DSDLVO.Classes.Velocity;
 import math.geom2d.Vector2D;
 import org.junit.jupiter.api.Test;
 

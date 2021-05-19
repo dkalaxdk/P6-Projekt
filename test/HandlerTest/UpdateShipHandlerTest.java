@@ -1,10 +1,10 @@
 package HandlerTest;
 
-import Dibbidut.Classes.*;
-import Dibbidut.Classes.Handlers.ShipHandler;
-import Dibbidut.Classes.Handlers.UpdateShipHandler;
-import Dibbidut.Classes.InputManagement.AISData;
-import Dibbidut.Interfaces.IShipDataHandler;
+import DSDLVO.Classes.*;
+import DSDLVO.Classes.Handlers.ShipHandler;
+import DSDLVO.Classes.Handlers.UpdateShipHandler;
+import DSDLVO.Classes.InputManagement.AISData;
+import DSDLVO.Interfaces.IShipDataHandler;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

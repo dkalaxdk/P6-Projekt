@@ -1,5 +1,5 @@
 
-import Dibbidut.Classes.ShipDomain;
+import DSDLVO.Classes.ShipDomain;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,8 @@
 package Geometry;
 
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.Classes.Geometry.PolarPoint;
-import Dibbidut.Classes.Utility;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Geometry.PolarPoint;
+import DSDLVO.Classes.Utility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

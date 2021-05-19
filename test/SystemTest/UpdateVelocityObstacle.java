@@ -1,13 +1,10 @@
 package SystemTest;
 
-import Dibbidut.Classes.*;
-import Dibbidut.Classes.CASystem;
-import Dibbidut.Classes.Geometry.HPoint;
-import Dibbidut.Classes.Handlers.ShipHandler;
-import Dibbidut.Classes.Handlers.UpdateShipHandler;
-import Dibbidut.Classes.InputManagement.AISData;
-import math.geom2d.Vector2D;
-import org.junit.jupiter.api.Nested;
+import DSDLVO.Classes.*;
+import DSDLVO.Classes.CASystem;
+import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Handlers.ShipHandler;
+import DSDLVO.Classes.Handlers.UpdateShipHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
