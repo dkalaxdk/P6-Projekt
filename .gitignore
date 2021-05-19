@@ -27,6 +27,7 @@ target/
 
 test/BigTestFiles/
 InputFiles/RealWorld/TooBig/
+InputFiles/generated_file.csv
 
 DataGenerator/output.csv
 
