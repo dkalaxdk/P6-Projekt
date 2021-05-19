@@ -64,13 +64,16 @@ public class CASystem {
         // 8:00 spotty connection to a target ship
 //        ownShipMMSI = 377739000;
 //        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
-//        String inputFile = "InputFiles/RealWorld/chaos.csv";
+//        String inputFile = "InputFiles/RealWorld/TooBig/chaos.csv";
+//        String inputFile = "InputFiles/RealWorld/chaos12.csv";
+//        String inputFile = "InputFiles/RealWorld/chaos13.csv";
+//        String inputFile = "InputFiles/RealWorld/chaos14.csv";
 
         // Paper with specific Aarhus collisions
         // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
 
 //        ownShipMMSI = 218176000;
-//        String inputFile = "InputFiles/RealWorld/AarhusEncounter.csv";
+//        String inputFile = "InputFiles/RealWorld/AarhusEncounter_Small.csv";
 
 //        ownShipMMSI = 219017081;
 //        String inputFile = "InputFiles/aisdk_20190510.csv";
