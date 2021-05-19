@@ -1,7 +1,7 @@
 # Dynamic Ship Domain Linear Velocity Obstacle algorithm
 Dynamic Ship Domain Linear Velocity Obstacle (DSDLVO) is a project implemented in Java, which combines the Dynamic Ship Domains of [Bakdi et al, 2020](https://www.mdpi.com/2077-1312/8/1/5) with the linear velocity obstacle algorithm from [Huang et al,2018](https://www.sciencedirect.com/science/article/abs/pii/S0029801818300015). <br>
 The project uses AIS data read from a CSV file acquired from [Danish Maritime Authority (FTP link)](ftp://ftp.ais.dk/ais_data/). <br>
-This project is made as a part of a bachelor project from Aalborg University, the report related to this project, can be seen at [Report link](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+This project is made as a part of a bachelor project from Aalborg University, the report related to this project, can be seen at [Report link](https://www.youtube.com/watch?v=dQw4w9WgXcQ).
 
 ## Setup of Java program
 The program comes with the Java 16 project and a python 3.8 project.<br>
@@ -26,6 +26,7 @@ When running the program the user is presented with an interface containing a sh
 2. **Time factor** <br> Simulation speed control, which defines the speed of the simulation.
 3. **Zoom** <br> Allows you to zoom in and out.
 
+### Reading the Program
 As the program runs through a simulation with other ships, the time frame can be extended/decreased to find the time in which a collision may occur. <br>
 If no collisions are detected at the current time frame, the cones will remain grey as seen in the image bellow.
 ![GreyCone](readMeAssets/crossing_no_collision.png) <br>
