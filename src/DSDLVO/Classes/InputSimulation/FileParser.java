@@ -4,9 +4,10 @@ import DSDLVO.Classes.InputManagement.AISData;
 import DSDLVO.Interfaces.IDataInput;
 import com.opencsv.bean.CsvToBeanBuilder;
 
-import java.lang.System;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
 
 public class FileParser implements IDataInput {

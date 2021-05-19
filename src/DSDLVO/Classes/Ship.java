@@ -4,8 +4,8 @@ import DSDLVO.Classes.Geometry.HPoint;
 import DSDLVO.Classes.Handlers.AISToShipHandler;
 import DSDLVO.Classes.Handlers.UpdateShipHandler;
 import DSDLVO.Classes.InputManagement.AISData;
-import DSDLVO.Interfaces.IShipDataHandler;
 import DSDLVO.Interfaces.IDomain;
+import DSDLVO.Interfaces.IShipDataHandler;
 
 import java.awt.*;
 import java.util.Hashtable;

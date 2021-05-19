@@ -5,7 +5,11 @@ import DSDLVO.Classes.Geometry.PointFactory;
 import DSDLVO.Classes.Geometry.PolarPoint;
 import DSDLVO.Classes.Utility;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 // TODO: Refactor this class to implement Point interface, and adapt usages

@@ -1,8 +1,8 @@
 package DSDLVO.Classes.UI;
 
 import DSDLVO.Classes.CASystem;
-import DSDLVO.Classes.Geometry.Polygon;
 import DSDLVO.Classes.Geometry.HPoint;
+import DSDLVO.Classes.Geometry.Polygon;
 import DSDLVO.Classes.Ship;
 
 import javax.swing.*;
