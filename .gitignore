@@ -31,3 +31,5 @@ InputFiles/RealWorld/TooBig/
 DataGenerator/output.csv
 
 DataGenerator/classes/__pycache__/
+
+DataGenerator/venv/
