@@ -1,10 +1,10 @@
-package Dibbidut.Classes;
+package DSDLVO.Classes;
 
-import Dibbidut.Classes.Geometry.*;
-import Dibbidut.Classes.Geometry.Point;
-import Dibbidut.Classes.Geometry.Polygon;
-import Dibbidut.Interfaces.IVelocityObstacle;
-import Dibbidut.utilities.GrahamScan;
+import DSDLVO.Classes.Geometry.*;
+import DSDLVO.Classes.Geometry.Point;
+import DSDLVO.Classes.Geometry.Polygon;
+import DSDLVO.Interfaces.IVelocityObstacle;
+import DSDLVO.utilities.GrahamScan;
 
 import java.util.ArrayList;
 
