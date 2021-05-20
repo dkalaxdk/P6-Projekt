@@ -27,23 +27,19 @@ public class UpdateShipHandler extends ShipHandler {
             if (data.cogIsSet) {
                 warnings.put("Heading", "Heading unknown, using COG as a placeholder");
                 return (int) Math.round(data.COG);
-            }
-            else if (oldData.cogIsSet) {
+            } else if (oldData.cogIsSet) {
                 warnings.put("Heading", "Heading unknown, using COG as a placeholder");
                 return (int) Math.round(oldData.COG);
-            }
-            else {
+            } else {
                 warnings.put("Heading", "Heading unknown, using " + headingPlaceholder + " degrees as placeholder");
                 return headingPlaceholder;
             }
-        }
-        else if (!data.headingIsSet) {
+        } else if (!data.headingIsSet) {
             warnings.put("Heading", "Heading lost, keeping old heading of " + oldData.heading + " degrees");
             data.heading = oldData.heading;
             data.headingIsSet = true;
             return data.heading;
-        }
-        else {
+        } else {
             warnings.put("Heading", "");
             return data.heading;
         }
@@ -54,19 +50,16 @@ public class UpdateShipHandler extends ShipHandler {
         if (!data.lengthIsSet && !oldData.lengthIsSet) {
             warnings.put("Length", "Length is unknown, using " + lengthPlaceHolder + "m as a placeholder");
             return lengthPlaceHolder;
-        }
-        else if (!data.lengthIsSet) {
+        } else if (!data.lengthIsSet) {
             warnings.put("Length", "Length lost, keeping old length of " + oldData.length + "m");
             data.length = oldData.length;
             data.lengthIsSet = true;
             return data.length;
-        }
-        else if (data.length != oldData.length) {
+        } else if (data.length != oldData.length) {
             warnings.put("Length", "Ship's length has changed, going from " +
                     oldData.length + "m to " + data.length + "m");
             return data.length;
-        }
-        else {
+        } else {
             warnings.put("Length", "");
             return data.length;
         }
@@ -77,19 +70,16 @@ public class UpdateShipHandler extends ShipHandler {
         if (!data.widthIsSet && !oldData.widthIsSet) {
             warnings.put("Width", "Width is unknown, using " + widthPlaceHolder + "m as a placeholder");
             return widthPlaceHolder;
-        }
-        else if (!data.widthIsSet) {
+        } else if (!data.widthIsSet) {
             warnings.put("Width", "Width lost, keeping old width of " + oldData.width + "m");
             data.width = oldData.width;
             data.lengthIsSet = true;
             return data.width;
-        }
-        else if (data.width != oldData.width) {
+        } else if (data.width != oldData.width) {
             warnings.put("Width", "Ship's width has changed, going from " +
                     oldData.width + "m to " + data.width + "m");
             return data.width;
-        }
-        else {
+        } else {
             warnings.put("Width", "");
             return data.width;
         }
@@ -103,16 +93,13 @@ public class UpdateShipHandler extends ShipHandler {
         if (data.cogIsSet && data.sogIsSet) {
             warnings.put("Velocity", "");
             return CalculateVelocity(data.SOG, data.COG);
-        }
-        else if (!data.cogIsSet && data.sogIsSet) {
+        } else if (!data.cogIsSet && data.sogIsSet) {
             warnings.put("Velocity", "COG unknown, using " + cogPlaceholder + " as a placeholder");
             return CalculateVelocity(data.SOG, cogPlaceholder);
-        }
-        else if (data.cogIsSet) {
+        } else if (data.cogIsSet) {
             warnings.put("Velocity", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
             return CalculateVelocity(sogPlaceHolder, data.COG);
-        }
-        else {
+        } else {
             warnings.put("Velocity", "Velocity unknown, using " + GetVelocityPlaceHolder() + " as a placeholder");
             return GetVelocityPlaceHolder();
         }
@@ -142,56 +129,41 @@ public class UpdateShipHandler extends ShipHandler {
         if (data.distanceForeIsSet) {
             if (data.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, fore, starboard, length, width);
-            }
-            else if (data.distancePortIsSet) {
+            } else if (data.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, fore, port, length, width);
-            }
-            else if (oldData.distanceStarboardIsSet) {
+            } else if (oldData.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, fore, oldData.distanceStarboard, length, width);
-            }
-            else if (oldData.distancePortIsSet) {
+            } else if (oldData.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, fore, oldData.distancePort, length, width);
             }
-        }
-        else if (data.distanceAftIsSet) {
+        } else if (data.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
                 return MovePositionToCenter.AftStarboard(myShipPosition, aft, starboard, length, width);
-            }
-            else if (data.distancePortIsSet) {
+            } else if (data.distancePortIsSet) {
                 return MovePositionToCenter.AftPort(myShipPosition, aft, port, length, width);
-            }
-            else if (oldData.distanceStarboardIsSet) {
+            } else if (oldData.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, aft, oldData.distanceStarboard, length, width);
-            }
-            else if (oldData.distancePortIsSet) {
+            } else if (oldData.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, aft, oldData.distancePort, length, width);
             }
-        }
-        else if (oldData.distanceForeIsSet) {
+        } else if (oldData.distanceForeIsSet) {
             if (data.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceFore, starboard, length, width);
-            }
-            else if (data.distancePortIsSet) {
+            } else if (data.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceFore, port, length, width);
-            }
-            else if (oldData.distanceStarboardIsSet) {
+            } else if (oldData.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceFore, oldData.distanceStarboard, length, width);
-            }
-            else if (oldData.distancePortIsSet) {
+            } else if (oldData.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceFore, oldData.distancePort, length, width);
             }
-        }
-        else if (oldData.distanceAftIsSet) {
+        } else if (oldData.distanceAftIsSet) {
             if (data.distanceStarboardIsSet) {
                 return MovePositionToCenter.AftStarboard(myShipPosition, oldData.distanceAft, starboard, length, width);
-            }
-            else if (data.distancePortIsSet) {
+            } else if (data.distancePortIsSet) {
                 return MovePositionToCenter.AftPort(myShipPosition, oldData.distanceAft, port, length, width);
-            }
-            else if (oldData.distanceStarboardIsSet) {
+            } else if (oldData.distanceStarboardIsSet) {
                 return MovePositionToCenter.ForeStarboard(myShipPosition, oldData.distanceAft, oldData.distanceStarboard, length, width);
-            }
-            else if (oldData.distancePortIsSet) {
+            } else if (oldData.distancePortIsSet) {
                 return MovePositionToCenter.ForePort(myShipPosition, oldData.distanceAft, oldData.distancePort, length, width);
             }
         }
@@ -199,43 +171,32 @@ public class UpdateShipHandler extends ShipHandler {
         // Cases where we have only fore/aft or only starboard/port
         if (data.distanceForeIsSet && data.distanceAftIsSet) {
             return MovePositionToCenter.Fore(myShipPosition, fore, length);
-        }
-        else if (data.distanceStarboardIsSet && data.distancePortIsSet) {
+        } else if (data.distanceStarboardIsSet && data.distancePortIsSet) {
             return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
-        }
-        else if (oldData.distanceForeIsSet && oldData.distanceAftIsSet) {
+        } else if (oldData.distanceForeIsSet && oldData.distanceAftIsSet) {
             return MovePositionToCenter.Fore(myShipPosition, oldData.distanceFore, length);
-        }
-        else if (oldData.distanceStarboardIsSet && oldData.distancePortIsSet) {
+        } else if (oldData.distanceStarboardIsSet && oldData.distancePortIsSet) {
             return MovePositionToCenter.Starboard(myShipPosition, oldData.distanceStarboard, width);
         }
 
         // Cases where we only have one
         if (data.distanceForeIsSet) {
             return MovePositionToCenter.Fore(myShipPosition, fore, length);
-        }
-        else if (data.distanceAftIsSet) {
+        } else if (data.distanceAftIsSet) {
             return MovePositionToCenter.Aft(myShipPosition, aft, length);
-        }
-        else if (data.distanceStarboardIsSet) {
+        } else if (data.distanceStarboardIsSet) {
             return MovePositionToCenter.Starboard(myShipPosition, starboard, width);
-        }
-        else if (data.distancePortIsSet) {
+        } else if (data.distancePortIsSet) {
             return MovePositionToCenter.Port(myShipPosition, port, width);
-        }
-        else if (oldData.distanceForeIsSet) {
+        } else if (oldData.distanceForeIsSet) {
             return MovePositionToCenter.Fore(myShipPosition, oldData.distanceFore, length);
-        }
-        else if (oldData.distanceAftIsSet) {
+        } else if (oldData.distanceAftIsSet) {
             return MovePositionToCenter.Aft(myShipPosition, oldData.distanceAft, length);
-        }
-        else if (oldData.distanceStarboardIsSet) {
+        } else if (oldData.distanceStarboardIsSet) {
             return MovePositionToCenter.Starboard(myShipPosition, oldData.distanceStarboard, width);
-        }
-        else if (oldData.distancePortIsSet) {
+        } else if (oldData.distancePortIsSet) {
             return MovePositionToCenter.Port(myShipPosition, oldData.distancePort, width);
-        }
-        else {
+        } else {
             warnings.put("TransceiverPosition", "Position of AIS transceiver not known");
             return myShipPosition;
         }
@@ -254,8 +215,7 @@ public class UpdateShipHandler extends ShipHandler {
                 warnings.put("SOG", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
                 return sogPlaceHolder;
             }
-        }
-        else {
+        } else {
             warnings.put("SOG", "");
             return data.SOG;
         }
@@ -274,19 +234,16 @@ public class UpdateShipHandler extends ShipHandler {
                 warnings.put("COG", "COG unknown, using heading instead");
                 cogPlaceholder = data.heading;
                 return data.heading;
-            }
-            else if (oldData.headingIsSet) {
+            } else if (oldData.headingIsSet) {
                 warnings.put("COG", "Lost COG and heading, using old data heading");
                 cogPlaceholder = oldData.heading;
                 return oldData.heading;
 
-            }
-            else {
+            } else {
                 warnings.put("COG", "COG is unknown, using " + cogPlaceholder + " as a placeholder");
                 return cogPlaceholder;
             }
-        }
-        else {
+        } else {
             warnings.put("COG", "");
             return data.COG;
         }

@@ -1,6 +1,8 @@
+import DSDLVO.Classes.CASystem;
 import DSDLVO.Classes.UI.Display;
 import DSDLVO.Classes.Ship;
 import DSDLVO.Classes.Geometry.HPoint;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,9 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DisplayTest {
 
     private Ship createStandardShip() {
-        Ship ship = new Ship(new HPoint(0,0), 100, 50, 0);
-        ship.position = new HPoint(0,0);
+        Ship ship = new Ship(new HPoint(0, 0), 100, 50, 0);
+        ship.position = new HPoint(0, 0);
         return ship;
+    }
+
+    public CASystem system;
+
+    @BeforeEach
+    public void setUp() {
+        system = new CASystem("test/TestFiles/TestInput1.csv", 2194005);
     }
 
 
@@ -26,7 +35,7 @@ public class DisplayTest {
         Ship ownShip = createStandardShip();
 
         // Act
-        Display display = new Display(ownShip, ships, new Hashtable<>());
+        Display display = new Display(ownShip, ships, new Hashtable<>(),system);
 
         // Assert
         assertEquals(ships, display.getShips());
@@ -41,7 +50,7 @@ public class DisplayTest {
         Ship ownShip = createStandardShip();
 
         // Act
-        Display display = new Display(ownShip, ships, new Hashtable<>());
+        Display display = new Display(ownShip, ships, new Hashtable<>(),system);
 
         // Assert
         assertEquals(ownShip, display.getOwnShip());
@@ -53,7 +62,7 @@ public class DisplayTest {
         ArrayList<Ship> ships = new ArrayList<>();
         ships.add(createStandardShip());
 
-        Display display = new Display(createStandardShip(), ships, new Hashtable<>());
+        Display display = new Display(createStandardShip(), ships, new Hashtable<>(),system);
 
         Ship otherShip = createStandardShip();
 
@@ -70,7 +79,7 @@ public class DisplayTest {
         ArrayList<Ship> ships = new ArrayList<>();
         ships.add(createStandardShip());
 
-        Display display = new Display(createStandardShip(), ships, new Hashtable<>());
+        Display display = new Display(createStandardShip(), ships, new Hashtable<>(),system);
 
         // Act
         ships.get(0).length = 3;
@@ -82,7 +91,7 @@ public class DisplayTest {
     @Test
     public void getCoordinatesToDrawShipFrom_shipPointingNorth() {
         // Arrange
-        Display display = new Display(createStandardShip(), new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(createStandardShip(), new ArrayList<>(), new Hashtable<>(),system);
 
         HPoint shipPosition = new HPoint(100, 100);
         int shipLength = 10;
@@ -108,7 +117,7 @@ public class DisplayTest {
     @Test
     public void getCoordinatesToDrawShipFrom_shipPointingNorthEast() {
         // Arrange
-        Display display = new Display(createStandardShip(), new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(createStandardShip(), new ArrayList<>(), new Hashtable<>(),system);
 
         HPoint shipPosition = new HPoint(100, 100);
         int shipLength = 10;
@@ -132,13 +141,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_bothShipsOrigo_zoom1_noChange() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(0,0), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(0, 0), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(0,0);
+        HPoint expectedTarget = new HPoint(0, 0);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -147,13 +156,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_bothShipsOrigo_zoom2_noChange() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(0,0), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(0, 0), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(0,0);
+        HPoint expectedTarget = new HPoint(0, 0);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -162,13 +171,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom1_noChange() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(1,1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(1, 1), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(1,1);
+        HPoint expectedTarget = new HPoint(1, 1);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -177,13 +186,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(1,1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(1, 1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(2,2);
+        HPoint expectedTarget = new HPoint(2, 2);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -192,13 +201,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetPosPos_zoom1Point5_Change() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(1,1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(1, 1), 10, 10, 0);
         double zoom = 1.5;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(1.5,1.5);
+        HPoint expectedTarget = new HPoint(1.5, 1.5);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -207,13 +216,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetPosPos_zoom1_noChange() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(2,2), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(2, 2), 10, 10, 0);
         double zoom = 1;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(2,2);
+        HPoint expectedTarget = new HPoint(2, 2);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -222,13 +231,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetPosPos_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(2,2), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(2, 2), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(3,3);
+        HPoint expectedTarget = new HPoint(3, 3);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -237,13 +246,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetPosPos_zoom1Point5_Change() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(2,2), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(2, 2), 10, 10, 0);
         double zoom = 1.5;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(2.5,2.5);
+        HPoint expectedTarget = new HPoint(2.5, 2.5);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -252,13 +261,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetPosNeg_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(1,-1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(1, -1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(2,-2);
+        HPoint expectedTarget = new HPoint(2, -2);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -267,13 +276,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetNegPos_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(-1,1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(-1, 1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(-2,2);
+        HPoint expectedTarget = new HPoint(-2, 2);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -282,13 +291,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownShipOrigo_targetNegNeg_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(0,0), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(-1,-1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(0, 0), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(-1, -1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(-2,-2);
+        HPoint expectedTarget = new HPoint(-2, -2);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -297,13 +306,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetPosNeg_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(1,-1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(1, -1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(1,-3);
+        HPoint expectedTarget = new HPoint(1, -3);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -312,13 +321,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetNegNeg_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(-1,-1), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(-1, -1), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(-3,-3);
+        HPoint expectedTarget = new HPoint(-3, -3);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 
@@ -327,13 +336,13 @@ public class DisplayTest {
 
     @Test
     public void getZoomedPosition_ownPosPos_targetOrigo_zoom2_Change() {
-        Ship ownShip = new Ship(new HPoint(1,1), 10, 10, 0);
-        Ship targetShip = new Ship(new HPoint(0,0), 10, 10, 0);
+        Ship ownShip = new Ship(new HPoint(1, 1), 10, 10, 0);
+        Ship targetShip = new Ship(new HPoint(0, 0), 10, 10, 0);
         double zoom = 2;
 
-        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>());
+        Display display = new Display(ownShip, new ArrayList<>(), new Hashtable<>(),system);
 
-        HPoint expectedTarget = new HPoint(-1,-1);
+        HPoint expectedTarget = new HPoint(-1, -1);
 
         HPoint actualTarget = display.getZoomedPosition(ownShip.position, targetShip.position, zoom);
 

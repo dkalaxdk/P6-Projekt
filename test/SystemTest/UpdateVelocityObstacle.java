@@ -33,7 +33,7 @@ public class UpdateVelocityObstacle {
         targetShip.domain.Update(targetShip.sog, targetShipHeading, targetShip.position.getY(), targetShip.position.getX());
 
 
-        CASystem caSystem = new CASystem();
+        CASystem caSystem = new CASystem("test/TestFiles/TestInput1.csv",2194005);
         caSystem.ownShipMMSI = 1;
         caSystem.ownShip = ownShip;
         caSystem.shipsInRange.add(targetShip);

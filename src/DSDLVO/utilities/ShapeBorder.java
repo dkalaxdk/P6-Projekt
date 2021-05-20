@@ -12,7 +12,7 @@ public class ShapeBorder {
     public static ArrayList<Point2D> getBorder(Shape shape) {
         PathIterator path = shape.getPathIterator(new AffineTransform());
         ArrayList<Point2D> points = new ArrayList<>();
-        while(!path.isDone()) {
+        while (!path.isDone()) {
             points.addAll(getSegmentCoordinates(path));
             path.next();
         }
@@ -31,8 +31,8 @@ public class ShapeBorder {
         int numberOfElements = getNumberOfCoordinates(type);
 
         ArrayList<Point2D> points = new ArrayList<>();
-        for(int i = 0; i < numberOfElements; i += 2) {
-            points.add(new Point2D.Double(segment[i], segment[i+1]));
+        for (int i = 0; i < numberOfElements; i += 2) {
+            points.add(new Point2D.Double(segment[i], segment[i + 1]));
         }
         return points;
     }

@@ -27,7 +27,7 @@ public class Ship extends Obstacle {
     private AISData currentData;
 
     public Ship(int mmsi) {
-        super(new HPoint(0,0), new HPoint(0,0));
+        super(new HPoint(0, 0), new HPoint(0, 0));
 
         this.mmsi = mmsi;
     }
@@ -40,7 +40,7 @@ public class Ship extends Obstacle {
     }
 
     public Ship(HPoint position, int length, int width, int heading) {
-        super(position, new HPoint(0,0));
+        super(position, new HPoint(0, 0));
         this.position = position;
         this.length = length;
         this.width = width;
@@ -51,7 +51,7 @@ public class Ship extends Obstacle {
     }
 
     public Ship(AISData data) {
-        super(new HPoint(0,0), new HPoint(0,0));
+        super(new HPoint(0, 0), new HPoint(0, 0));
 
         warnings = new Hashtable<>();
         currentData = data;
@@ -66,6 +66,7 @@ public class Ship extends Obstacle {
 
     /**
      * Updates the given ship with new data
+     *
      * @param data The new data that the ship will be updated with
      */
     public void Update(AISData data) {
@@ -84,11 +85,9 @@ public class Ship extends Obstacle {
     public boolean equals(Object obj) {
         if (obj.getClass() == Ship.class) {
             return this.mmsi == ((Ship) obj).mmsi;
-        }
-        else if (obj.getClass() == AISData.class) {
+        } else if (obj.getClass() == AISData.class) {
             return this.mmsi == ((AISData) obj).mmsi;
-        }
-        else {
+        } else {
             return super.equals(obj);
         }
     }

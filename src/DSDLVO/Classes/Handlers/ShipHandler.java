@@ -61,7 +61,7 @@ public abstract class ShipHandler implements IShipDataHandler {
     }
 
     public HPoint GetPositionPlaceHolder() {
-        return new HPoint(0,0);
+        return new HPoint(0, 0);
     }
 
     public double KnotsToMetersPerSecond(double kn) {
@@ -70,32 +70,32 @@ public abstract class ShipHandler implements IShipDataHandler {
 
     public static class MovePositionToCenter {
         public static HPoint AftPort(HPoint originalPosition,
-                                       int aft, int port,
-                                       int length, int width) {
+                                     int aft, int port,
+                                     int length, int width) {
 
             return new HPoint(Port(originalPosition, port, width).getX(),
                     Aft(originalPosition, aft, length).getY());
         }
 
         public static HPoint AftStarboard(HPoint originalPosition,
-                                            int aft, int starboard,
-                                            int length, int width) {
+                                          int aft, int starboard,
+                                          int length, int width) {
 
             return new HPoint(Starboard(originalPosition, starboard, width).getX(),
                     Aft(originalPosition, aft, length).getY());
         }
 
         public static HPoint ForePort(HPoint originalPosition,
-                                        int fore, int port,
-                                        int length, int width) {
+                                      int fore, int port,
+                                      int length, int width) {
 
             return new HPoint(Port(originalPosition, port, width).getX(),
                     Fore(originalPosition, fore, length).getY());
         }
 
         public static HPoint ForeStarboard(HPoint originalPosition,
-                                             int fore, int starboard,
-                                             int length, int width) {
+                                           int fore, int starboard,
+                                           int length, int width) {
 
             return new HPoint(Starboard(originalPosition, starboard, width).getX(),
                     Fore(originalPosition, fore, length).getY());
@@ -103,28 +103,28 @@ public abstract class ShipHandler implements IShipDataHandler {
 
 
         public static HPoint Fore(HPoint originalPosition,
-                                    int fore, int length) {
+                                  int fore, int length) {
 
             return new HPoint(originalPosition.getX(),
                     originalPosition.getY() + fore - (((double) length) / 2));
         }
 
         public static HPoint Aft(HPoint originalPosition,
-                                   int aft, int length) {
+                                 int aft, int length) {
 
             return new HPoint(originalPosition.getX(),
                     originalPosition.getY() - aft + (((double) length / 2)));
         }
 
         public static HPoint Starboard(HPoint originalPosition,
-                                         int starboard, int width) {
+                                       int starboard, int width) {
 
             return new HPoint(originalPosition.getX() + starboard - (((double) width) / 2),
                     originalPosition.getY());
         }
 
         public static HPoint Port(HPoint originalPosition,
-                                    int port, int width) {
+                                  int port, int width) {
 
             return new HPoint(originalPosition.getX() - port + (((double) width) / 2),
                     originalPosition.getY());

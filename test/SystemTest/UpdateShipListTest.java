@@ -4,6 +4,7 @@ import DSDLVO.Classes.*;
 import DSDLVO.Classes.CASystem;
 import DSDLVO.Classes.InputManagement.AISData;
 import DSDLVO.Classes.Geometry.HPoint;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdateShipListTest {
 
+    CASystem system;
+    @BeforeEach
+    public void setUp() {
+        system = new CASystem("InputFiles/generated_file.csv",1);
+    }
+
     @Test
     public void emptyListEmptyBuffer_noChange() {
 
-        CASystem system = new CASystem();
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -28,8 +34,6 @@ public class UpdateShipListTest {
 
     @Test
     public void emptyListNonEmptyBuffer_newElement_elementAddedToList() {
-
-        CASystem system = new CASystem();
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -46,8 +50,6 @@ public class UpdateShipListTest {
 
     @Test
     public void emptyListNonEmptyBuffer_twoNewElements_elementsAddedToList() {
-
-        CASystem system = new CASystem();
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -70,9 +72,6 @@ public class UpdateShipListTest {
 
     @Test
     public void nonemptyListNonEmptyBuffer_newElement_elementAddedToList() {
-
-        CASystem system = new CASystem();
-
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
@@ -92,7 +91,6 @@ public class UpdateShipListTest {
     @Test
     public void nonemptyListNonEmptyBuffer_existingElement_elementUpdated() {
 
-        CASystem system = new CASystem();
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -122,7 +120,7 @@ public class UpdateShipListTest {
 
     @Test
     public void emptyListNonEmptyBuffer_elementOutOfRange_listRemainsEmpty() {
-        CASystem system = new CASystem();
+
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -143,7 +141,7 @@ public class UpdateShipListTest {
 
     @Test
     public void nonEmptyListNonEmptyBuffer_elementOutOfRange_removeElementFromList() {
-        CASystem system = new CASystem();
+
 
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
@@ -173,7 +171,7 @@ public class UpdateShipListTest {
     class RemoveShipsOutOfRange {
         @Test
         public void ShipsAreWithinRange_NoChange() {
-            CASystem system = new CASystem();
+
 
             Ship target1 = new Ship(new HPoint(1,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(2,0), 10, 10, 0);
@@ -191,7 +189,7 @@ public class UpdateShipListTest {
 
         @Test
         public void OneShipOutOfRange_RemoveOneShip() {
-            CASystem system = new CASystem();
+
 
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(1,0), 10, 10, 0);
@@ -209,7 +207,6 @@ public class UpdateShipListTest {
 
         @Test
         public void MultipleShipsOutOfRange_RemoveShips() {
-            CASystem system = new CASystem();
 
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(12,0), 10, 10, 0);
@@ -230,7 +227,6 @@ public class UpdateShipListTest {
 
         @Test
         public void AllShipOutOfRange_EmptyList() {
-            CASystem system = new CASystem();
 
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(12,0), 10, 10, 0);

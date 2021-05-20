@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
-public class InputSimulator extends Thread{
+public class InputSimulator extends Thread {
 
     BlockingQueue<AISData> tsBuffer;
     BlockingQueue<AISData> osBuffer;
@@ -49,7 +49,7 @@ public class InputSimulator extends Thread{
 
     // todo: lav evt flere tests til run()
     @Override
-    public void run() throws NullPointerException{
+    public void run() throws NullPointerException {
 
         executorService = Executors.newScheduledThreadPool(1);
 
@@ -65,7 +65,7 @@ public class InputSimulator extends Thread{
 //        }, 0, (long)(1000 / timeFactor), TimeUnit.MILLISECONDS);
 
         Runnable runnable = () -> {
-            if (nextInput != null){
+            if (nextInput != null) {
 
                 if (timeFactor != 0) {
                     long start = System.nanoTime();
@@ -78,13 +78,11 @@ public class InputSimulator extends Thread{
                     long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
 
                     executorService.schedule(this, (1000 / timeFactor.longValue()) - duration, TimeUnit.MILLISECONDS);
-                }
-                else {
+                } else {
                     executorService.schedule(this, 500, TimeUnit.MILLISECONDS);
                 }
 
-            }
-            else
+            } else
                 executorService.shutdown();
         };
 
@@ -95,11 +93,10 @@ public class InputSimulator extends Thread{
         AISData os = null;
         nextInput = GetNextInput();
 
-        while(nextInput != null && (currentTime == null || !nextInput.dateTime.isAfter(currentTime))){
-            if (nextInput.mmsi != osMMSI){
+        while (nextInput != null && (currentTime == null || !nextInput.dateTime.isAfter(currentTime))) {
+            if (nextInput.mmsi != osMMSI) {
                 AddNextInputToTSList();
-            }
-            else {
+            } else {
                 currentTime = nextInput.dateTime;
                 os = nextInput;
             }
@@ -121,7 +118,7 @@ public class InputSimulator extends Thread{
         tsList.clear();
     }
 
-    public void AddNextInputToTSList(){
+    public void AddNextInputToTSList() {
         int i = 0;
 
         if (tsList.size() > 0) {
@@ -135,10 +132,10 @@ public class InputSimulator extends Thread{
         tsList.add(nextInput);
     }
 
-    public void AddDataToBuffers(){
+    public void AddDataToBuffers() {
         AISData os = null;
 
-        while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)){
+        while (nextInput != null && !nextInput.dateTime.isAfter(currentTime)) {
             if (nextInput.mmsi != osMMSI)
                 tsList.add(nextInput);
             else

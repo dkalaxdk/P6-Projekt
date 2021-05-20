@@ -8,7 +8,8 @@ The program comes with the Java 16 project and a python 3.8 project.<br>
 The Java project contains the implementation of the dynamic ship domain and the velocity obstacle algorithm, as well as a CSV reader which reads the AIS data.
 
 * **Define input file:**<br>
-  The GitHub repository contains a set of predefined input files [Input InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). To change which file is being used, one currently have to change the input within the Main class of the Java project [Reference til Main](https://www.youtube.com/watch?v=dQw4w9WgXcQ). <br>
+  The GitHub repository contains a set of predefined input files [Input InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). <br>
+  Upon opening the application, the user will be prompted to select the input file, and the MMSI which should be considered as Own Ship.<br>
   The program repository also contains a python script to define a custom input file. [Input File Creator](#setup-of-input-file-generator)<br>
   If an external input file is used, it should adhere to the same standards as the defined inputs files. The entries are comma separated, and SOG, COG ,Length ,Heading ,longitude ,latitude should be floats.
 * **Define MMSI**<br>

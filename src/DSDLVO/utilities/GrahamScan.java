@@ -32,7 +32,7 @@ class TranslatedPoint {
 // This would remove the meed to have the calculate method and the hull could be produced when an instance is created
 // and be made available through a getter. Or it could be calculated in the getter.
 public class GrahamScan implements ConvexHull<Point> {
-    private PointFactory factory;
+    private final PointFactory factory;
 
     public GrahamScan(PointFactory factory) {
         this.factory = factory;
@@ -42,8 +42,8 @@ public class GrahamScan implements ConvexHull<Point> {
     public List<Point> Calculate(List<Point> points) {
         // Remove duplicate points
         List<Point> uniquePoints = new ArrayList<>(new HashSet<>(points));
-        if(uniquePoints.size() < 3) {
-            throw  new IllegalArgumentException("Arguments must contain collection with at least three points");
+        if (uniquePoints.size() < 3) {
+            throw new IllegalArgumentException("Arguments must contain collection with at least three points");
         }
         // Find point with lowest y, if multiple then select leftmost
         Point p0 = getStartPoint(uniquePoints);
@@ -65,8 +65,8 @@ public class GrahamScan implements ConvexHull<Point> {
         lookaheadStack.add(sortedPoints.get(0));
         lookaheadStack.add(sortedPoints.get(1));
 
-        for(int i=3; i <= sortedPoints.size(); i++) {
-            while(!leftTurn(nextToTop(lookaheadStack), top(lookaheadStack), getIndex(sortedPoints, i -1))) {
+        for (int i = 3; i <= sortedPoints.size(); i++) {
+            while (!leftTurn(nextToTop(lookaheadStack), top(lookaheadStack), getIndex(sortedPoints, i - 1))) {
                 lookaheadStack.remove(lookaheadStack.size() - 1);
             }
             lookaheadStack.add(sortedPoints.get(i - 1));
@@ -90,23 +90,21 @@ public class GrahamScan implements ConvexHull<Point> {
         double angle = points.get(0).polarPoint.angle;
 
         for (int i = 0; i < points.size(); i++) {
-            if(points.get(i).polarPoint.angle == angle && i + 1 < points.size()){
+            if (points.get(i).polarPoint.angle == angle && i + 1 < points.size()) {
                 tempList.add(points.get(i));
-            }
-            else if(points.get(i).polarPoint.angle == angle && i + 1 == points.size()){
+            } else if (points.get(i).polarPoint.angle == angle && i + 1 == points.size()) {
                 tempList.add(points.get(i));
 
                 TranslatedPoint temp = tempList.get(0);
-                for(TranslatedPoint p : tempList){
-                    if(Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
+                for (TranslatedPoint p : tempList) {
+                    if (Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
                         temp = p;
                 }
                 result.add(temp);
-            }
-            else if(points.get(i).polarPoint.angle != angle && i + 1 < points.size()){
+            } else if (points.get(i).polarPoint.angle != angle && i + 1 < points.size()) {
                 TranslatedPoint temp = tempList.get(0);
-                for(TranslatedPoint p : tempList){
-                    if(Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
+                for (TranslatedPoint p : tempList) {
+                    if (Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
                         temp = p;
                 }
                 result.add(temp);
@@ -114,11 +112,10 @@ public class GrahamScan implements ConvexHull<Point> {
                 tempList.clear();
                 angle = points.get(i).polarPoint.angle;
                 tempList.add(points.get(i));
-            }
-            else{
+            } else {
                 TranslatedPoint temp = tempList.get(0);
-                for(TranslatedPoint p : tempList){
-                    if(Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
+                for (TranslatedPoint p : tempList) {
+                    if (Utility.roundToFourDecimals(p.polarPoint.length) > Utility.roundToFourDecimals(temp.polarPoint.length))
                         temp = p;
                 }
                 result.add(temp);
@@ -131,7 +128,7 @@ public class GrahamScan implements ConvexHull<Point> {
     }
 
     private boolean leftTurn(Point a, Point b, Point c) {
-        double crossProduct = (c.getX() - a.getX())*(b.getY() - a.getY()) - (b.getX() - a.getX())*(c.getY() - a.getY());
+        double crossProduct = (c.getX() - a.getX()) * (b.getY() - a.getY()) - (b.getX() - a.getX()) * (c.getY() - a.getY());
         // Check for negative cross product
         return crossProduct < 0;
     }

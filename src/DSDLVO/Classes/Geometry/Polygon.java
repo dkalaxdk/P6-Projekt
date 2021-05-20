@@ -108,8 +108,8 @@ public class Polygon extends Geometry {
 
     public Polygon combineWith(Polygon polygon) {
         List<Point> list = new ArrayList<>();
-        for (HPoint vertex1 : this.coordinates){
-            for (HPoint vertex2 : polygon.coordinates){
+        for (HPoint vertex1 : this.coordinates) {
+            for (HPoint vertex2 : polygon.coordinates) {
                 list.add(vertex1.add(polygon.referencePoint.subtract(vertex2)));
             }
         }
@@ -131,8 +131,7 @@ public class Polygon extends Geometry {
 
         if (coordinates == null || coordinates.size() == 0) {
             referencePoint = null;
-        }
-        else {
+        } else {
             for (HPoint point : coordinates) {
                 x = x + point.getX();
                 y = y + point.getY();
@@ -161,8 +160,8 @@ public class Polygon extends Geometry {
 
         // Create lines between all points
         // Last point is excluded and handled separately
-        for(int i = 0; i < coordinates.size() - 1; i++) {
-            vertices.add(new Line(coordinates.get(i), coordinates.get(i+1)));
+        for (int i = 0; i < coordinates.size() - 1; i++) {
+            vertices.add(new Line(coordinates.get(i), coordinates.get(i + 1)));
         }
         HPoint lastPoint = coordinates.get(coordinates.size() - 1);
         HPoint firstPoint = coordinates.get(0);

@@ -53,20 +53,20 @@ public class HPoint extends Geometry implements Comparable, Point {
         return Math.acos(dotProduct(point) / (this.length() * point.length()));
     }
 
-    public double counterClockwiseAngle(HPoint point){
+    public double counterClockwiseAngle(HPoint point) {
         double angle = this.angle(point);
-        double orientation = new HPoint(0,0).orientation(this, point);
+        double orientation = new HPoint(0, 0).orientation(this, point);
 
         // Source: https://vlecomte.github.io/cp-geo.pdf (page 40)
         // The cross product indicates the orientation of the two points relative to each other,
         // and therefore determines whether the angle is larger or smaller that 180 degrees
-        if(orientation >= 0)
+        if (orientation >= 0)
             return angle;
         else
             return Math.toRadians(360) - angle;
     }
 
-    public double standardCounterClockwiseAngle(){
+    public double standardCounterClockwiseAngle() {
         return new HPoint(1, 0).counterClockwiseAngle(this);
     }
 
@@ -98,10 +98,10 @@ public class HPoint extends Geometry implements Comparable, Point {
 
     @Override
     public void transform(Transformation transformation) {
-        double [][] matrix = transformation.get();
+        double[][] matrix = transformation.get();
         double[] transformedPoint = new double[3];
 
-        for(int col = 0; col < 3; col++) {
+        for (int col = 0; col < 3; col++) {
             double res = 0;
             // This is not the most elegant solution,
             // However should anyone ask, it is optimised using loop unrolling
@@ -138,7 +138,7 @@ public class HPoint extends Geometry implements Comparable, Point {
 
     @Override
     public int compareTo(Object point) {
-        double result = this.standardCounterClockwiseAngle() - ((HPoint)point).standardCounterClockwiseAngle();
+        double result = this.standardCounterClockwiseAngle() - ((HPoint) point).standardCounterClockwiseAngle();
 
         if (result > 0)
             return 1;
@@ -148,7 +148,7 @@ public class HPoint extends Geometry implements Comparable, Point {
             return 0;
     }
 
-    public PolarPoint toPolarPoint(){
+    public PolarPoint toPolarPoint() {
         double length = this.length();
         double angle = this.standardCounterClockwiseAngle();
         return new PolarPoint(length, angle);
@@ -174,10 +174,10 @@ public class HPoint extends Geometry implements Comparable, Point {
     }
 
     public HPoint roundElements() {
-        return new HPoint(roundToFourDecimals(x),roundToFourDecimals(y), roundToFourDecimals(z));
+        return new HPoint(roundToFourDecimals(x), roundToFourDecimals(y), roundToFourDecimals(z));
     }
 
     private double roundToFourDecimals(double number) {
-        return (double)Math.round(number * 10000d) / 10000d;
+        return (double) Math.round(number * 10000d) / 10000d;
     }
 }

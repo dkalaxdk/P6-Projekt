@@ -3,8 +3,8 @@ package DSDLVO.Classes.Geometry;
 import java.util.Objects;
 
 public class Line {
-    private double slope;
-    private double yAxisIntersection;
+    private final double slope;
+    private final double yAxisIntersection;
 
     public Line(double slope, double yAxisIntersection) {
         this.slope = slope;
@@ -15,13 +15,12 @@ public class Line {
         double changeInY = pointTwo.getY() - pointOne.getY();
         double changeInX = pointTwo.getX() - pointOne.getX();
         // Handle vertical line
-        if(isInvalidValue(changeInX)) {
+        if (isInvalidValue(changeInX)) {
             slope = pointOne.getX();
             yAxisIntersection = Double.NaN;
-        }
-        else {
+        } else {
             // Handle horizontal line. If changeInY is 0 and changeInX is negative slope will be -0 but should be 0
-            slope = changeInY == 0 ? 0 : changeInY/changeInX;
+            slope = changeInY == 0 ? 0 : changeInY / changeInX;
             yAxisIntersection = pointOne.getY() - slope * pointOne.getX();
         }
     }
@@ -41,13 +40,13 @@ public class Line {
     public Point getIntersection(Line other) {
         double intersectionX = (other.yAxisIntersection - this.yAxisIntersection) / (this.slope - other.slope);
         double intersectionY = intersectionX + this.yAxisIntersection;
-        if(isVertical())
+        if (isVertical())
             intersectionX = slope;
-        if(other.isVertical())
+        if (other.isVertical())
             intersectionX = other.slope;
-        if(isHorizontal())
+        if (isHorizontal())
             intersectionY = yAxisIntersection;
-        if(other.isHorizontal())
+        if (other.isHorizontal())
             intersectionY = other.yAxisIntersection;
         return new HPoint(intersectionX, intersectionY);
     }
@@ -61,7 +60,7 @@ public class Line {
     }
 
     public HPoint getDirectionVector() {
-        if(isVertical())
+        if (isVertical())
             return new HPoint(0, 1);
         // Find two points on the line
         HPoint p1 = new HPoint(0, yAxisIntersection);               // x = 0

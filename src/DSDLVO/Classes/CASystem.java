@@ -43,8 +43,9 @@ public class CASystem {
     public Float timeFactor;
 
     public boolean dirty;
+    private String inputFile;
 
-    public CASystem() {
+    public CASystem(String inputFile, int ownShipMMSI) {
         osBuffer = new LinkedBlockingQueue<>();
         tsBuffer = new LinkedBlockingQueue<>();
 
@@ -100,10 +101,10 @@ public class CASystem {
 //        String inputFile = "InputFiles/RealWorld/Simulation1.csv";
 
 
-        ownShipMMSI = 1;
+        //ownShipMMSI = 1;
 //        String inputFile = "InputFiles/Crossings/collision.csv";
 //        String inputFile = "InputFiles/Overtakings/overtaking_starboard.csv";
-        String inputFile = "InputFiles/generated_file.csv";
+        //inputFile = "InputFiles/generated_file.csv";
 
 
         timeFactor = 0f;
@@ -141,7 +142,7 @@ public class CASystem {
         long end;
         long duration = 0;
 
-        while(running) {
+        while (running) {
             start = System.nanoTime();
 
             listLock.lock();
@@ -230,8 +231,7 @@ public class CASystem {
                     ship.Update(data);
                     found = true;
                     dirty = true;
-                }
-                else {
+                } else {
                     i++;
                 }
             }

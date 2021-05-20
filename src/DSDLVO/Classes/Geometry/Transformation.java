@@ -9,7 +9,7 @@ public class Transformation {
     private double rotation = 0;
 
     public Transformation() {
-        matrix = new double[][] {
+        matrix = new double[][]{
                 {1, 0, 0},
                 {0, 1, 0},
                 {0, 0, 1}
@@ -23,7 +23,7 @@ public class Transformation {
     public Transformation rotate(double degrees) {
         double radians = Math.toRadians(-degrees);
         rotation += radians;
-        setMatrix(new double[][] {
+        setMatrix(new double[][]{
                 {Math.cos(radians), Math.sin(radians), 0},
                 {-Math.sin(radians), Math.cos(radians), 0},
                 {0, 0, 1}
@@ -32,7 +32,7 @@ public class Transformation {
     }
 
     public Transformation scale(double width, double height) {
-        setMatrix(new double[][] {
+        setMatrix(new double[][]{
                 {width, 0, 0},
                 {0, height, 0},
                 {0, 0, 1}
@@ -61,10 +61,10 @@ public class Transformation {
 
     private double[][] multiplyMatrix(double[][] matrixOne, double[][] matrixTwo) {
         double[][] result = new double[3][3];
-        for(int col = 0; col < 3; col++) {
-            for(int row = 0; row < 3; row++) {
+        for (int col = 0; col < 3; col++) {
+            for (int row = 0; row < 3; row++) {
                 double res = 0;
-                for(int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                     res += matrixOne[i][row] * matrixTwo[col][i];
                 result[col][row] = res;
             }
@@ -75,8 +75,8 @@ public class Transformation {
     // Rounds the entries to four decimals before returning the matrix
     public double[][] get() {
         double[][] rounded = new double[3][3];
-        for(int i = 0; i < matrix.length; i++)
-            for(int j = 0; j < matrix[i].length; j++)
+        for (int i = 0; i < matrix.length; i++)
+            for (int j = 0; j < matrix[i].length; j++)
                 rounded[i][j] = Utility.roundToFourDecimals(matrix[i][j]);
         return rounded;
     }

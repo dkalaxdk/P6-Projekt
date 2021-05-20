@@ -31,8 +31,8 @@ public class Display extends JPanel {
         yOffset = 0;
     }
 
-    public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO) {
-        this.system = new CASystem();
+    public Display(Ship ownShip, ArrayList<Ship> ships, Hashtable<Ship, Polygon> MVO,CASystem system) {
+        this.system = system;
         system.ownShip = ownShip;
         system.shipsInRange = ships;
         system.MVO = MVO;
@@ -51,7 +51,7 @@ public class Display extends JPanel {
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(1000,1000);
+        return new Dimension(1000, 1000);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Display extends JPanel {
         g2.scale(1, -1);
 
         // Apply zoom
-        g2.scale(1/ zoom,1 / zoom);
+        g2.scale(1 / zoom, 1 / zoom);
 
         // Translate so that own ship is in the center
         g2.translate((((displayWith / 2) * zoom) - system.ownShip.position.getX()) + xOffset,
@@ -81,7 +81,6 @@ public class Display extends JPanel {
 //        g2.translate((((displayWith / 2) )- system.ownShip.position.getX()),
 //                (((displayHeight / 2) )- system.ownShip.position.getY()) - (displayHeight )
 //        );
-
 
 
         drawGUIElements(g2, system.ownShip, system.shipsInRange);
@@ -180,12 +179,11 @@ public class Display extends JPanel {
             // Pentagon
 
             shape = drawPentagonDomain(ship);
-        }
-        else {
+        } else {
             // Ellipse
             HPoint p = getCoordinatesToDrawDomainFrom(ship);
 
-            ship.domain.Update(ship.sog,0, p.getY(), p.getX());
+            ship.domain.Update(ship.sog, 0, p.getY(), p.getX());
 
             shape = drawEllipseDomain(ship);
         }
@@ -212,8 +210,7 @@ public class Display extends JPanel {
 
         if (violation && ship.mmsi == system.ownShipMMSI) {
             g2.setColor(Color.red);
-        }
-        else {
+        } else {
             g2.setColor(Color.green);
         }
 
@@ -224,7 +221,6 @@ public class Display extends JPanel {
         velocity = ship.position.add(velocity);
 
         Shape shape = new Line2D.Double(ship.position.getX(), ship.position.getY(), velocity.getX(), velocity.getY());
-
 
 
         g2.draw(shape);
@@ -247,8 +243,7 @@ public class Display extends JPanel {
             if (polygon.inOrOn(point)) {
                 violation = true;
                 drawVelocityObstacle(g, polygon, true);
-            }
-            else {
+            } else {
                 drawVelocityObstacle(g, polygon, false);
             }
         }
@@ -257,8 +252,7 @@ public class Display extends JPanel {
     private void drawVelocityObstacle(Graphics2D g, Polygon vo, boolean violation) {
         if (violation) {
             g.setColor(new Color(1f, 0f, 0f, 0.5f));
-        }
-        else {
+        } else {
             g.setColor(new Color(0f, 0f, 0f, 0.3f));
         }
 
@@ -298,7 +292,7 @@ public class Display extends JPanel {
         double x = ship.position.getX() - (ship.domain.getWidth() / 2);
         double y = ship.position.getY() - (ship.domain.getHeight() / 2);
 
-        return new HPoint(x,y);
+        return new HPoint(x, y);
     }
 
     private Path2D drawPentagonDomain(Ship ship) {
@@ -312,6 +306,7 @@ public class Display extends JPanel {
     private Path2D drawEllipseDomain(Ship ship) {
         return new Path2D.Double();
     }
+
     public void Update() {
         clearDisplay();
     }

@@ -89,7 +89,8 @@ public class AISData implements Comparable {
     //public String ETA;
     //public String dateSourceType;
 
-    public AISData(){ }
+    public AISData() {
+    }
 
     public AISData(String timestampString, int mmsi, float latitude, float longitude, int width, int length) {
         this.timestampString = timestampString;
@@ -107,7 +108,7 @@ public class AISData implements Comparable {
         this.dateTime = LocalDateTime.parse(this.timestampString, formatter);
     }
 
-    public void SetValuesAndBooleans(){
+    public void SetValuesAndBooleans() {
         rotIsSet = !StringUtils.isEmpty(rotString);
         ROT = rotIsSet ? Double.parseDouble(rotString) : 0;
 
@@ -142,9 +143,9 @@ public class AISData implements Comparable {
     @Override
     public int compareTo(Object o) {
 
-        if (this.dateTime.isBefore(((AISData)o).dateTime))
+        if (this.dateTime.isBefore(((AISData) o).dateTime))
             return -1;
-        else if (this.dateTime.isAfter(((AISData)o).dateTime))
+        else if (this.dateTime.isAfter(((AISData) o).dateTime))
             return 1;
         else
             return 0;

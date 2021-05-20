@@ -6,6 +6,7 @@ import DSDLVO.Classes.VelocityObstacle;
 
 public interface IRoute {
 
-    public Velocity getVelocity();
-    public Velocity Calculate(VelocityObstacle obstacles, Ship ownShip);
+    Velocity getVelocity();
+
+    Velocity Calculate(VelocityObstacle obstacles, Ship ownShip);
 }

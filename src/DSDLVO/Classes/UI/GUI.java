@@ -108,7 +108,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        slider.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         Font font = new Font("Serif", Font.ITALIC, 15);
         slider.setFont(font);
         slider.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -122,7 +122,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
         JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, current);
 
         slider.addChangeListener(this);
-        slider.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        slider.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         slider.setAlignmentX(Component.CENTER_ALIGNMENT);
         slider.setAlignmentY(Component.CENTER_ALIGNMENT);
         slider.setIgnoreRepaint(true);
@@ -130,7 +130,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(500,500);
+        return new Dimension(500, 500);
     }
 
     @Override
@@ -184,8 +184,7 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 float value = (float) timeFactorSlider.getValue();
                 system.inputSimulator.SetTimeFactor(value);
                 timeFactorLabel.setText("Time factor: " + value);
-            }
-            else if (slider == this.zoomSlider) {
+            } else if (slider == this.zoomSlider) {
                 double value = zoomSlider.getValue();
 
                 value = (value == 0) ? 1 : value;
@@ -197,26 +196,22 @@ public class GUI extends JPanel implements ActionListener, WindowListener, Chang
                 }
 
                 system.display.zoom = value;
-            }
-            else if (slider == this.timeFrameSlider) {
+            } else if (slider == this.timeFrameSlider) {
 
                 int value = timeFrameSlider.getValue();
                 system.timeFrame = (value == 0) ? 1 : value * 60;
                 timeFrameLabel.setText("Time frame: " + (value) + " minutes");
 
                 timeChange = true;
-            }
-            else if (slider == this.lookAheadSlider) {
+            } else if (slider == this.lookAheadSlider) {
                 float value = lookAheadSlider.getValue();
                 system.lookAhead = (value == 0) ? 1 : value;
                 lookAheadLabel.setText("Lookahead: " + value);
 
                 timeChange = true;
-            }
-            else if (slider == this.xOffsetSlider) {
+            } else if (slider == this.xOffsetSlider) {
                 system.display.xOffset = -xOffsetSlider.getValue();
-            }
-            else if (slider == this.yOffsetSlider) {
+            } else if (slider == this.yOffsetSlider) {
                 system.display.yOffset = -yOffsetSlider.getValue();
             }
 

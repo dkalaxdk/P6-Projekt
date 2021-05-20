@@ -22,7 +22,7 @@ public class FileParser implements IDataInput {
         dataList = new CsvToBeanBuilder(reader).withType(AISData.class).withEscapeChar('\r').build().iterator();
     }
 
-    public AISData GetNextInput(){
+    public AISData GetNextInput() {
         AISData data = dataList.next();
 
         data.AddDateTime();
@@ -33,12 +33,12 @@ public class FileParser implements IDataInput {
 
     public void SkipHashtagIfPresent() throws IOException {
         reader.mark(2);
-        if(reader.read() != '#'){
+        if (reader.read() != '#') {
             reader.reset();
         }
     }
 
-    public void PrintData(AISData data){
+    public void PrintData(AISData data) {
         System.out.println("TimeStamp: " + data.timestampString);
         System.out.println("DateTime: " + data.dateTime);
         System.out.println("MMSI: " + data.mmsi);

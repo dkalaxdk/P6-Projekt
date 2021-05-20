@@ -60,7 +60,7 @@ public class Ellipse extends Geometry {
     @Override
     public boolean contains(HPoint point) {
         // Long bit of math, read more at: https://stackoverflow.com/questions/7946187/point-and-ellipse-rotated-position-test-algorithm
-        return Math.pow(Math.cos(rotation)*(point.getX() - center.getX()) + Math.sin(rotation)*(point.getY() - center.getY()),2) / Math.pow(semiMajorAxis, 2) + Math.pow(Math.sin(rotation)*(point.getX() - center.getX()) - Math.cos(rotation)*(point.getY()-center.getY()), 2) / Math.pow(semiMinorAxis, 2) <= 1;
+        return Math.pow(Math.cos(rotation) * (point.getX() - center.getX()) + Math.sin(rotation) * (point.getY() - center.getY()), 2) / Math.pow(semiMajorAxis, 2) + Math.pow(Math.sin(rotation) * (point.getX() - center.getX()) - Math.cos(rotation) * (point.getY() - center.getY()), 2) / Math.pow(semiMinorAxis, 2) <= 1;
     }
 
     public HPoint getCenter() {

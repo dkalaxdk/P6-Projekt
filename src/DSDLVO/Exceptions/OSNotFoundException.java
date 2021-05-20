@@ -1,5 +1,5 @@
 package DSDLVO.Exceptions;
 
-public class OSNotFoundException extends Exception{
+public class OSNotFoundException extends Exception {
 
 }

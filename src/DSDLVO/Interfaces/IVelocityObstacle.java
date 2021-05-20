@@ -7,6 +7,7 @@ import DSDLVO.Classes.VO;
 
 public interface IVelocityObstacle {
 
-    public Geometry Calculate(Point objectPos, Geometry obstacleDomain, Point obstaclePos, HPoint obstacleVel, double timeFrame);
-    public VO Merge(VO to, VO from);
+    Geometry Calculate(Point objectPos, Geometry obstacleDomain, Point obstaclePos, HPoint obstacleVel, double timeFrame);
+
+    VO Merge(VO to, VO from);
 }

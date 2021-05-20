@@ -27,14 +27,14 @@ public class ShipDomain implements IDomain {
     private DSDLVO.Classes.Geometry.Ellipse ellipseDomain;
     private DSDLVO.Classes.Geometry.Polygon pentagonDomain;
     private final DomainDimensions DomainDimensions;
-    private boolean domainType;
+    private final boolean domainType;
     private double Heading;
 
 
-    public ShipDomain(int shipLength, int shipWidth , String domainType ) {
+    public ShipDomain(int shipLength, int shipWidth, String domainType) {
         if (domainType.equals("Pentagon")) {
             this.domainType = true;
-        } else if(domainType.equals("Ellipse")) {
+        } else if (domainType.equals("Ellipse")) {
             this.domainType = false;
         } else throw new IllegalArgumentException();
         this.shipLength = shipLength;
@@ -107,6 +107,7 @@ public class ShipDomain implements IDomain {
         updateEllipseDomain();
         return ellipseDomain;
     }
+
     @Override
     public ShipDomain Update(double SOG, double Heading, double y, double x) {
         this.Heading = Heading;
@@ -153,7 +154,7 @@ public class ShipDomain implements IDomain {
     }
 
     private void updateEllipseDomain() {
-        this.ellipseDomain = new Ellipse(new HPoint(x + starboardOffset,y + aftOffset,1),width,height);
+        this.ellipseDomain = new Ellipse(new HPoint(x + starboardOffset, y + aftOffset, 1), width, height);
     }
 
     private void updatePentagonDomain() {
@@ -171,8 +172,6 @@ public class ShipDomain implements IDomain {
         coordinates.add(new HPoint(x + DomainDimensions.One, y + DomainDimensions.Four));
         // P5
         coordinates.add(new HPoint(x + DomainDimensions.One, y + DomainDimensions.Three));
-
-
 
 
         pentagonDomain = new Polygon(coordinates, new HPoint(x, y));
