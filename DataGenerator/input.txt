@@ -1,4 +1,8 @@
 X,Y,SOG,COG,Heading,Length,Width
 0,0,15.0,0,,50,10
+<<<<<<< Updated upstream
 500,500,17.0,270,,50,10
 
+=======
+-3000,17000,15.0,160,,50,10
+>>>>>>> Stashed changes
