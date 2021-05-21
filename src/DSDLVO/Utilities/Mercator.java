@@ -1,4 +1,4 @@
-package DSDLVO.Classes;
+package DSDLVO.Utilities;
 
 import DSDLVO.Classes.Geometry.HPoint;
 

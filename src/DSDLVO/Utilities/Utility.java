@@ -1,4 +1,4 @@
-package DSDLVO.Classes;
+package DSDLVO.Utilities;
 
 public class Utility {
     public static double roundToFourDecimals(double number) {

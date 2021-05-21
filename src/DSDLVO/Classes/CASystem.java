@@ -7,6 +7,7 @@ import DSDLVO.Classes.InputSimulation.InputSimulator;
 import DSDLVO.Classes.UI.Display;
 import DSDLVO.Classes.UI.GUI;
 import DSDLVO.Exceptions.OSNotFoundException;
+import DSDLVO.Utilities.Mercator;
 
 import javax.swing.*;
 import java.io.IOException;

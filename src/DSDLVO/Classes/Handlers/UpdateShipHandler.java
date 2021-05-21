@@ -2,7 +2,7 @@ package DSDLVO.Classes.Handlers;
 
 import DSDLVO.Classes.Geometry.HPoint;
 import DSDLVO.Classes.InputManagement.AISData;
-import DSDLVO.Classes.Mercator;
+import DSDLVO.Utilities.Mercator;
 import DSDLVO.Classes.Ship;
 
 import java.util.Hashtable;

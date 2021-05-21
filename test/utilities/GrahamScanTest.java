@@ -2,8 +2,8 @@ package utilities;
 
 import DSDLVO.Classes.Geometry.*;
 import DSDLVO.Classes.Geometry.HPoint;
-import DSDLVO.utilities.ConvexHull;
-import DSDLVO.utilities.GrahamScan;
+import DSDLVO.Utilities.ConvexHull;
+import DSDLVO.Utilities.GrahamScan;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;

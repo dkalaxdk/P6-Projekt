@@ -4,14 +4,13 @@ import DSDLVO.Classes.Geometry.*;
 import DSDLVO.Classes.Geometry.Point;
 import DSDLVO.Classes.Geometry.Polygon;
 import DSDLVO.Interfaces.IVelocityObstacle;
-import DSDLVO.utilities.GrahamScan;
+import DSDLVO.Utilities.GrahamScan;
 
 import java.util.ArrayList;
 
 import static java.util.stream.Collectors.toList;
 
 public class VelocityObstacle implements IVelocityObstacle {
-    public VO velocities;
 
     @Override
     public Geometry Calculate(Point objectPos, Geometry obstacleDomain, Point obstaclePos, HPoint obstacleVel, double timeFrame) {
@@ -19,11 +18,6 @@ public class VelocityObstacle implements IVelocityObstacle {
         Geometry relativeVO = RelativeVO(objectPos, obstacleDomain, obstaclePos, timeFrame);
         relativeVO.transform(t);
         return relativeVO;
-    }
-
-    @Override
-    public VO Merge(VO to, VO from) {
-        return null;
     }
 
     public Geometry RelativeVO(Point objectPos, Geometry obstacleDomain, Point obstaclePos, double timeframe) {

@@ -2,7 +2,7 @@ package Geometry;
 
 import DSDLVO.Classes.Geometry.Transformation;
 import DSDLVO.Classes.Geometry.HPoint;
-import DSDLVO.Classes.Utility;
+import DSDLVO.Utilities.Utility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

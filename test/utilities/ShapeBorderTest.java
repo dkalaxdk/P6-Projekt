@@ -2,7 +2,7 @@ package utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import DSDLVO.utilities.ShapeBorder;
+import DSDLVO.Utilities.ShapeBorder;
 import org.junit.jupiter.api.*;
 
 import java.awt.geom.Ellipse2D;

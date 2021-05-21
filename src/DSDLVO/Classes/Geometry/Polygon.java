@@ -1,6 +1,6 @@
 package DSDLVO.Classes.Geometry;
 
-import DSDLVO.utilities.GrahamScan;
+import DSDLVO.Utilities.GrahamScan;
 
 import java.util.ArrayList;
 import java.util.List;

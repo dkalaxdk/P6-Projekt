@@ -1,6 +1,6 @@
 package DSDLVO.Classes.Geometry;
 
-import DSDLVO.Classes.Utility;
+import DSDLVO.Utilities.Utility;
 
 public class Transformation {
     // 3x3 matrix for homogeneous coordinates

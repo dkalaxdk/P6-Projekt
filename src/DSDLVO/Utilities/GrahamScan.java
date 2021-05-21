@@ -1,9 +1,8 @@
-package DSDLVO.utilities;
+package DSDLVO.Utilities;
 
 import DSDLVO.Classes.Geometry.Point;
 import DSDLVO.Classes.Geometry.PointFactory;
 import DSDLVO.Classes.Geometry.PolarPoint;
-import DSDLVO.Classes.Utility;
 
 import java.util.ArrayList;
 import java.util.Comparator;

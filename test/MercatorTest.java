@@ -1,5 +1,5 @@
 import DSDLVO.Classes.Geometry.HPoint;
-import DSDLVO.Classes.Mercator;
+import DSDLVO.Utilities.Mercator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

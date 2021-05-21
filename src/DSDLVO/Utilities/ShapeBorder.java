@@ -1,4 +1,4 @@
-package DSDLVO.utilities;
+package DSDLVO.Utilities;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
