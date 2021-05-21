@@ -5,13 +5,14 @@ This project is made as a part of a bachelor project from Aalborg University. Th
 
 ## Setup of Java program
 The program comes with the Java 16 project and a python 3.8 project.<br>
-The Java project contains the implementation of the dynamic ship domain and the velocity obstacle algorithm, as well as a CSV reader which reads the AIS data.
+The Java project contains the implementation of the dynamic ship domain and the velocity obstacle algorithm, as well as a CSV reader which reads the AIS data.  
+The following must be done in order to run the program:
 
-* **Define input file:**<br>
-  The GitHub repository contains a set of predefined input files [Input InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). <br>
-  Upon opening the application, the user will be prompted to select the input file, and the MMSI which should be considered as Own Ship.<br>
+* **Select an input file:**<br>
+  The GitHub repository contains a set of predefined [InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). <br>
+  Upon opening the application, the user will be prompted to select the input file, and define the MMSI which should be considered as Own Ship.<br>
   The program repository also contains a python script to define a custom input file. [Input File Creator](#setup-of-input-file-generator)<br>
-  If an external input file is used, it should adhere to the same standards as the defined inputs files. The entries are comma separated, and SOG, COG ,Length ,Heading ,longitude ,latitude should be floats.
+  If an external input file is used, it should adhere to the same standards as the defined inputs files. The entries are comma separated, and the columns SOG, COG ,Length ,Heading ,longitude ,latitude should be floating point values.
 * **Define MMSI**<br>
   When running the program, the Own Ship (OS) should be defined. Therefore, the MMSI of the ship that should be interpreted as the OS, should be defined.
 * **Build the project**<br>
@@ -28,10 +29,10 @@ When running the program, the user is presented with an interface containing a s
 3. **Zoom** <br> Allows you to zoom in and out.
 
 ### Reading the Program
-As the program runs through a simulation with other ships, the time frame can be extended/decreased to find the time in which a collision may occur. <br>
-If no collisions are detected at the current time frame, the cones will remain grey as seen in the image bellow. <br>
+As the program runs through a simulation with other ships, the time frame can be increased/decreased to find the time in which a collision may occur. <br>
+If no collisions are detected within the current time frame, the cones will remain grey as seen in the image bellow. <br>
 ![GreyCone](readMeAssets/crossing_no_collision.png) <br>
-Whereas if a collision is predicted, the cone will turn red (see image below).<br>
+Whereas if a collision is detected, the cone will turn red (see image below).<br>
 ![RedCone](readMeAssets/crossing_collision.png)
 
 
