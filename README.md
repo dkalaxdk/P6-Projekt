@@ -51,3 +51,21 @@ The first line in the input file defines a ship with MMSI 1, second row defines 
 The input file generator overrides the [InputFiles/generated_file.csv](https://github.com/dkalaxdk/P6-Projekt/blob/master/InputFiles/generated_file.csv). To use this, the input file in the Java program should be defined as the generated_file. <br>
 
 After having defined the inputfile.txt, the python project should be built and run. Upon running, the python project will prompt for the amount of minutes that should be simulated.
+
+
+# Own ship MMSI for included files
+|**File path**|**Own ship MMSI**|
+|:-----|:-----|
+|test/Testfiles/TestInput.csv|219004612|
+|test/TestFiles/TestInput2.csv|211235221|
+|InputFiles/RealWorld/AarhusEncounter_Small.csv|218176000|
+|InputFiles/aisdk_20190510.csv|219017081|
+|InputFiles/RealWorld/EXPRESS_1_&_BALTIC_CONDOR.csv|219017081|
+|InputFiles/RealWorld/SKULD_&_ENSCO_72.csv|212172000|
+|InputFiles/RealWorld/FRANK_&_LILLY.csv|305369000|
+|InputFiles/RealWorld/TOENNE_&_HELLE.csv|219001359|
+|InputFiles/RealWorld/TOENNE_&_HELLE.csv|219798000|
+|InputFiles/RealWorld/Simulation1.csv|1|
+|InputFiles/Crossings/collision.csv|1|
+|InputFiles/Overtakings/overtaking_starboard.csv|1|
+|InputFiles/generated_file.csv|1|

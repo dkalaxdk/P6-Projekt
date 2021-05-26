@@ -53,60 +53,6 @@ public class CASystem {
         bufferLock = new ReentrantLock(true);
         listLock = new ReentrantLock(true);
 
-        // Set own ship's MMSI here:
-//        ownShipMMSI = 219004612;
-//        String inputFile = "test/TestFiles/TestInput1.csv";
-
-//        ownShipMMSI = 211235221;
-//        String inputFile = "test/TestFiles/TestInput2.csv";
-
-        // Near miss at 13:00 (+-)
-        // Ship domain too small at 16:00
-        // 8:00 spotty connection to a target ship
-//        ownShipMMSI = 377739000;
-//        String inputFile = "test/BigTestFiles/aisdk_20210208.csv";
-//        String inputFile = "InputFiles/RealWorld/TooBig/chaos.csv";
-//        String inputFile = "InputFiles/RealWorld/chaos12.csv";
-//        String inputFile = "InputFiles/RealWorld/chaos13.csv";
-//        String inputFile = "InputFiles/RealWorld/chaos14.csv";
-
-        // Paper with specific Aarhus collisions
-        // https://www-sciencedirect-com.zorac.aub.aau.dk/science/article/pii/S0029801818308618
-
-//        ownShipMMSI = 218176000;
-//        String inputFile = "InputFiles/RealWorld/AarhusEncounter_Small.csv";
-
-//        ownShipMMSI = 219017081;
-//        String inputFile = "InputFiles/aisdk_20190510.csv";
-//        String inputFile = "InputFiles/RealWorld/EXPRESS_1_&_BALTIC_CONDOR.csv";
-
-//        ownShipMMSI = 219678000;
-//        String inputFile = "InputFiles/RealWorld/SKULD_&_ENSCO_72.csv";
-
-//        ownShipMMSI = 212172000;
-//        String inputFile = "InputFiles/RealWorld/NECKAR_HIGHWAY_&_ORION.csv";
-
-//        ownShipMMSI = 305369000;
-//        String inputFile = "InputFiles/RealWorld/FRANK_&_LILLY.csv";
-
-        // HELLE
-//        ownShipMMSI = 219001359;
-
-        // TØNNE
-//        ownShipMMSI = 219798000;
-//        String inputFile = "InputFiles/RealWorld/TOENNE_&_HELLE.csv";
-
-        // https://doi.org/10.1016/j.oceaneng.2016.11.044
-        // #1
-//        ownShipMMSI = 1;
-//        String inputFile = "InputFiles/RealWorld/Simulation1.csv";
-
-
-        //ownShipMMSI = 1;
-//        String inputFile = "InputFiles/Crossings/collision.csv";
-//        String inputFile = "InputFiles/Overtakings/overtaking_starboard.csv";
-        //inputFile = "InputFiles/generated_file.csv";
-
 
         timeFactor = 0f;
         range = 20000;
