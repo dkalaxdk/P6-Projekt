@@ -10,7 +10,7 @@ The following must be done in order to run the program:
 
 * **Select an input file:**<br>
   The GitHub repository contains a set of predefined [InputFiles](https://github.com/dkalaxdk/P6-Projekt/tree/master/InputFiles). <br>
-  Upon opening the application, the user will be prompted to select the input file, and define the MMSI which should be considered as Own Ship.<br>
+  Upon opening the application, the user will be prompted to select the input file, and define the MMSI which should be considered as Own Ship. A list of MMSI's can be seen at [Default MMSI's](#own-ship-mmsi-for-included-files)<br>
   The program repository also contains a python script to define a custom input file. [Input File Creator](#setup-of-input-file-generator)<br>
   If an external input file is used, it should adhere to the same standards as the defined inputs files. The entries are comma separated, and the columns SOG, COG ,Length ,Heading ,longitude ,latitude should be floating point values.
 * **Define MMSI**<br>
