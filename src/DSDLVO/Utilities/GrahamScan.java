@@ -11,7 +11,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-// TODO: Refactor this class to implement Point interface, and adapt usages
+
 class TranslatedPoint {
     public Point originalPoint;
     public Point translatedPoint;

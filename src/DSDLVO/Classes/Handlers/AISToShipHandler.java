@@ -63,7 +63,6 @@ public class AISToShipHandler extends ShipHandler {
         if (data.sogIsSet && data.cogIsSet) {
             return CalculateVelocity(data.SOG, data.COG);
         } else if (!data.sogIsSet && data.cogIsSet) {
-            // TODO: Ved ikke om det her er dumt
             warnings.put("Velocity", "Ship's SOG is unknown, using " +
                     sogPlaceHolder + " as placeholder");
             return CalculateVelocity(sogPlaceHolder, data.COG);

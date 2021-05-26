@@ -104,7 +104,6 @@ public class UpdateShipHandler extends ShipHandler {
             return GetVelocityPlaceHolder();
         }
 
-        // TODO: Måske se på om den nye velocity falder helt uden for skibets path / Er helt urealistisk?
     }
 
     public HPoint HandlePosition() {
@@ -210,7 +209,7 @@ public class UpdateShipHandler extends ShipHandler {
                 data.sogIsSet = true;
                 return data.SOG;
             }
-            //TODO: Calculate SOG based on previous position
+
             else {
                 warnings.put("SOG", "SOG unknown, using " + sogPlaceHolder + " as a placeholder");
                 return sogPlaceHolder;
@@ -229,7 +228,7 @@ public class UpdateShipHandler extends ShipHandler {
                 data.cogIsSet = true;
                 return data.COG;
             }
-            //TODO: Calculate COG based on previous position
+
             else if (data.headingIsSet) {
                 warnings.put("COG", "COG unknown, using heading instead");
                 cogPlaceholder = data.heading;
@@ -255,7 +254,6 @@ public class UpdateShipHandler extends ShipHandler {
             warnings.put("Longitude", "Longitude is unrealistic");
         }
 
-        // TODO: Tjek om det her er helt skørt
         return data.longitude;
     }
 
@@ -265,7 +263,6 @@ public class UpdateShipHandler extends ShipHandler {
             warnings.put("Latitude", "Latitude is unrealistic");
         }
 
-        // TODO: Tjek om det her er helt skørt
         return data.latitude;
     }
 }

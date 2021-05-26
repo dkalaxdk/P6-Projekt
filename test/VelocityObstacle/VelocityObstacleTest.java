@@ -97,7 +97,7 @@ public class VelocityObstacleTest {
 
             Geometry absVO = VO.Calculate(objPos, obsDomain, obsPos, obsVel, time);
 
-            // TODO: Go through these and see which ones are actually relevant for Absolute VO
+
             //assertFalse(absVO.contains(new Point2D.Double(0.75, 1)));     // Fails if VO is not cone
             assertFalse(absVO.contains(new HPoint(0.5, 2, 1)));
             assertFalse(absVO.contains(new HPoint(0.5, 1, 1)));      // Fails because VO is not cone

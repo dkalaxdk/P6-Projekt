@@ -149,7 +149,6 @@ public class Display extends JPanel {
         }
     }
 
-    //TODO: Better name please
     private void drawShipVisualisation(Graphics2D g, Ship ship) {
 
         drawShip(ship, g);
@@ -302,7 +301,6 @@ public class Display extends JPanel {
         return drawPolygon(domain);
     }
 
-    // TODO: Implement me
     private Path2D drawEllipseDomain(Ship ship) {
         return new Path2D.Double();
     }
