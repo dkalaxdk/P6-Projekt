@@ -74,17 +74,12 @@ public class CASystem {
             e.printStackTrace();
             return;
         }
-        inputSimulator.start();
 
         boolean running = true;
         dirty = false;
 
-        long start;
-        long end;
-        long duration = 0;
-
         while (running) {
-            start = System.nanoTime();
+            inputSimulator.run();
 
             listLock.lock();
 
@@ -100,15 +95,6 @@ public class CASystem {
 
             listLock.unlock();
 
-            end = System.nanoTime();
-
-            duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(10 - (duration < 0 ? 0 : duration));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
