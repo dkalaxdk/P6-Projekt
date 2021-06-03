@@ -20,7 +20,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CASystem {
-
     public InputSimulator inputSimulator;
     public ArrayList<Ship> shipsInRange;
 
@@ -31,35 +30,26 @@ public class CASystem {
     public GUI gui;
     public VelocityObstacle obstacleCalculator;
     public Hashtable<Ship, Polygon> MVO;
-
-    public final Lock bufferLock;
     public final Lock listLock;
-
     public double range;
     public double timeFrame;
     public double lookAhead;
-
     public Float timeFactor;
-
     public boolean dirty;
-    private String inputFile;
 
     public CASystem(String inputFile, int ownShipMMSI) {
-        bufferLock = new ReentrantLock(true);
         listLock = new ReentrantLock(true);
-
         timeFactor = 0f;
         range = 20000;
         timeFrame = 1;
         lookAhead = 1;
 
         try {
-            // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(bufferLock, ownShipMMSI, inputFile);
+            // Set AIS data input file here:
+            inputSimulator = new InputSimulator(ownShipMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         inputSimulator.SetTimeFactor(timeFactor);
 
         shipsInRange = new ArrayList<>();
@@ -99,8 +89,6 @@ public class CASystem {
     }
 
     public void UpdateOwnShip() {
-        bufferLock.lock();
-
         if (!inputSimulator.osBuffer.isEmpty()) {
 
             ArrayList<AISData> dataList = new ArrayList<>();
@@ -122,20 +110,13 @@ public class CASystem {
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
-
         if (ownShip == null || inputSimulator.tsBuffer.isEmpty()) {
-            bufferLock.unlock();
             return;
         }
-
         ArrayList<AISData> dataList = new ArrayList<>();
-
         inputSimulator.tsBuffer.drainTo(dataList);
 
-        bufferLock.unlock();
-
         for (AISData data : dataList) {
-
             // If the potential ship is already out of range,
             // check if there is a reference to the ship in the ship list, remove it if there is,
             // and continue to next iteration
