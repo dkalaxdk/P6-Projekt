@@ -7,16 +7,13 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 
 public class InputSimulator extends Thread {
 
-    BlockingQueue<AISData> tsBuffer;
-    BlockingQueue<AISData> osBuffer;
+    public BlockingQueue<AISData> tsBuffer;
+    public BlockingQueue<AISData> osBuffer;
     String inputFile;
     int dataListIterator;
     public ArrayList<AISData> tsList;
@@ -31,14 +28,14 @@ public class InputSimulator extends Thread {
 
     public ScheduledExecutorService executorService;
 
-    public InputSimulator(Float timeFactor, Lock bufferLock, int osMMSI, BlockingQueue<AISData> osBuffer, BlockingQueue<AISData> tsBuffer, String inputFile) throws IOException {
+    public InputSimulator(Float timeFactor, Lock bufferLock, int osMMSI, String inputFile) throws IOException {
         this.timeFactor = timeFactor > 0 ? timeFactor : 1f;
 
         this.bufferLock = bufferLock;
 
         this.osMMSI = osMMSI;
-        this.osBuffer = osBuffer;
-        this.tsBuffer = tsBuffer;
+        this.osBuffer = new LinkedBlockingQueue<>();
+        this.tsBuffer = new LinkedBlockingQueue<>();
         this.inputFile = inputFile;
 
         fileParser = new FileParser(inputFile);

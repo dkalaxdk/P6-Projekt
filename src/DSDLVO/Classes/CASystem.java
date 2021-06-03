@@ -61,7 +61,7 @@ public class CASystem {
 
         try {
             // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(timeFactor, bufferLock, ownShipMMSI, osBuffer, tsBuffer, inputFile);
+            inputSimulator = new InputSimulator(timeFactor, bufferLock, ownShipMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
