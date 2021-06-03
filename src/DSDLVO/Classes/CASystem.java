@@ -115,7 +115,7 @@ public class CASystem {
     public void UpdateOwnShip() {
         bufferLock.lock();
 
-        if (inputSimulator.osBuffer.size() > 0) {
+        if (!inputSimulator.osBuffer.isEmpty()) {
 
             ArrayList<AISData> dataList = new ArrayList<>();
 
@@ -137,7 +137,7 @@ public class CASystem {
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (ownShip == null || inputSimulator.tsBuffer.size() == 0) {
+        if (ownShip == null || inputSimulator.tsBuffer.isEmpty()) {
             bufferLock.unlock();
             return;
         }
@@ -259,7 +259,7 @@ public class CASystem {
     }
 
     /**
-     * Creates the window where the simulation is shows
+     * Creates the window where the simulation is shown
      */
     private void createAndShowGUI() {
         // Check if we are running on the correct thread (?)
