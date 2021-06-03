@@ -23,8 +23,6 @@ public class CASystem {
 
     public InputSimulator inputSimulator;
     public ArrayList<Ship> shipsInRange;
-    public BlockingQueue<AISData> tsBuffer;
-    public BlockingQueue<AISData> osBuffer;
 
     public Ship ownShip;
     public int ownShipMMSI;
@@ -47,12 +45,8 @@ public class CASystem {
     private String inputFile;
 
     public CASystem(String inputFile, int ownShipMMSI) {
-        osBuffer = new LinkedBlockingQueue<>();
-        tsBuffer = new LinkedBlockingQueue<>();
-
         bufferLock = new ReentrantLock(true);
         listLock = new ReentrantLock(true);
-
 
         timeFactor = 0f;
         range = 20000;
@@ -61,7 +55,7 @@ public class CASystem {
 
         try {
             // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(timeFactor, bufferLock, ownShipMMSI, inputFile);
+            inputSimulator = new InputSimulator(bufferLock, ownShipMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,11 +115,11 @@ public class CASystem {
     public void UpdateOwnShip() {
         bufferLock.lock();
 
-        if (osBuffer.size() > 0) {
+        if (inputSimulator.osBuffer.size() > 0) {
 
             ArrayList<AISData> dataList = new ArrayList<>();
 
-            osBuffer.drainTo(dataList);
+            inputSimulator.osBuffer.drainTo(dataList);
 
             if (ownShip == null) {
                 AISData data = dataList.remove(0);
@@ -143,14 +137,14 @@ public class CASystem {
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
-        if (ownShip == null || tsBuffer.size() == 0) {
+        if (ownShip == null || inputSimulator.tsBuffer.size() == 0) {
             bufferLock.unlock();
             return;
         }
 
         ArrayList<AISData> dataList = new ArrayList<>();
 
-        tsBuffer.drainTo(dataList);
+        inputSimulator.tsBuffer.drainTo(dataList);
 
         bufferLock.unlock();
 

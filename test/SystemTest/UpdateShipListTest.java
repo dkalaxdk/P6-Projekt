@@ -40,7 +40,7 @@ public class UpdateShipListTest {
 
         AISData data = new AISData();
         data.mmsi = 0;
-        system.tsBuffer.add(data);
+        system.inputSimulator.tsBuffer.add(data);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -60,8 +60,8 @@ public class UpdateShipListTest {
         AISData data1 = new AISData();
         data1.mmsi = 1;
 
-        system.tsBuffer.add(data);
-        system.tsBuffer.add(data1);
+        system.inputSimulator.tsBuffer.add(data);
+        system.inputSimulator.tsBuffer.add(data1);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -80,7 +80,7 @@ public class UpdateShipListTest {
 
         system.shipsInRange.add(new Ship(new HPoint(0,0), 10, 5, 0));
 
-        system.tsBuffer.add(data1);
+        system.inputSimulator.tsBuffer.add(data1);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -100,7 +100,7 @@ public class UpdateShipListTest {
         data1.length = 10;
         data1.lengthIsSet = true;
 
-        system.tsBuffer.add(data1);
+        system.inputSimulator.tsBuffer.add(data1);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -110,7 +110,7 @@ public class UpdateShipListTest {
         data2.length = 20;
         data2.lengthIsSet = true;
 
-        system.tsBuffer.add(data2);
+        system.inputSimulator.tsBuffer.add(data2);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -131,7 +131,7 @@ public class UpdateShipListTest {
         data.longitude = 10;
         data.latitude = 10;
 
-        system.tsBuffer.add(data);
+        system.inputSimulator.tsBuffer.add(data);
 
         system.bufferLock.lock();
         system.UpdateShipList();
@@ -152,14 +152,14 @@ public class UpdateShipListTest {
         data1.longitude = 0;
         data1.latitude = 0;
 
-        system.tsBuffer.add(data1);
+        system.inputSimulator.tsBuffer.add(data1);
 
         AISData data2 = new AISData();
         data2.mmsi = 1;
         data2.longitude = 10;
         data2.latitude = 10;
 
-        system.tsBuffer.add(data2);
+        system.inputSimulator.tsBuffer.add(data2);
 
         system.bufferLock.lock();
         system.UpdateShipList();

@@ -27,7 +27,7 @@ public class InputSimulatorTest {
         Lock bufferLock = new ReentrantLock(true);
         InputSimulator simulator = null;
         try {
-            simulator = new InputSimulator(1f, bufferLock, osMMSI, inputFile);
+            simulator = new InputSimulator(bufferLock, osMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

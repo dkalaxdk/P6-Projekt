@@ -28,8 +28,8 @@ public class InputSimulator extends Thread {
 
     public ScheduledExecutorService executorService;
 
-    public InputSimulator(Float timeFactor, Lock bufferLock, int osMMSI, String inputFile) throws IOException {
-        this.timeFactor = timeFactor > 0 ? timeFactor : 1f;
+    public InputSimulator(Lock bufferLock, int osMMSI, String inputFile) throws IOException {
+        this.timeFactor = 1f;
 
         this.bufferLock = bufferLock;
 
