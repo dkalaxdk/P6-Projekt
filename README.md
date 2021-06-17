@@ -65,6 +65,8 @@ After having defined the inputfile.txt, the python project should be built and r
 |InputFiles/RealWorld/FRANK_&_LILLY.csv|305369000|
 |InputFiles/RealWorld/TOENNE_&_HELLE.csv|219001359|
 |InputFiles/RealWorld/TOENNE_&_HELLE.csv|219798000|
+|InputFiles/RealWorld/Bornholm_12.csv|377739000|
+|InputFiles/RealWorld/Bornholm_13.csv|377739000|
 |InputFiles/RealWorld/Simulation1.csv|1|
 |InputFiles/Crossings/collision.csv|1|
 |InputFiles/Overtakings/overtaking_starboard.csv|1|
