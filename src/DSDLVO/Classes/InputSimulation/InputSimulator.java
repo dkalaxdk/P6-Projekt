@@ -16,15 +16,20 @@ public class InputSimulator {
     public BlockingQueue<AISData> tsBuffer;
     public BlockingQueue<AISData> osBuffer;
     public ArrayList<AISData> tsList;
+    private final int osMMSI;
+
+    private final FileParser fileParser;
     public LocalDateTime currentTime;
     public AISData nextInput;
 
-    private final FileParser fileParser;
-    private final int osMMSI;
+    private Lock bufferLock;
     private Float timeFactor;
 
-    public InputSimulator(int osMMSI, String inputFile) throws IOException {
+    public ScheduledExecutorService executorService;
+
+    public InputSimulator(Lock bufferLock, int osMMSI, String inputFile) throws IOException {
         this.timeFactor = 1f;
+        this.bufferLock = bufferLock;
         this.osMMSI = osMMSI;
         this.osBuffer = new LinkedBlockingQueue<>();
         this.tsBuffer = new LinkedBlockingQueue<>();
@@ -100,12 +105,16 @@ public class InputSimulator {
     }
 
     /**
-     * This method adds data to buffers
+     * This method adds data to buffers and handles the lock
      */
     private void addElementsToBuffers(AISData os, List<AISData> tsList) {
+        bufferLock.lock();
+
         if (os != null)
             osBuffer.add(os);
         tsBuffer.addAll(tsList);
+
+        bufferLock.unlock();
 
         tsList.clear();
     }
