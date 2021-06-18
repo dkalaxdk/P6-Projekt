@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 
-public class InputSimulator {
+public class InputSimulator extends Thread {
 
     public BlockingQueue<AISData> tsBuffer;
     public BlockingQueue<AISData> osBuffer;
@@ -38,11 +38,30 @@ public class InputSimulator {
         tsList = new ArrayList<>();
     }
 
-    public void run() {
-        if(inputIsAvailable() && timeFactor != 0) {
-            currentTime = currentTime.plusSeconds(1);
-            AddDataToBuffers();
-        }
+    @Override
+    public void run() throws NullPointerException {
+        executorService = Executors.newScheduledThreadPool(1);
+
+        Runnable runnable = () -> {
+            if (nextInput != null) {
+                if (timeFactor != 0) {
+                    long start = System.nanoTime();
+
+                    currentTime = currentTime.plusSeconds(1);
+                    AddDataToBuffers();
+
+                    long end = System.nanoTime();
+                    long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+
+                    executorService.schedule(this, (1000 / timeFactor.longValue()) - duration, TimeUnit.MILLISECONDS);
+                } else {
+                    executorService.schedule(this, 500, TimeUnit.MILLISECONDS);
+                }
+            } else
+                executorService.shutdown();
+        };
+
+        executorService.schedule(runnable, 0, TimeUnit.MILLISECONDS);
     }
 
     public void RunSetUp() throws OSNotFoundException {

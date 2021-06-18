@@ -40,12 +40,23 @@ public class InputSimulatorTest {
     class run{
 
         @Test
-        public void run_StopsAtCorrectCurrentTime() throws OSNotFoundException {
+        public void run_StopsAtCorrectCurrentTime(){
             int osMMSI = 211235220;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOneElement);
-            simulator.RunSetUp();
+
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             simulator.run();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(LocalDateTime.of(2017, 6, 23, 12, 34, 56),
                          simulator.currentTime);
@@ -63,27 +74,56 @@ public class InputSimulatorTest {
 
             simulator.run();
 
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             assertNull(simulator.nextInput);
         }
 
         @Test
-        public void run_AddsCorrectNumberOfItemsToTsBuffer() throws OSNotFoundException {
+        public void run_AddsCorrectNumberOfItemsToTsBuffer() {
             int osMMSI = 265785410;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
-            simulator.RunSetUp();
+
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             simulator.run();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(11, simulator.tsBuffer.size());
         }
 
         @Test
-        public void run_AddsCorrectNumberOfItemsToOsBuffer() throws OSNotFoundException {
+        public void run_AddsCorrectNumberOfItemsToOsBuffer() {
             int osMMSI = 311000223;
+
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
-            simulator.RunSetUp();
+
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             simulator.run();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(2, simulator.osBuffer.size());
         }
@@ -93,31 +133,43 @@ public class InputSimulatorTest {
     @DisplayName("InputSimulator.RunSetUp")
     class RunSetUp{
         @Test
-        public void RunSetUp_AddsOneOSDataPointToOsBuffer() throws OSNotFoundException {
+        public void RunSetUp_AddsOneOSDataPointToOsBuffer(){
             int osMMSI = 219007034;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(1, simulator.osBuffer.size());
         }
 
         @Test
-        public void RunSetUp_AddsDataToTSBuffer() throws OSNotFoundException {
+        public void RunSetUp_AddsDataToTSBuffer(){
             int osMMSI = 219007034;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(10, simulator.tsBuffer.size());
         }
 
         @Test
-        public void RunSetUp_ResetsTsList() throws OSNotFoundException {
+        public void RunSetUp_ResetsTsList(){
             int osMMSI = 219007034;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
 
-            simulator.RunSetUp();
+            try {
+                simulator.RunSetUp();
+            } catch (OSNotFoundException e) {
+                e.printStackTrace();
+            }
 
             assertEquals(0, simulator.tsList.size());
         }
