@@ -40,9 +40,10 @@ public class UpdateShipListTest {
 
         AISData data = new AISData();
         data.mmsi = 0;
-        system.inputSimulator.tsBuffer.add(data);
+        //system.inputSimulator.tsBuffer.add(data);
+        system.inputSimulator.inputCollection.insert(data);
 
-        system.bufferLock.lock();
+        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.get(0).mmsi);
@@ -58,16 +59,18 @@ public class UpdateShipListTest {
         data.mmsi = 0;
 
         AISData data1 = new AISData();
-        data1.mmsi = 1;
+        data1.mmsi = 2;
 
-        system.inputSimulator.tsBuffer.add(data);
-        system.inputSimulator.tsBuffer.add(data1);
+        //system.inputSimulator.tsBuffer.add(data);
+        //system.inputSimulator.tsBuffer.add(data1);
+        system.inputSimulator.inputCollection.insert(data);
+        system.inputSimulator.inputCollection.insert(data1);
 
-        system.bufferLock.lock();
+        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.get(0).mmsi);
-        assertEquals(1, system.shipsInRange.get(1).mmsi);
+        assertEquals(2, system.shipsInRange.get(1).mmsi);
     }
 
     @Test
@@ -76,22 +79,21 @@ public class UpdateShipListTest {
         system.ownShip.longitude = 0;
 
         AISData data1 = new AISData();
-        data1.mmsi = 1;
+        data1.mmsi = 2;
 
         system.shipsInRange.add(new Ship(new HPoint(0,0), 10, 5, 0));
 
-        system.inputSimulator.tsBuffer.add(data1);
+        //system.inputSimulator.tsBuffer.add(data1);
+        system.inputSimulator.inputCollection.insert(data1);
 
-        system.bufferLock.lock();
+        //system.bufferLock.lock();
         system.UpdateShipList();
 
-        assertEquals(1, system.shipsInRange.get(1).mmsi);
+        assertEquals(2, system.shipsInRange.get(1).mmsi);
     }
 
     @Test
     public void nonemptyListNonEmptyBuffer_existingElement_elementUpdated() {
-
-
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
@@ -100,19 +102,22 @@ public class UpdateShipListTest {
         data1.length = 10;
         data1.lengthIsSet = true;
 
-        system.inputSimulator.tsBuffer.add(data1);
+        //system.inputSimulator.tsBuffer.add(data1);
+        system.inputSimulator.inputCollection.insert(data1);
 
-        system.bufferLock.lock();
+        //system.bufferLock.lock();
         system.UpdateShipList();
 
         AISData data2 = new AISData();
+        data2.timestampString = "11/11/1111 11:11:11";
         data2.mmsi = 10;
         data2.length = 20;
         data2.lengthIsSet = true;
 
-        system.inputSimulator.tsBuffer.add(data2);
+        //system.inputSimulator.tsBuffer.add(data2);
+        system.inputSimulator.inputCollection.insert(data2);
 
-        system.bufferLock.lock();
+        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(20, system.shipsInRange.get(0).length);

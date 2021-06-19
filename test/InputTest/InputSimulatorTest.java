@@ -88,7 +88,7 @@ public class InputSimulatorTest {
     @DisplayName("InputSimulator.RunSetUp")
     class RunSetUp{
         @Test
-        public void RunSetUp_AddsOneOSDataPointToOsBuffer(){
+        public void RunSetUp_AddsDataToInputCollection(){
             int osMMSI = 219007034;
             InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
 
@@ -98,21 +98,7 @@ public class InputSimulatorTest {
                 e.printStackTrace();
             }
 
-            assertEquals(1, simulator.osBuffer.size());
-        }
-
-        @Test
-        public void RunSetUp_AddsDataToTSBuffer(){
-            int osMMSI = 219007034;
-            InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
-
-            try {
-                simulator.RunSetUp();
-            } catch (OSNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            assertEquals(10, simulator.tsBuffer.size());
+            assertEquals(11, simulator.inputCollection.getAll().size());
         }
 
         @Test
@@ -160,7 +146,7 @@ public class InputSimulatorTest {
     @DisplayName("InputSimulator.AddDataToBuffers")
     class AddDataToBuffers{
         @Test
-        public void AddDataToBuffers_AddsCorrectNumberOfItemsToTSBuffer(){
+        public void AddDataToBuffers_AddsCorrectNumberOfItemsToInputCollection(){
             int osMMSI = 219002624;
             InputSimulator simulator = createInputSimulator(osMMSI, InputThreeElementsSameTime);
             simulator.nextInput = simulator.GetNextInput();
@@ -168,19 +154,7 @@ public class InputSimulatorTest {
 
             simulator.AddDataToBuffers();
 
-            assertEquals(2, simulator.tsBuffer.size());
-        }
-
-        @Test
-        public void AddDataToBuffers_AddsCorrectNumberOfItemsToOSBuffer(){
-            int osMMSI = 219002624;
-            InputSimulator simulator = createInputSimulator(osMMSI, InputThreeElementsSameTime);
-            simulator.nextInput = simulator.GetNextInput();
-            simulator.currentTime = simulator.nextInput.dateTime;
-
-            simulator.AddDataToBuffers();
-
-            assertEquals(1, simulator.osBuffer.size());
+            assertEquals(3, simulator.inputCollection.getAll().size());
         }
 
         @Test

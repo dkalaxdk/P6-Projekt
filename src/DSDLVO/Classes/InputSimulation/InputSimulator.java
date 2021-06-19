@@ -17,6 +17,7 @@ public class InputSimulator extends Thread {
     public BlockingQueue<AISData> osBuffer;
     public ArrayList<AISData> tsList;
     private final int osMMSI;
+    public InputCollection inputCollection;
 
     private final FileParser fileParser;
     public LocalDateTime currentTime;
@@ -36,6 +37,8 @@ public class InputSimulator extends Thread {
 
         fileParser = new FileParser(inputFile);
         tsList = new ArrayList<>();
+        inputCollection = new InputCollection();
+        inputCollection.setOwnShipMMSI(osMMSI);
     }
 
     @Override
@@ -130,10 +133,13 @@ public class InputSimulator extends Thread {
         bufferLock.lock();
 
         if (os != null)
-            osBuffer.add(os);
-        tsBuffer.addAll(tsList);
+            //osBuffer.add(os);
+        //tsBuffer.addAll(tsList);
 
         bufferLock.unlock();
+
+        inputCollection.insert(os);
+        inputCollection.insertList(tsList);
 
         tsList.clear();
     }

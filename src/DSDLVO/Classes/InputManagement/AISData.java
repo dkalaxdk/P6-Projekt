@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class AISData implements Comparable {
 
@@ -92,7 +93,7 @@ public class AISData implements Comparable {
     public AISData() {
     }
 
-    public AISData(String timestampString, int mmsi, float latitude, float longitude, int width, int length) {
+    public AISData(String timestampString, int mmsi, double latitude, double longitude, int width, int length) {
         this.timestampString = timestampString;
         this.mmsi = mmsi;
         this.latitude = latitude;
@@ -149,5 +150,18 @@ public class AISData implements Comparable {
             return 1;
         else
             return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AISData aisData = (AISData) o;
+        return mmsi == aisData.mmsi && Double.compare(aisData.latitude, latitude) == 0 && Double.compare(aisData.longitude, longitude) == 0 && Double.compare(aisData.ROT, ROT) == 0 && Double.compare(aisData.SOG, SOG) == 0 && Double.compare(aisData.COG, COG) == 0 && heading == aisData.heading && distanceFore == aisData.distanceFore && distanceAft == aisData.distanceAft && distancePort == aisData.distancePort && distanceStarboard == aisData.distanceStarboard && width == aisData.width && length == aisData.length && Objects.equals(dateTime, aisData.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateTime, mmsi, latitude, longitude, ROT, SOG, COG, heading, distanceFore, distanceAft, distancePort, distanceStarboard, width, length);
     }
 }

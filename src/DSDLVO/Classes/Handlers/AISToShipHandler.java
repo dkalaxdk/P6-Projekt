@@ -9,6 +9,8 @@ import java.util.Hashtable;
 
 public class AISToShipHandler extends ShipHandler {
 
+    //TODO: Rename this to a more clear name, such as AISShipDataConverter or verifier
+    // the name as it stands now does not say what this class does, nor do the method names
     public AISToShipHandler(Ship myShip, AISData data, Hashtable<String, String> warnings) {
         super(myShip, data, null, warnings);
     }

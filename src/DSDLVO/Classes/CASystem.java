@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +66,7 @@ public class CASystem {
         shipsInRange = new ArrayList<>();
         obstacleCalculator = new VelocityObstacle();
         MVO = new Hashtable<>();
+        this.ownShipMMSI = ownShipMMSI;
     }
 
     public void Start() {
@@ -113,6 +115,17 @@ public class CASystem {
     }
 
     public void UpdateOwnShip() {
+        AISData osData = inputSimulator.inputCollection.getOwnShip();
+        if(osData != null) {
+            if(ownShip == null) {
+                ownShip = new Ship(osData);
+            }
+            else {
+                ownShip.Update(osData);
+            }
+            dirty = true;
+        }
+        /*
         bufferLock.lock();
 
         if (!inputSimulator.osBuffer.isEmpty()) {
@@ -126,18 +139,28 @@ public class CASystem {
                 ownShip = new Ship(data);
             }
 
+            //TODO: I'm guessing this is to get the latest data about OS
+            // and all entries must be checked, as later entries may be missing data
+            // this should be made more explicit,
+            // perhaps by checking for missing data, and go backwards through the list
+            // until all data is found
+
+            // TODO: if above comment is correct, this is made redundant by using InputCollection
             for (AISData data : dataList) {
                 ownShip.Update(data);
             }
 
             dirty = true;
         }
+         */
     }
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
 
+        /*
         if (ownShip == null || inputSimulator.tsBuffer.isEmpty()) {
+            // FIXME: buffer locked and unlocked in different methods
             bufferLock.unlock();
             return;
         }
@@ -147,6 +170,9 @@ public class CASystem {
         inputSimulator.tsBuffer.drainTo(dataList);
 
         bufferLock.unlock();
+         */
+
+        ArrayList<AISData> dataList = new ArrayList<>(inputSimulator.inputCollection.getTargetShips());
 
         for (AISData data : dataList) {
 
