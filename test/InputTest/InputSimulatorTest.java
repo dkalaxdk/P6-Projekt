@@ -82,51 +82,6 @@ public class InputSimulatorTest {
 
             assertNull(simulator.nextInput);
         }
-
-        @Test
-        public void run_AddsCorrectNumberOfItemsToTsBuffer() {
-            int osMMSI = 265785410;
-            InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
-
-            try {
-                simulator.RunSetUp();
-            } catch (OSNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            simulator.run();
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            assertEquals(11, simulator.tsBuffer.size());
-        }
-
-        @Test
-        public void run_AddsCorrectNumberOfItemsToOsBuffer() {
-            int osMMSI = 311000223;
-
-            InputSimulator simulator = createInputSimulator(osMMSI, InputOSDataNotAtStart);
-
-            try {
-                simulator.RunSetUp();
-            } catch (OSNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            simulator.run();
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            assertEquals(2, simulator.osBuffer.size());
-        }
     }
 
     @Nested
