@@ -1,6 +1,5 @@
 package InputTest;
 
-import DSDLVO.Classes.InputManagement.AISData;
 import DSDLVO.Classes.InputSimulation.InputSimulator;
 import DSDLVO.Exceptions.OSNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,10 +21,9 @@ public class InputSimulatorTest {
 
 
     private InputSimulator createInputSimulator(int osMMSI, String inputFile) {
-        Lock bufferLock = new ReentrantLock(true);
         InputSimulator simulator = null;
         try {
-            simulator = new InputSimulator(bufferLock, osMMSI, inputFile);
+            simulator = new InputSimulator(osMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,28 +139,28 @@ public class InputSimulatorTest {
     }
 
     @Nested
-    @DisplayName("InputSimulator.AddDataToBuffers")
+    @DisplayName("InputSimulator.AddDataToInputCollection")
     class AddDataToBuffers{
         @Test
-        public void AddDataToBuffers_AddsCorrectNumberOfItemsToInputCollection(){
+        public void AddDataToInputCollection_AddsCorrectNumberOfItemsToInputCollection(){
             int osMMSI = 219002624;
             InputSimulator simulator = createInputSimulator(osMMSI, InputThreeElementsSameTime);
             simulator.nextInput = simulator.GetNextInput();
             simulator.currentTime = simulator.nextInput.dateTime;
 
-            simulator.AddDataToBuffers();
+            simulator.AddDataToInputCollection();
 
             assertEquals(3, simulator.inputCollection.getAll().size());
         }
 
         @Test
-        public void AddDataToBuffers_ResetsTSList(){
+        public void AddDataToInputCollection_ResetsTSList(){
             int osMMSI = 219002624;
             InputSimulator simulator = createInputSimulator(osMMSI, InputThreeElementsSameTime);
             simulator.nextInput = simulator.GetNextInput();
             simulator.currentTime = simulator.nextInput.dateTime;
 
-            simulator.AddDataToBuffers();
+            simulator.AddDataToInputCollection();
 
             assertEquals(0, simulator.tsList.size());
         }

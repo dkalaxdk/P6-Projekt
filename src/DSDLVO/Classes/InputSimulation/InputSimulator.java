@@ -9,12 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
 
 public class InputSimulator extends Thread {
-
-    public BlockingQueue<AISData> tsBuffer;
-    public BlockingQueue<AISData> osBuffer;
     public ArrayList<AISData> tsList;
     private final int osMMSI;
     public InputCollection inputCollection;
@@ -23,17 +19,13 @@ public class InputSimulator extends Thread {
     public LocalDateTime currentTime;
     public AISData nextInput;
 
-    private Lock bufferLock;
     private Float timeFactor;
 
     public ScheduledExecutorService executorService;
 
-    public InputSimulator(Lock bufferLock, int osMMSI, String inputFile) throws IOException {
+    public InputSimulator(int osMMSI, String inputFile) throws IOException {
         this.timeFactor = 1f;
-        this.bufferLock = bufferLock;
         this.osMMSI = osMMSI;
-        this.osBuffer = new LinkedBlockingQueue<>();
-        this.tsBuffer = new LinkedBlockingQueue<>();
 
         fileParser = new FileParser(inputFile);
         tsList = new ArrayList<>();
@@ -51,7 +43,7 @@ public class InputSimulator extends Thread {
                     long start = System.nanoTime();
 
                     currentTime = currentTime.plusSeconds(1);
-                    AddDataToBuffers();
+                    AddDataToInputCollection();
 
                     long end = System.nanoTime();
                     long duration = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
@@ -87,7 +79,7 @@ public class InputSimulator extends Thread {
             throw new OSNotFoundException();
         }
 
-        addElementsToBuffers(os, tsList);
+        addElementsToInputCollection(os, tsList);
     }
 
     public void AddNextInputToTSList() {
@@ -97,7 +89,7 @@ public class InputSimulator extends Thread {
         tsList.add(nextInput);
     }
 
-    public void AddDataToBuffers() {
+    public void AddDataToInputCollection() {
         AISData os = null;
 
         while (inputIsAvailable() && nextInputTimestampIsNotLaterThanCurrentTime()) {
@@ -109,7 +101,7 @@ public class InputSimulator extends Thread {
             nextInput = GetNextInput();
         }
 
-        addElementsToBuffers(os, tsList);
+        addElementsToInputCollection(os, tsList);
     }
 
     /**
@@ -129,16 +121,9 @@ public class InputSimulator extends Thread {
     /**
      * This method adds data to buffers and handles the lock
      */
-    private void addElementsToBuffers(AISData os, List<AISData> tsList) {
-        bufferLock.lock();
-
-        if (os != null)
-            //osBuffer.add(os);
-        //tsBuffer.addAll(tsList);
-
-        bufferLock.unlock();
-
-        inputCollection.insert(os);
+    private void addElementsToInputCollection(AISData os, List<AISData> tsList) {
+        if(os != null)
+            inputCollection.insert(os);
         inputCollection.insertList(tsList);
 
         tsList.clear();

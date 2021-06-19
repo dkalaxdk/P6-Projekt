@@ -33,9 +33,6 @@ public class CASystem {
     public VelocityObstacle obstacleCalculator;
     public Hashtable<Ship, Polygon> MVO;
 
-    public final Lock bufferLock;
-    public final Lock listLock;
-
     public double range;
     public double timeFrame;
     public double lookAhead;
@@ -46,9 +43,6 @@ public class CASystem {
     private String inputFile;
 
     public CASystem(String inputFile, int ownShipMMSI) {
-        bufferLock = new ReentrantLock(true);
-        listLock = new ReentrantLock(true);
-
         timeFactor = 0f;
         range = 20000;
         timeFrame = 1;
@@ -56,7 +50,7 @@ public class CASystem {
 
         try {
             // Set time factor and AIS data input file here:
-            inputSimulator = new InputSimulator(bufferLock, ownShipMMSI, inputFile);
+            inputSimulator = new InputSimulator(ownShipMMSI, inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,8 +82,6 @@ public class CASystem {
         while (running) {
             start = System.nanoTime();
 
-            listLock.lock();
-
             UpdateOwnShip();
             UpdateShipList();
 
@@ -99,8 +91,6 @@ public class CASystem {
                 UpdateDisplay();
                 dirty = false;
             }
-
-            listLock.unlock();
 
             end = System.nanoTime();
 
@@ -125,53 +115,10 @@ public class CASystem {
             }
             dirty = true;
         }
-        /*
-        bufferLock.lock();
-
-        if (!inputSimulator.osBuffer.isEmpty()) {
-
-            ArrayList<AISData> dataList = new ArrayList<>();
-
-            inputSimulator.osBuffer.drainTo(dataList);
-
-            if (ownShip == null) {
-                AISData data = dataList.remove(0);
-                ownShip = new Ship(data);
-            }
-
-            //TODO: I'm guessing this is to get the latest data about OS
-            // and all entries must be checked, as later entries may be missing data
-            // this should be made more explicit,
-            // perhaps by checking for missing data, and go backwards through the list
-            // until all data is found
-
-            // TODO: if above comment is correct, this is made redundant by using InputCollection
-            for (AISData data : dataList) {
-                ownShip.Update(data);
-            }
-
-            dirty = true;
-        }
-         */
     }
 
     // Get new ships from buffer, and update exiting ones
     public void UpdateShipList() {
-
-        /*
-        if (ownShip == null || inputSimulator.tsBuffer.isEmpty()) {
-            // FIXME: buffer locked and unlocked in different methods
-            bufferLock.unlock();
-            return;
-        }
-
-        ArrayList<AISData> dataList = new ArrayList<>();
-
-        inputSimulator.tsBuffer.drainTo(dataList);
-
-        bufferLock.unlock();
-         */
-
         ArrayList<AISData> dataList = new ArrayList<>(inputSimulator.inputCollection.getTargetShips());
 
         for (AISData data : dataList) {

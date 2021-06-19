@@ -21,37 +21,30 @@ public class UpdateShipListTest {
 
     @Test
     public void emptyListEmptyBuffer_noChange() {
-
-
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
-        system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.size());
     }
 
     @Test
-    public void emptyListNonEmptyBuffer_newElement_elementAddedToList() {
-
+    public void emptyListNonEmptyInputCollection_newElement_elementAddedToList() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
         AISData data = new AISData();
         data.mmsi = 0;
-        //system.inputSimulator.tsBuffer.add(data);
         system.inputSimulator.inputCollection.insert(data);
 
-        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.get(0).mmsi);
     }
 
     @Test
-    public void emptyListNonEmptyBuffer_twoNewElements_elementsAddedToList() {
-
+    public void emptyListNonEmptyInputCollection_twoNewElements_elementsAddedToList() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
@@ -61,12 +54,9 @@ public class UpdateShipListTest {
         AISData data1 = new AISData();
         data1.mmsi = 2;
 
-        //system.inputSimulator.tsBuffer.add(data);
-        //system.inputSimulator.tsBuffer.add(data1);
         system.inputSimulator.inputCollection.insert(data);
         system.inputSimulator.inputCollection.insert(data1);
 
-        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.get(0).mmsi);
@@ -74,7 +64,7 @@ public class UpdateShipListTest {
     }
 
     @Test
-    public void nonemptyListNonEmptyBuffer_newElement_elementAddedToList() {
+    public void nonemptyListNonEmptyInputCollection_newElement_elementAddedToList() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
@@ -83,17 +73,15 @@ public class UpdateShipListTest {
 
         system.shipsInRange.add(new Ship(new HPoint(0,0), 10, 5, 0));
 
-        //system.inputSimulator.tsBuffer.add(data1);
         system.inputSimulator.inputCollection.insert(data1);
 
-        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(2, system.shipsInRange.get(1).mmsi);
     }
 
     @Test
-    public void nonemptyListNonEmptyBuffer_existingElement_elementUpdated() {
+    public void nonemptyListNonEmptyInputCollection_existingElement_elementUpdated() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
 
@@ -102,10 +90,8 @@ public class UpdateShipListTest {
         data1.length = 10;
         data1.lengthIsSet = true;
 
-        //system.inputSimulator.tsBuffer.add(data1);
         system.inputSimulator.inputCollection.insert(data1);
 
-        //system.bufferLock.lock();
         system.UpdateShipList();
 
         AISData data2 = new AISData();
@@ -114,19 +100,15 @@ public class UpdateShipListTest {
         data2.length = 20;
         data2.lengthIsSet = true;
 
-        //system.inputSimulator.tsBuffer.add(data2);
         system.inputSimulator.inputCollection.insert(data2);
 
-        //system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(20, system.shipsInRange.get(0).length);
     }
 
     @Test
-    public void emptyListNonEmptyBuffer_elementOutOfRange_listRemainsEmpty() {
-
-
+    public void emptyListNonEmptyInputCollection_elementOutOfRange_listRemainsEmpty() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
         system.range = 1;
@@ -136,18 +118,15 @@ public class UpdateShipListTest {
         data.longitude = 10;
         data.latitude = 10;
 
-        system.inputSimulator.tsBuffer.add(data);
+        system.inputSimulator.inputCollection.insert(data);
 
-        system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.size());
     }
 
     @Test
-    public void nonEmptyListNonEmptyBuffer_elementOutOfRange_removeElementFromList() {
-
-
+    public void nonEmptyListNonEmptyInputCollection_elementOutOfRange_removeElementFromList() {
         system.ownShip = new Ship(new HPoint(0,0), 50, 10, 0);
         system.ownShip.longitude = 0;
         system.range = 1;
@@ -157,16 +136,16 @@ public class UpdateShipListTest {
         data1.longitude = 0;
         data1.latitude = 0;
 
-        system.inputSimulator.tsBuffer.add(data1);
+        system.inputSimulator.inputCollection.insert(data1);
 
         AISData data2 = new AISData();
+        data2.timestampString = "11/11/1111 11:11:11";
         data2.mmsi = 1;
         data2.longitude = 10;
         data2.latitude = 10;
 
-        system.inputSimulator.tsBuffer.add(data2);
+        system.inputSimulator.inputCollection.insert(data2);
 
-        system.bufferLock.lock();
         system.UpdateShipList();
 
         assertEquals(0, system.shipsInRange.size());
@@ -176,8 +155,6 @@ public class UpdateShipListTest {
     class RemoveShipsOutOfRange {
         @Test
         public void ShipsAreWithinRange_NoChange() {
-
-
             Ship target1 = new Ship(new HPoint(1,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(2,0), 10, 10, 0);
 
@@ -194,8 +171,6 @@ public class UpdateShipListTest {
 
         @Test
         public void OneShipOutOfRange_RemoveOneShip() {
-
-
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(1,0), 10, 10, 0);
 
@@ -212,7 +187,6 @@ public class UpdateShipListTest {
 
         @Test
         public void MultipleShipsOutOfRange_RemoveShips() {
-
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(12,0), 10, 10, 0);
             Ship target3 = new Ship(new HPoint(1,0), 10, 10, 0);
@@ -232,7 +206,6 @@ public class UpdateShipListTest {
 
         @Test
         public void AllShipOutOfRange_EmptyList() {
-
             Ship target1 = new Ship(new HPoint(11,0), 10, 10, 0);
             Ship target2 = new Ship(new HPoint(12,0), 10, 10, 0);
             Ship target3 = new Ship(new HPoint(13,0), 10, 10, 0);

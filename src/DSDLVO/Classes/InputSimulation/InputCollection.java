@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//TODO: Make sure it does not cause problems that the elements themselves are not thread safe
 /**
  * This class maintains a collection of AISData entries indexed by mmsi.
  * It has methods for getting data about all ships, own ship, and target ships
